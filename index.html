@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jinvani eBook Reader</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Jinvani eBook Reader</h1>
+            <p class="header-subtitle">Your Beautiful PDF Reading Experience</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Sidebar for file selection -->
+            <aside class="sidebar">
+                <h2>Your Library</h2>
+                <div class="file-input-container">
+                    <label for="folderInput" class="folder-btn">
+                        📁 Select PDF Folder
+                    </label>
+                    <input type="file" id="folderInput" webkitdirectory directory multiple accept=".pdf" style="display: none;">
+                </div>
+                <div id="fileList" class="file-list">
+                    <p class="placeholder">No PDFs loaded. Select a folder to begin.</p>
+                </div>
+            </aside>
+
+            <!-- PDF Viewer Area -->
+            <main class="viewer-area">
+                <div id="welcomeScreen" class="welcome-screen">
+                    <div class="welcome-content">
+                        <div class="welcome-icon">📖</div>
+                        <h2>Welcome to Jinvani Reader</h2>
+                        <p>Select a folder containing PDF files to start your reading journey</p>
+                    </div>
+                </div>
+
+                <div id="pdfViewer" class="pdf-viewer" style="display: none;">
+                    <!-- Controls -->
+                    <div class="controls">
+                        <div class="control-group">
+                            <button id="prevPage" class="btn" title="Previous Page">⬅️ Previous</button>
+                            <span class="page-info">
+                                Page <input type="number" id="pageNum" min="1" value="1" class="page-input"> 
+                                of <span id="pageCount">0</span>
+                            </span>
+                            <button id="nextPage" class="btn" title="Next Page">Next ➡️</button>
+                        </div>
+                        
+                        <div class="control-group">
+                            <button id="zoomOut" class="btn" title="Zoom Out">🔍-</button>
+                            <span id="zoomLevel">100%</span>
+                            <button id="zoomIn" class="btn" title="Zoom In">🔍+</button>
+                            <button id="fitWidth" class="btn" title="Fit Width">↔️</button>
+                        </div>
+
+                        <div class="control-group">
+                            <button id="closeBook" class="btn btn-close" title="Close Book">✖️ Close</button>
+                        </div>
+                    </div>
+
+                    <!-- PDF Canvas -->
+                    <div class="canvas-container" id="canvasContainer">
+                        <canvas id="pdfCanvas"></canvas>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- PDF.js Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
