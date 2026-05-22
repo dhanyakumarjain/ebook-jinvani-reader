@@ -4,21 +4,16 @@ const CONFIG = {
     mediaFolder: 'media/',
     
     // Folder structure with PDFs
-    // Organize your PDFs in folders for better management
-    // Format: 
-    // {
-    //   'FolderName': ['file1.pdf', 'file2.pdf'],
-    //   'AnotherFolder': {
-    //     'Subfolder': ['file3.pdf'],
-    //     '_files': ['file4.pdf']  // Files directly in AnotherFolder
-    //   },
-    //   '_files': ['root-file.pdf']  // Files in root media folder
-    // }
     structure: {
-        // Add your folder structure here
-        // Example:
-        // 'Technical Books': ['javascript.pdf', 'python.pdf'],
-        // 'Novels': ['book1.pdf', 'book2.pdf'],
+        // Root level files
+        '_files': [
+            '_प्रवचनसार_प्रवचन_भाग_3,_4_एवं_5.pdf',
+            '⏱Adhyatma Pujanjali.pdf',
+            '⏱Jin Puja 2020 SUDHA KALASH.pdf',
+            '⏱Samadhi Maran BADA FULL.pdf',
+            '⏱Shantinath Vidhan Tara 36pg.pdf',
+            '⏱अर्घ्य शिखर जी.pdf'
+        ],
     },
     
     // Application settings
