@@ -7,12 +7,9 @@ let pageNum = 1;
 let pageRendering = false;
 let pageNumPending = null;
 let scale = 1.5;
-let pdfFiles = [];
 let currentFileName = '';
-let isMediaMode = false; // Track if using media folder or manual upload
 
 // DOM elements
-const folderInput = document.getElementById('folderInput');
 const fileList = document.getElementById('fileList');
 const welcomeScreen = document.getElementById('welcomeScreen');
 const pdfViewer = document.getElementById('pdfViewer');
@@ -24,7 +21,6 @@ const zoomLevelSpan = document.getElementById('zoomLevel');
 const canvasContainer = document.getElementById('canvasContainer');
 
 // Event Listeners
-folderInput.addEventListener('change', handleFolderSelect);
 document.getElementById('prevPage').addEventListener('click', onPrevPage);
 document.getElementById('nextPage').addEventListener('click', onNextPage);
 document.getElementById('zoomIn').addEventListener('click', onZoomIn);
@@ -37,81 +33,118 @@ pageNumInput.addEventListener('change', onPageInputChange);
 window.addEventListener('DOMContentLoaded', initializeMediaFolder);
 
 async function initializeMediaFolder() {
-    if (typeof CONFIG !== 'undefined' && CONFIG.pdfFiles && CONFIG.pdfFiles.length > 0) {
-        isMediaMode = true;
-        pdfFiles = CONFIG.pdfFiles.map(filename => ({
-            name: filename,
-            path: CONFIG.mediaFolder + filename
-        }));
-        
-        // Hide folder input button
-        document.querySelector('.file-input-container').style.display = 'none';
-        
-        displayMediaFileList();
+    if (typeof CONFIG !== 'undefined' && CONFIG.structure) {
+        displayFolderStructure();
     } else {
-        // Show placeholder for manual upload
-        fileList.innerHTML = '<p class="placeholder">No PDFs loaded. Select a folder to begin.</p>';
+        fileList.innerHTML = '<p class="placeholder">No PDFs configured. Please update config.js</p>';
     }
 }
 
-// Display list of PDF files from media folder
-function displayMediaFileList() {
+// Display folder structure
+function displayFolderStructure() {
     fileList.innerHTML = '';
     
-    if (pdfFiles.length === 0) {
-        fileList.innerHTML = '<p class="placeholder">No PDF files configured. Add files to config.js</p>';
+    const structure = CONFIG.structure;
+    
+    if (Object.keys(structure).length === 0) {
+        fileList.innerHTML = '<p class="placeholder">No PDFs found. Add PDFs to media folder and update config.js</p>';
         return;
     }
     
-    pdfFiles.forEach((file, index) => {
-        const fileItem = document.createElement('div');
-        fileItem.className = 'file-item';
-        fileItem.textContent = file.name;
-        fileItem.dataset.index = index;
-        fileItem.addEventListener('click', () => loadPDFFromMedia(file, fileItem));
-        fileList.appendChild(fileItem);
-    });
+    renderStructure(structure, fileList, '');
 }
 
-// Handle folder selection (manual upload mode)
-function handleFolderSelect(e) {
-    const files = Array.from(e.target.files);
-    pdfFiles = files.filter(file => file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf'));
-    
-    if (pdfFiles.length === 0) {
-        fileList.innerHTML = '<p class="placeholder">No PDF files found in the selected folder.</p>';
-        return;
+// Recursively render folder structure
+function renderStructure(structure, parentElement, currentPath) {
+    for (const [key, value] of Object.entries(structure)) {
+        if (key === '_files' && Array.isArray(value)) {
+            // Render files in current folder
+            value.forEach(filename => {
+                createFileItem(filename, currentPath, parentElement);
+            });
+        } else if (Array.isArray(value)) {
+            // It's a folder with files
+            const folderItem = createFolderItem(key, parentElement);
+            const folderContent = folderItem.querySelector('.folder-content');
+            
+            value.forEach(filename => {
+                createFileItem(filename, currentPath + key + '/', folderContent);
+            });
+        } else if (typeof value === 'object') {
+            // It's a folder with subfolders
+            const folderItem = createFolderItem(key, parentElement);
+            const folderContent = folderItem.querySelector('.folder-content');
+            
+            renderStructure(value, folderContent, currentPath + key + '/');
+        }
     }
-
-    isMediaMode = false;
-    displayFileList();
 }
 
-// Display list of PDF files (manual upload mode)
-function displayFileList() {
-    fileList.innerHTML = '';
+// Create folder item with expand/collapse
+function createFolderItem(folderName, parentElement) {
+    const folderContainer = document.createElement('div');
+    folderContainer.className = 'folder-container';
     
-    pdfFiles.forEach((file, index) => {
-        const fileItem = document.createElement('div');
-        fileItem.className = 'file-item';
-        fileItem.textContent = file.name;
-        fileItem.dataset.index = index;
-        fileItem.addEventListener('click', () => loadPDF(file, fileItem));
-        fileList.appendChild(fileItem);
+    const folderHeader = document.createElement('div');
+    folderHeader.className = 'folder-header';
+    folderHeader.innerHTML = `
+        <span class="folder-icon">📁</span>
+        <span class="folder-name">${folderName}</span>
+        <span class="folder-toggle">▼</span>
+    `;
+    
+    const folderContent = document.createElement('div');
+    folderContent.className = 'folder-content';
+    
+    // Auto-expand if configured
+    if (CONFIG.settings.autoExpandFolders) {
+        folderContent.classList.add('expanded');
+        folderHeader.classList.add('expanded');
+    }
+    
+    // Toggle folder on click
+    folderHeader.addEventListener('click', () => {
+        folderContent.classList.toggle('expanded');
+        folderHeader.classList.toggle('expanded');
     });
+    
+    folderContainer.appendChild(folderHeader);
+    folderContainer.appendChild(folderContent);
+    parentElement.appendChild(folderContainer);
+    
+    return folderContainer;
+}
+
+// Create file item
+function createFileItem(filename, path, parentElement) {
+    const fileItem = document.createElement('div');
+    fileItem.className = 'file-item';
+    fileItem.innerHTML = `<span class="file-icon">📄</span><span class="file-name">${filename}</span>`;
+    
+    const fullPath = CONFIG.mediaFolder + path + filename;
+    
+    fileItem.addEventListener('click', () => loadPDFFromMedia(fullPath, filename, fileItem));
+    parentElement.appendChild(fileItem);
 }
 
 // Load PDF from media folder
-async function loadPDFFromMedia(file, fileItem) {
+async function loadPDFFromMedia(filePath, fileName, fileItem) {
     try {
         // Update active file in list
         document.querySelectorAll('.file-item').forEach(item => item.classList.remove('active'));
         fileItem.classList.add('active');
         
-        currentFileName = file.name;
+        // Update icon for active file
+        const icon = fileItem.querySelector('.file-icon');
+        if (icon) icon.textContent = '📖';
+        
+        currentFileName = fileName;
+        
+        // Show loading state
+        showLoading(true);
         
         // Fetch PDF from media folder
-        const response = await fetch(file.path);
+        const response = await fetch(filePath);
         if (!response.ok) {
             throw new Error(`Failed to load PDF: ${response.statusText}`);
         }
@@ -132,47 +165,34 @@ async function loadPDFFromMedia(file, fileItem) {
         welcomeScreen.style.display = 'none';
         pdfViewer.style.display = 'flex';
         
+        showLoading(false);
+        
         // Render first page
         renderPage(pageNum);
         
     } catch (error) {
         console.error('Error loading PDF:', error);
+        showLoading(false);
         alert('Error loading PDF: ' + error.message + '\n\nMake sure the PDF file exists in the media folder.');
+        
+        // Reset icon on error
+        const icon = fileItem.querySelector('.file-icon');
+        if (icon) icon.textContent = '📄';
+        fileItem.classList.remove('active');
     }
 }
 
-// Load and display PDF (manual upload mode)
-async function loadPDF(file, fileItem) {
-    try {
-        // Update active file in list
-        document.querySelectorAll('.file-item').forEach(item => item.classList.remove('active'));
-        fileItem.classList.add('active');
-        
-        currentFileName = file.name;
-        
-        // Read file as array buffer
-        const arrayBuffer = await file.arrayBuffer();
-        
-        // Load PDF document
-        const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-        pdfDoc = await loadingTask.promise;
-        
-        // Reset to first page
-        pageNum = 1;
-        pageCountSpan.textContent = pdfDoc.numPages;
-        pageNumInput.max = pdfDoc.numPages;
-        pageNumInput.value = 1;
-        
-        // Show viewer, hide welcome screen
-        welcomeScreen.style.display = 'none';
-        pdfViewer.style.display = 'flex';
-        
-        // Render first page
-        renderPage(pageNum);
-        
-    } catch (error) {
-        console.error('Error loading PDF:', error);
-        alert('Error loading PDF: ' + error.message);
+// Show/hide loading indicator
+function showLoading(show) {
+    const existingLoader = document.querySelector('.loading-overlay');
+    
+    if (show && !existingLoader) {
+        const loader = document.createElement('div');
+        loader.className = 'loading-overlay';
+        loader.innerHTML = '<div class="loading-spinner"></div><p>Loading PDF...</p>';
+        document.body.appendChild(loader);
+    } else if (!show && existingLoader) {
+        existingLoader.remove();
     }
 }
 
@@ -284,13 +304,17 @@ function closeBook() {
     pdfViewer.style.display = 'none';
     welcomeScreen.style.display = 'flex';
     
-    // Clear active selection
-    document.querySelectorAll('.file-item').forEach(item => item.classList.remove('active'));
+    // Clear active selection and reset icons
+    document.querySelectorAll('.file-item').forEach(item => {
+        item.classList.remove('active');
+        const icon = item.querySelector('.file-icon');
+        if (icon) icon.textContent = '📄';
+    });
 }
 
 // Keyboard shortcuts
 document.addEventListener('keydown', (e) => {
-    if (!pdfDoc) return;
+    if (!pdfDoc || !CONFIG.settings.enableKeyboardShortcuts) return;
     
     switch(e.key) {
         case 'ArrowLeft':
