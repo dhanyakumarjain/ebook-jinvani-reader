@@ -1,0 +1,10 @@
+Place your PDF files in this folder.
+
+The application will automatically load and display all PDF files from this directory.
+
+Instructions:
+1. Copy your PDF files into this 'media' folder
+2. Refresh the webpage
+3. All PDFs will appear in the sidebar automatically
+
+Note: This folder is tracked by Git. Add your PDFs here and push to GitHub to make them available online.

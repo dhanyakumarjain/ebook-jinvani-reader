@@ -9,6 +9,7 @@ let pageNumPending = null;
 let scale = 1.5;
 let pdfFiles = [];
 let currentFileName = '';
+let isMediaMode = false; // Track if using media folder or manual upload
 
 // DOM elements
 const folderInput = document.getElementById('folderInput');
@@ -32,7 +33,47 @@ document.getElementById('fitWidth').addEventListener('click', onFitWidth);
 document.getElementById('closeBook').addEventListener('click', closeBook);
 pageNumInput.addEventListener('change', onPageInputChange);
 
-// Handle folder selection
+// Initialize - Load PDFs from media folder
+window.addEventListener('DOMContentLoaded', initializeMediaFolder);
+
+async function initializeMediaFolder() {
+    if (typeof CONFIG !== 'undefined' && CONFIG.pdfFiles && CONFIG.pdfFiles.length > 0) {
+        isMediaMode = true;
+        pdfFiles = CONFIG.pdfFiles.map(filename => ({
+            name: filename,
+            path: CONFIG.mediaFolder + filename
+        }));
+        
+        // Hide folder input button
+        document.querySelector('.file-input-container').style.display = 'none';
+        
+        displayMediaFileList();
+    } else {
+        // Show placeholder for manual upload
+        fileList.innerHTML = '<p class="placeholder">No PDFs loaded. Select a folder to begin.</p>';
+    }
+}
+
+// Display list of PDF files from media folder
+function displayMediaFileList() {
+    fileList.innerHTML = '';
+    
+    if (pdfFiles.length === 0) {
+        fileList.innerHTML = '<p class="placeholder">No PDF files configured. Add files to config.js</p>';
+        return;
+    }
+    
+    pdfFiles.forEach((file, index) => {
+        const fileItem = document.createElement('div');
+        fileItem.className = 'file-item';
+        fileItem.textContent = file.name;
+        fileItem.dataset.index = index;
+        fileItem.addEventListener('click', () => loadPDFFromMedia(file, fileItem));
+        fileList.appendChild(fileItem);
+    });
+}
+
+// Handle folder selection (manual upload mode)
 function handleFolderSelect(e) {
     const files = Array.from(e.target.files);
     pdfFiles = files.filter(file => file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf'));
@@ -42,10 +83,11 @@ function handleFolderSelect(e) {
         return;
     }
 
+    isMediaMode = false;
     displayFileList();
 }
 
-// Display list of PDF files
+// Display list of PDF files (manual upload mode)
 function displayFileList() {
     fileList.innerHTML = '';
     
@@ -59,7 +101,47 @@ function displayFileList() {
     });
 }
 
-// Load and display PDF
+// Load PDF from media folder
+async function loadPDFFromMedia(file, fileItem) {
+    try {
+        // Update active file in list
+        document.querySelectorAll('.file-item').forEach(item => item.classList.remove('active'));
+        fileItem.classList.add('active');
+        
+        currentFileName = file.name;
+        
+        // Fetch PDF from media folder
+        const response = await fetch(file.path);
+        if (!response.ok) {
+            throw new Error(`Failed to load PDF: ${response.statusText}`);
+        }
+        
+        const arrayBuffer = await response.arrayBuffer();
+        
+        // Load PDF document
+        const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+        pdfDoc = await loadingTask.promise;
+        
+        // Reset to first page
+        pageNum = 1;
+        pageCountSpan.textContent = pdfDoc.numPages;
+        pageNumInput.max = pdfDoc.numPages;
+        pageNumInput.value = 1;
+        
+        // Show viewer, hide welcome screen
+        welcomeScreen.style.display = 'none';
+        pdfViewer.style.display = 'flex';
+        
+        // Render first page
+        renderPage(pageNum);
+        
+    } catch (error) {
+        console.error('Error loading PDF:', error);
+        alert('Error loading PDF: ' + error.message + '\n\nMake sure the PDF file exists in the media folder.');
+    }
+}
+
+// Load and display PDF (manual upload mode)
 async function loadPDF(file, fileItem) {
     try {
         // Update active file in list
