@@ -7,11 +7,13 @@
 1. ADD YOUR PDFs
    → Double-click: add-pdf.bat
    → Copy your PDF files to the opened folder
-   → Press any key to update config
+   → Organize into subfolders (optional)
+   → Press any key to scan and update config
 
 2. TEST LOCALLY
    → Double-click: open-local.bat
    → Your reader opens in browser
+   → Check folder structure and PDFs
 
 3. PUBLISH ONLINE
    → Double-click: push.bat
@@ -20,14 +22,35 @@
    → Double-click: open-github.bat
 
 ========================================
+  NEW FEATURES
+========================================
+
+✨ AUTOMATIC FOLDER STRUCTURE
+   - No upload button needed!
+   - PDFs load automatically from media folder
+   - Organize PDFs in folders
+   - Folder structure appears in UI
+   - Click folders to expand/collapse
+
+📁 FOLDER ORGANIZATION
+   media/
+   ├── book1.pdf              (root level)
+   ├── Technical Books/       (folder)
+   │   ├── javascript.pdf
+   │   └── python.pdf
+   └── Novels/                (folder)
+       └── fiction.pdf
+
+========================================
   BATCH FILES EXPLAINED
 ========================================
 
 📁 add-pdf.bat
    - Opens media folder
-   - Scans for PDFs
+   - Scans for PDFs and folders
    - Updates config.js automatically
-   - USE THIS to add new books!
+   - Generates folder structure
+   - USE THIS to add/organize books!
 
 🚀 push.bat
    - Commits all changes
