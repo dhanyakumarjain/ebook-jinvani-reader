@@ -1,0 +1,36 @@
+{
+  "name": "media",
+  "type": "folder",
+  "children": [
+    {
+      "name": "_प्रवचनसार_प्रवचन_भाग_3,_4_एवं_5.pdf",
+      "type": "file",
+      "path": "media/_प्रवचनसार_प्रवचन_भाग_3,_4_एवं_5.pdf"
+    },
+    {
+      "name": "⏱Adhyatma Pujanjali.pdf",
+      "type": "file",
+      "path": "media/⏱Adhyatma Pujanjali.pdf"
+    },
+    {
+      "name": "⏱Jin Puja 2020 SUDHA KALASH.pdf",
+      "type": "file",
+      "path": "media/⏱Jin Puja 2020 SUDHA KALASH.pdf"
+    },
+    {
+      "name": "⏱Samadhi Maran BADA FULL.pdf",
+      "type": "file",
+      "path": "media/⏱Samadhi Maran BADA FULL.pdf"
+    },
+    {
+      "name": "⏱Shantinath Vidhan Tara 36pg.pdf",
+      "type": "file",
+      "path": "media/⏱Shantinath Vidhan Tara 36pg.pdf"
+    },
+    {
+      "name": "⏱अर्घ्य शिखर जी.pdf",
+      "type": "file",
+      "path": "media/⏱अर्घ्य शिखर जी.pdf"
+    }
+  ]
+}

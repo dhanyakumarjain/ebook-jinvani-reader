@@ -3,73 +3,146 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jinvani eBook Reader</title>
+    <title>Jinvani eBook Reader - PDF Library</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-left">
+            <button class="menu-toggle" id="menuToggle" aria-label="Toggle Menu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <h1 class="logo">
+                <i class="fas fa-book-open"></i>
+                Jinvani eBook Reader
+            </h1>
+        </div>
+        <div class="header-right">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    class="search-input" 
+                    placeholder="Search PDFs..."
+                    aria-label="Search PDFs"
+                >
+                <button class="search-clear" id="searchClear" aria-label="Clear Search">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
     <div class="container">
-        <header>
-            <h1>📚 Jinvani eBook Reader</h1>
-            <p class="header-subtitle">Your Beautiful PDF Reading Experience</p>
-        </header>
-
-        <div class="main-content">
-            <!-- Sidebar for file selection -->
-            <aside class="sidebar">
-                <h2>Your Library</h2>
-                <div id="fileList" class="file-list">
-                    <p class="placeholder">Loading PDFs...</p>
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <h2>
+                    <i class="fas fa-folder-tree"></i>
+                    Library
+                </h2>
+                <button class="collapse-all" id="collapseAll" title="Collapse All Folders">
+                    <i class="fas fa-compress-alt"></i>
+                </button>
+            </div>
+            <div class="folder-tree" id="folderTree">
+                <!-- Dynamically generated folder structure -->
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i>
+                    <p>Loading library...</p>
                 </div>
-            </aside>
+            </div>
+        </aside>
 
-            <!-- PDF Viewer Area -->
-            <main class="viewer-area">
-                <div id="welcomeScreen" class="welcome-screen">
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Breadcrumb -->
+            <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb">
+                <a href="#" class="breadcrumb-item" data-path="">
+                    <i class="fas fa-home"></i>
+                    Home
+                </a>
+            </nav>
+
+            <!-- PDF Grid -->
+            <div class="pdf-grid" id="pdfGrid">
+                <!-- Welcome Screen -->
+                <div class="welcome-screen" id="welcomeScreen">
                     <div class="welcome-content">
-                        <div class="welcome-icon">📖</div>
-                        <h2>Welcome to Jinvani Reader</h2>
-                        <p>Select a folder containing PDF files to start your reading journey</p>
+                        <i class="fas fa-book-reader welcome-icon"></i>
+                        <h2>Welcome to Jinvani eBook Reader</h2>
+                        <p>Select a folder from the sidebar or search for PDFs to begin reading</p>
+                        <div class="welcome-stats" id="welcomeStats">
+                            <div class="stat-item">
+                                <i class="fas fa-file-pdf"></i>
+                                <span id="totalPdfs">0</span>
+                                <small>PDFs</small>
+                            </div>
+                            <div class="stat-item">
+                                <i class="fas fa-folder"></i>
+                                <span id="totalFolders">0</span>
+                                <small>Folders</small>
+                            </div>
+                        </div>
                     </div>
                 </div>
+            </div>
 
-                <div id="pdfViewer" class="pdf-viewer" style="display: none;">
-                    <!-- Controls -->
-                    <div class="controls">
-                        <div class="control-group">
-                            <button id="prevPage" class="btn" title="Previous Page">⬅️ Previous</button>
-                            <span class="page-info">
-                                Page <input type="number" id="pageNum" min="1" value="1" class="page-input"> 
-                                of <span id="pageCount">0</span>
-                            </span>
-                            <button id="nextPage" class="btn" title="Next Page">Next ➡️</button>
-                        </div>
-                        
-                        <div class="control-group">
-                            <button id="zoomOut" class="btn" title="Zoom Out">🔍-</button>
-                            <span id="zoomLevel">100%</span>
-                            <button id="zoomIn" class="btn" title="Zoom In">🔍+</button>
-                            <button id="fitWidth" class="btn" title="Fit Width">↔️</button>
-                        </div>
+            <!-- Empty State -->
+            <div class="empty-state" id="emptyState" style="display: none;">
+                <i class="fas fa-inbox"></i>
+                <h3>No PDFs Found</h3>
+                <p>No PDFs match your search criteria</p>
+            </div>
 
-                        <div class="control-group">
-                            <button id="closeBook" class="btn btn-close" title="Close Book">✖️ Close</button>
-                        </div>
-                    </div>
+            <!-- Error State -->
+            <div class="error-state" id="errorState" style="display: none;">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Error Loading Library</h3>
+                <p id="errorMessage">Could not load data.json. Please run generate-data.bat</p>
+                <button class="btn-primary" onclick="location.reload()">
+                    <i class="fas fa-redo"></i>
+                    Retry
+                </button>
+            </div>
+        </main>
+    </div>
 
-                    <!-- PDF Canvas -->
-                    <div class="canvas-container" id="canvasContainer">
-                        <canvas id="pdfCanvas"></canvas>
-                    </div>
-                </div>
-            </main>
+    <!-- PDF Viewer Modal -->
+    <div class="modal" id="pdfModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="modalTitle">PDF Viewer</h3>
+                <button class="modal-close" id="modalClose" aria-label="Close Modal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <iframe id="pdfFrame" frameborder="0"></iframe>
+            </div>
         </div>
     </div>
 
     <!-- PDF.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
-    <!-- Configuration -->
-    <script src="config.js"></script>
-    <!-- Application -->
-    <script src="app.js"></script>
+    <script>
+        // Configure PDF.js worker
+        if (typeof pdfjsLib !== 'undefined') {
+            pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        }
+    </script>
+    
+    <!-- Main Application Script -->
+    <script src="script.js"></script>
 </body>
 </html>
