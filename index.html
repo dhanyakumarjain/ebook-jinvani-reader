@@ -150,58 +150,70 @@
             </div>
             
             <div class="pdf-controls">
-                <div class="control-group">
+                <!-- Primary Controls (Always Visible) -->
+                <div class="primary-controls">
                     <button class="btn-control" id="toggleViewMode" title="Toggle View Mode">
                         <i class="fas fa-th-list"></i>
-                        <span class="mode-text">Scroll</span>
                     </button>
-                </div>
-                
-                <div class="control-group">
-                    <button class="btn-control" id="firstPage" title="First Page">
-                        <i class="fas fa-step-backward"></i>
-                    </button>
+                    
                     <button class="btn-control" id="prevPage" title="Previous Page">
                         <i class="fas fa-chevron-left"></i>
                     </button>
+                    
                     <div class="page-indicator">
                         <input type="number" id="pageNumber" min="1" value="1" class="page-input">
-                        <span>of <span id="totalPages">0</span></span>
+                        <span class="page-separator">/</span>
+                        <span id="totalPages">0</span>
                     </div>
+                    
                     <button class="btn-control" id="nextPage" title="Next Page">
                         <i class="fas fa-chevron-right"></i>
                     </button>
-                    <button class="btn-control" id="lastPage" title="Last Page">
-                        <i class="fas fa-step-forward"></i>
-                    </button>
-                </div>
-                
-                <div class="control-group">
+                    
                     <button class="btn-control" id="zoomOut" title="Zoom Out">
                         <i class="fas fa-search-minus"></i>
                     </button>
-                    <span class="zoom-level" id="zoomLevel">100%</span>
+                    
                     <button class="btn-control" id="zoomIn" title="Zoom In">
                         <i class="fas fa-search-plus"></i>
                     </button>
-                    <button class="btn-control" id="fitWidth" title="Fit Width">
-                        <i class="fas fa-arrows-alt-h"></i>
-                    </button>
-                    <button class="btn-control" id="fitPage" title="Fit Page">
-                        <i class="fas fa-compress"></i>
+                    
+                    <button class="btn-control btn-more" id="moreControls" title="More Options">
+                        <i class="fas fa-ellipsis-v"></i>
                     </button>
                 </div>
                 
-                <div class="control-group">
-                    <button class="btn-control" id="rotateLeft" title="Rotate Left">
-                        <i class="fas fa-undo"></i>
-                    </button>
-                    <button class="btn-control" id="rotateRight" title="Rotate Right">
-                        <i class="fas fa-redo"></i>
-                    </button>
-                    <button class="btn-control" id="downloadPdf" title="Download PDF">
-                        <i class="fas fa-download"></i>
-                    </button>
+                <!-- Secondary Controls (Collapsible on Mobile) -->
+                <div class="secondary-controls" id="secondaryControls">
+                    <div class="control-group">
+                        <button class="btn-control" id="firstPage" title="First Page">
+                            <i class="fas fa-step-backward"></i>
+                        </button>
+                        <button class="btn-control" id="lastPage" title="Last Page">
+                            <i class="fas fa-step-forward"></i>
+                        </button>
+                        <button class="btn-control" id="fitWidth" title="Fit Width">
+                            <i class="fas fa-arrows-alt-h"></i>
+                        </button>
+                        <button class="btn-control" id="fitPage" title="Fit Page">
+                            <i class="fas fa-compress"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="control-group">
+                        <button class="btn-control" id="rotateLeft" title="Rotate Left">
+                            <i class="fas fa-undo"></i>
+                        </button>
+                        <button class="btn-control" id="rotateRight" title="Rotate Right">
+                            <i class="fas fa-redo"></i>
+                        </button>
+                        <button class="btn-control" id="bookmarkBtn" title="Bookmark">
+                            <i class="fas fa-bookmark"></i>
+                        </button>
+                        <button class="btn-control" id="downloadPdf" title="Download">
+                            <i class="fas fa-download"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
             

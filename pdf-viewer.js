@@ -34,6 +34,19 @@ class PDFViewer {
         // View mode toggle
         document.getElementById('toggleViewMode').addEventListener('click', () => this.toggleViewMode());
         
+        // More controls toggle (mobile)
+        const moreBtn = document.getElementById('moreControls');
+        const secondaryControls = document.getElementById('secondaryControls');
+        if (moreBtn) {
+            moreBtn.addEventListener('click', () => {
+                secondaryControls.classList.toggle('active');
+                const icon = moreBtn.querySelector('i');
+                icon.className = secondaryControls.classList.contains('active') 
+                    ? 'fas fa-times' 
+                    : 'fas fa-ellipsis-v';
+            });
+        }
+        
         // Page navigation
         document.getElementById('firstPage').addEventListener('click', () => this.goToPage(1));
         document.getElementById('prevPage').addEventListener('click', () => this.previousPage());
@@ -60,6 +73,9 @@ class PDFViewer {
         
         // Scroll detection for scroll mode
         this.scrollView.addEventListener('scroll', () => this.handleScroll());
+        
+        // Touch gestures for mobile
+        this.initializeTouchGestures();
         
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
@@ -103,24 +119,54 @@ class PDFViewer {
         });
     }
     
+    initializeTouchGestures() {
+        let touchStartX = 0;
+        let touchEndX = 0;
+        
+        const handleSwipe = () => {
+            if (this.viewMode !== 'single') return;
+            
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left - next page
+                    this.nextPage();
+                } else {
+                    // Swipe right - previous page
+                    this.previousPage();
+                }
+            }
+        };
+        
+        this.singlePageView.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+        
+        this.singlePageView.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
+    }
+    
     toggleViewMode() {
         this.viewMode = this.viewMode === 'single' ? 'scroll' : 'single';
         
         const btn = document.getElementById('toggleViewMode');
-        const modeText = btn.querySelector('.mode-text');
         const icon = btn.querySelector('i');
         
         if (this.viewMode === 'scroll') {
             this.singlePageView.style.display = 'none';
             this.scrollView.style.display = 'block';
-            modeText.textContent = 'Single';
             icon.className = 'fas fa-file';
+            btn.title = 'Single Page Mode';
             this.renderScrollView();
         } else {
             this.singlePageView.style.display = 'flex';
             this.scrollView.style.display = 'none';
-            modeText.textContent = 'Scroll';
             icon.className = 'fas fa-th-list';
+            btn.title = 'Scroll Mode';
             this.renderPage(this.currentPage);
         }
     }
