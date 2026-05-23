@@ -1,0 +1,48 @@
+{
+  "name": "Jinvani eBook Reader",
+  "short_name": "Jinvani",
+  "description": "A beautiful PDF reader for Jain religious texts and scriptures",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#667eea",
+  "theme_color": "#667eea",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["books", "education", "lifestyle"],
+  "screenshots": [
+    {
+      "src": "assets/screenshot-1.png",
+      "sizes": "1280x720",
+      "type": "image/png"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Recent Books",
+      "short_name": "Recent",
+      "description": "View recently read books",
+      "url": "/?view=recent",
+      "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Bookmarks",
+      "short_name": "Bookmarks",
+      "description": "View your bookmarks",
+      "url": "/?view=bookmarks",
+      "icons": [{ "src": "assets/icon-192.png", "sizes": "192x192" }]
+    }
+  ]
+}

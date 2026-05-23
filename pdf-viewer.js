@@ -32,13 +32,13 @@ class PDFViewer {
     
     initializeControls() {
         // View mode toggle
-        document.getElementById('toggleViewMode').addEventListener('click', () => this.toggleViewMode());
+        this.addButtonListener('toggleViewMode', () => this.toggleViewMode());
         
         // More controls toggle (mobile)
         const moreBtn = document.getElementById('moreControls');
         const secondaryControls = document.getElementById('secondaryControls');
         if (moreBtn) {
-            moreBtn.addEventListener('click', () => {
+            this.addButtonListener('moreControls', () => {
                 secondaryControls.classList.toggle('active');
                 const icon = moreBtn.querySelector('i');
                 icon.className = secondaryControls.classList.contains('active') 
@@ -48,28 +48,29 @@ class PDFViewer {
         }
         
         // Page navigation
-        document.getElementById('firstPage').addEventListener('click', () => this.goToPage(1));
-        document.getElementById('prevPage').addEventListener('click', () => this.previousPage());
-        document.getElementById('nextPage').addEventListener('click', () => this.nextPage());
-        document.getElementById('lastPage').addEventListener('click', () => this.goToPage(this.totalPages));
+        this.addButtonListener('firstPage', () => this.goToPage(1));
+        this.addButtonListener('prevPage', () => this.previousPage());
+        this.addButtonListener('nextPage', () => this.nextPage());
+        this.addButtonListener('lastPage', () => this.goToPage(this.totalPages));
+        
         document.getElementById('pageNumber').addEventListener('change', (e) => {
             this.goToPage(parseInt(e.target.value));
         });
         
         // Zoom controls
-        document.getElementById('zoomIn').addEventListener('click', () => this.zoomIn());
-        document.getElementById('zoomOut').addEventListener('click', () => this.zoomOut());
-        document.getElementById('fitWidth').addEventListener('click', () => this.fitWidth());
-        document.getElementById('fitPage').addEventListener('click', () => this.fitPage());
+        this.addButtonListener('zoomIn', () => this.zoomIn());
+        this.addButtonListener('zoomOut', () => this.zoomOut());
+        this.addButtonListener('fitWidth', () => this.fitWidth());
+        this.addButtonListener('fitPage', () => this.fitPage());
         
         // Rotation
-        document.getElementById('rotateLeft').addEventListener('click', () => this.rotate(-90));
-        document.getElementById('rotateRight').addEventListener('click', () => this.rotate(90));
+        this.addButtonListener('rotateLeft', () => this.rotate(-90));
+        this.addButtonListener('rotateRight', () => this.rotate(90));
         
         // Other controls
-        document.getElementById('downloadPdf').addEventListener('click', () => this.downloadPdf());
-        document.getElementById('bookmarkBtn').addEventListener('click', () => this.addBookmark());
-        document.getElementById('fullscreenBtn').addEventListener('click', () => this.toggleFullscreen());
+        this.addButtonListener('downloadPdf', () => this.downloadPdf());
+        this.addButtonListener('bookmarkBtn', () => this.addBookmark());
+        this.addButtonListener('fullscreenBtn', () => this.toggleFullscreen());
         
         // Scroll detection for scroll mode
         this.scrollView.addEventListener('scroll', () => this.handleScroll());
@@ -115,6 +116,28 @@ class PDFViewer {
                 case 'S':
                     this.toggleViewMode();
                     break;
+            }
+        });
+    }
+    
+    // Helper method to add both click and touch events
+    addButtonListener(elementId, callback) {
+        const element = document.getElementById(elementId);
+        if (!element) return;
+        
+        // Prevent double-firing on devices that support both touch and click
+        let touchHandled = false;
+        
+        element.addEventListener('touchend', (e) => {
+            e.preventDefault();
+            touchHandled = true;
+            callback();
+            setTimeout(() => { touchHandled = false; }, 300);
+        });
+        
+        element.addEventListener('click', (e) => {
+            if (!touchHandled) {
+                callback();
             }
         });
     }
@@ -371,17 +394,20 @@ class PDFViewer {
     
     previousPage() {
         if (this.currentPage <= 1) return;
-        this.renderPage(this.currentPage - 1);
+        if (this.viewMode === 'scroll') {
+            this.goToPage(this.currentPage - 1);
+        } else {
+            this.renderPage(this.currentPage - 1);
+        }
     }
     
     nextPage() {
         if (this.currentPage >= this.totalPages) return;
-        this.renderPage(this.currentPage + 1);
-    }
-    
-    goToPage(pageNum) {
-        if (pageNum < 1 || pageNum > this.totalPages) return;
-        this.renderPage(pageNum);
+        if (this.viewMode === 'scroll') {
+            this.goToPage(this.currentPage + 1);
+        } else {
+            this.renderPage(this.currentPage + 1);
+        }
     }
     
     zoomIn() {
@@ -448,7 +474,12 @@ class PDFViewer {
     }
     
     updateZoomLevel() {
-        document.getElementById('zoomLevel').textContent = Math.round(this.scale * 100) + '%';
+        const zoomLevelElement = document.getElementById('zoomLevel');
+        if (zoomLevelElement) {
+            zoomLevelElement.textContent = Math.round(this.scale * 100) + '%';
+        }
+        // Also log to console for debugging
+        console.log('Zoom level:', Math.round(this.scale * 100) + '%');
     }
     
     updateProgress() {
@@ -607,9 +638,21 @@ let pdfViewer;
 document.addEventListener('DOMContentLoaded', () => {
     pdfViewer = new PDFViewer();
     
-    // Close modal
-    document.getElementById('modalClose').addEventListener('click', () => {
+    // Close modal with touch support
+    const closeBtn = document.getElementById('modalClose');
+    let touchHandled = false;
+    
+    closeBtn.addEventListener('touchend', (e) => {
+        e.preventDefault();
+        touchHandled = true;
         pdfViewer.closePdf();
+        setTimeout(() => { touchHandled = false; }, 300);
+    });
+    
+    closeBtn.addEventListener('click', () => {
+        if (!touchHandled) {
+            pdfViewer.closePdf();
+        }
     });
     
     // Close on background click

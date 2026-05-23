@@ -4,7 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jinvani eBook Reader - PDF Library</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="A beautiful PDF reader for Jain religious texts and scriptures">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Jinvani">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Icons -->
+    <link rel="icon" type="image/png" sizes="192x192" href="assets/icon-192.png">
+    <link rel="apple-touch-icon" href="assets/icon-192.png">
+    
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="enhanced-styles.css">
+    <link rel="stylesheet" href="landing-page.css">
     <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
@@ -84,25 +101,175 @@
 
             <!-- PDF Grid -->
             <div class="pdf-grid" id="pdfGrid">
-                <!-- Welcome Screen -->
+                <!-- Enhanced Welcome/Landing Page -->
                 <div class="welcome-screen" id="welcomeScreen">
-                    <div class="welcome-content">
-                        <div class="welcome-image-container">
-                            <img src="assets/jain-statue.jpg" alt="Jain Tirthankara" class="welcome-image">
+                    <!-- Hero Section -->
+                    <section class="hero-section">
+                        <div class="hero-content">
+                            <div class="hero-image-container">
+                                <img src="assets/jain-statue.jpg" alt="Jain Tirthankara" class="hero-image">
+                                <div class="hero-glow"></div>
+                            </div>
+                            <div class="hero-text">
+                                <h1 class="hero-title">
+                                    <span class="gradient-text">Jinvani eBook Reader</span>
+                                </h1>
+                                <p class="hero-tagline">
+                                    <i class="fas fa-book-open"></i>
+                                    Read, Bookmark & Continue Seamlessly
+                                </p>
+                                <p class="hero-description">
+                                    Your personal library of sacred Jain texts, poojas, and scriptures. 
+                                    Access anywhere, anytime.
+                                </p>
+                                <div class="hero-actions">
+                                    <button class="btn-hero-primary" onclick="document.getElementById('searchInput').focus()">
+                                        <i class="fas fa-search"></i>
+                                        Explore Library
+                                    </button>
+                                    <button class="btn-hero-secondary" onclick="scrollToContinueReading()">
+                                        <i class="fas fa-play-circle"></i>
+                                        Continue Reading
+                                    </button>
+                                </div>
+                            </div>
                         </div>
-                        <h2>Welcome to Jinvani eBook Reader</h2>
-                        <p>Select a folder from the sidebar or search for PDFs to begin reading</p>
-                        <div class="welcome-stats" id="welcomeStats">
-                            <div class="stat-item">
-                                <i class="fas fa-file-pdf"></i>
-                                <span id="totalPdfs">0</span>
-                                <small>PDFs</small>
+                        
+                        <!-- Floating Stats -->
+                        <div class="floating-stats">
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-file-pdf"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-number" id="totalPdfs">0</span>
+                                    <span class="stat-label">Sacred Texts</span>
+                                </div>
                             </div>
-                            <div class="stat-item">
-                                <i class="fas fa-folder"></i>
-                                <span id="totalFolders">0</span>
-                                <small>Folders</small>
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-bookmark"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-number" id="totalBookmarks">0</span>
+                                    <span class="stat-label">Bookmarks</span>
+                                </div>
                             </div>
+                            <div class="stat-card">
+                                <div class="stat-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <div class="stat-info">
+                                    <span class="stat-number" id="recentCount">0</span>
+                                    <span class="stat-label">Recently Read</span>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Continue Reading Section -->
+                    <section class="continue-reading-section" id="continueReadingSection" style="display: none;">
+                        <div class="section-header">
+                            <h2>
+                                <i class="fas fa-book-reader"></i>
+                                Continue Reading
+                            </h2>
+                            <p>Pick up where you left off</p>
+                        </div>
+                        <div class="continue-reading-card" id="continueReadingCard">
+                            <!-- Dynamically populated -->
+                        </div>
+                    </section>
+                    
+                    <!-- Recent Books Carousel -->
+                    <section class="recent-books-section" id="recentBooksSection" style="display: none;">
+                        <div class="section-header">
+                            <h2>
+                                <i class="fas fa-history"></i>
+                                Recent Books
+                            </h2>
+                            <p>Your reading history</p>
+                        </div>
+                        <div class="recent-books-carousel">
+                            <button class="carousel-btn carousel-prev" onclick="scrollCarousel('left')">
+                                <i class="fas fa-chevron-left"></i>
+                            </button>
+                            <div class="carousel-container" id="recentBooksCarousel">
+                                <!-- Dynamically populated -->
+                            </div>
+                            <button class="carousel-btn carousel-next" onclick="scrollCarousel('right')">
+                                <i class="fas fa-chevron-right"></i>
+                            </button>
+                        </div>
+                    </section>
+                    
+                    <!-- Features Grid -->
+                    <section class="features-section">
+                        <div class="section-header">
+                            <h2>
+                                <i class="fas fa-star"></i>
+                                Features
+                            </h2>
+                            <p>Everything you need for a great reading experience</p>
+                        </div>
+                        <div class="features-grid">
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-book-reader"></i>
+                                </div>
+                                <h3>Easy Reading</h3>
+                                <p>Beautiful PDF viewer with zoom, scroll, and smooth navigation</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-bookmark"></i>
+                                </div>
+                                <h3>Smart Bookmarks</h3>
+                                <p>Save your progress and favorite pages automatically</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-search"></i>
+                                </div>
+                                <h3>Quick Search</h3>
+                                <p>Find any text or scripture instantly across all pages</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-mobile-alt"></i>
+                                </div>
+                                <h3>Mobile Ready</h3>
+                                <p>Works perfectly on phones, tablets, and desktops</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-cloud-download-alt"></i>
+                                </div>
+                                <h3>Offline Access</h3>
+                                <p>Read your books even without internet connection</p>
+                            </div>
+                            <div class="feature-card">
+                                <div class="feature-icon">
+                                    <i class="fas fa-palette"></i>
+                                </div>
+                                <h3>Dark Mode</h3>
+                                <p>Easy on the eyes with beautiful light and dark themes</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <!-- Install PWA Prompt -->
+                    <div class="install-prompt" id="installPrompt" style="display: none;">
+                        <div class="install-prompt-content">
+                            <i class="fas fa-download"></i>
+                            <div>
+                                <strong>Install Jinvani Reader</strong>
+                                <p>Add to your home screen for quick access</p>
+                            </div>
+                            <button class="btn-install" id="installButton">Install</button>
+                            <button class="btn-dismiss" id="dismissInstall">
+                                <i class="fas fa-times"></i>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -137,9 +304,6 @@
                     <span class="reading-progress" id="readingProgress">0%</span>
                 </div>
                 <div class="modal-controls">
-                    <button class="modal-btn" id="bookmarkBtn" title="Bookmark this page">
-                        <i class="fas fa-bookmark"></i>
-                    </button>
                     <button class="modal-btn" id="fullscreenBtn" title="Fullscreen">
                         <i class="fas fa-expand"></i>
                     </button>
@@ -164,6 +328,7 @@
                         <input type="number" id="pageNumber" min="1" value="1" class="page-input">
                         <span class="page-separator">/</span>
                         <span id="totalPages">0</span>
+                        <span class="zoom-level" id="zoomLevel">150%</span>
                     </div>
                     
                     <button class="btn-control" id="nextPage" title="Next Page">
@@ -185,35 +350,33 @@
                 
                 <!-- Secondary Controls (Collapsible on Mobile) -->
                 <div class="secondary-controls" id="secondaryControls">
-                    <div class="control-group">
-                        <button class="btn-control" id="firstPage" title="First Page">
-                            <i class="fas fa-step-backward"></i>
-                        </button>
-                        <button class="btn-control" id="lastPage" title="Last Page">
-                            <i class="fas fa-step-forward"></i>
-                        </button>
-                        <button class="btn-control" id="fitWidth" title="Fit Width">
-                            <i class="fas fa-arrows-alt-h"></i>
-                        </button>
-                        <button class="btn-control" id="fitPage" title="Fit Page">
-                            <i class="fas fa-compress"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="control-group">
-                        <button class="btn-control" id="rotateLeft" title="Rotate Left">
-                            <i class="fas fa-undo"></i>
-                        </button>
-                        <button class="btn-control" id="rotateRight" title="Rotate Right">
-                            <i class="fas fa-redo"></i>
-                        </button>
-                        <button class="btn-control" id="bookmarkBtn" title="Bookmark">
-                            <i class="fas fa-bookmark"></i>
-                        </button>
-                        <button class="btn-control" id="downloadPdf" title="Download">
-                            <i class="fas fa-download"></i>
-                        </button>
-                    </div>
+                    <button class="btn-control" id="firstPage" title="First Page">
+                        <i class="fas fa-step-backward"></i>
+                    </button>
+                    <button class="btn-control" id="lastPage" title="Last Page">
+                        <i class="fas fa-step-forward"></i>
+                    </button>
+                    <button class="btn-control" id="fitWidth" title="Fit Width">
+                        <i class="fas fa-arrows-alt-h"></i>
+                    </button>
+                    <button class="btn-control" id="fitPage" title="Fit Page">
+                        <i class="fas fa-compress"></i>
+                    </button>
+                    <button class="btn-control" id="rotateLeft" title="Rotate Left">
+                        <i class="fas fa-undo"></i>
+                    </button>
+                    <button class="btn-control" id="rotateRight" title="Rotate Right">
+                        <i class="fas fa-redo"></i>
+                    </button>
+                    <button class="btn-control" id="searchPdfBtn" title="Search in PDF">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn-control" id="bookmarkBtn" title="Bookmark">
+                        <i class="fas fa-bookmark"></i>
+                    </button>
+                    <button class="btn-control" id="downloadPdf" title="Download">
+                        <i class="fas fa-download"></i>
+                    </button>
                 </div>
             </div>
             
@@ -260,6 +423,35 @@
         </div>
     </div>
 
+    <!-- PDF Search Panel -->
+    <div class="search-panel" id="searchPanel">
+        <div class="search-panel-header">
+            <h3><i class="fas fa-search"></i> Search in PDF</h3>
+            <button class="close-search" id="closeSearch">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="search-panel-body">
+            <div class="search-input-container">
+                <input type="text" id="pdfSearchInput" placeholder="Search text in current PDF..." class="pdf-search-input">
+                <button class="btn-search" id="searchInPdf">
+                    <i class="fas fa-search"></i>
+                </button>
+            </div>
+            <div class="search-options">
+                <label>
+                    <input type="checkbox" id="caseSensitiveSearch"> Case sensitive
+                </label>
+                <label>
+                    <input type="checkbox" id="wholeWordSearch"> Whole words
+                </label>
+            </div>
+            <div class="search-results" id="searchResults">
+                <p class="search-placeholder">Enter text to search...</p>
+            </div>
+        </div>
+    </div>
+
     <!-- PDF.js Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
     <script>
@@ -272,7 +464,82 @@
     <!-- PDF Viewer Script -->
     <script src="pdf-viewer.js"></script>
     
+    <!-- PDF Search Script -->
+    <script src="pdf-search.js"></script>
+    
+    <!-- Landing Page Script -->
+    <script src="landing-page.js"></script>
+    
     <!-- Main Application Script -->
     <script src="script.js"></script>
+    
+    <!-- PWA Registration -->
+    <script>
+        // Register Service Worker
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/service-worker.js')
+                    .then((registration) => {
+                        console.log('✅ Service Worker registered:', registration.scope);
+                    })
+                    .catch((error) => {
+                        console.log('❌ Service Worker registration failed:', error);
+                    });
+            });
+        }
+        
+        // PWA Install Prompt
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install prompt
+            const installPrompt = document.getElementById('installPrompt');
+            if (installPrompt) {
+                installPrompt.style.display = 'block';
+            }
+        });
+        
+        // Install button click
+        document.addEventListener('DOMContentLoaded', () => {
+            const installButton = document.getElementById('installButton');
+            const dismissInstall = document.getElementById('dismissInstall');
+            const installPrompt = document.getElementById('installPrompt');
+            
+            if (installButton) {
+                installButton.addEventListener('click', async () => {
+                    if (deferredPrompt) {
+                        deferredPrompt.prompt();
+                        const { outcome } = await deferredPrompt.userChoice;
+                        console.log(`User response: ${outcome}`);
+                        deferredPrompt = null;
+                        installPrompt.style.display = 'none';
+                    }
+                });
+            }
+            
+            if (dismissInstall) {
+                dismissInstall.addEventListener('click', () => {
+                    installPrompt.style.display = 'none';
+                    localStorage.setItem('installPromptDismissed', 'true');
+                });
+            }
+            
+            // Don't show if previously dismissed
+            if (localStorage.getItem('installPromptDismissed') === 'true') {
+                installPrompt.style.display = 'none';
+            }
+        });
+        
+        // Update recent count on welcome screen
+        window.addEventListener('DOMContentLoaded', () => {
+            const recentBooks = JSON.parse(localStorage.getItem('recentBooks') || '[]');
+            const recentCount = document.getElementById('recentCount');
+            if (recentCount) {
+                recentCount.textContent = recentBooks.length;
+            }
+        });
+    </script>
 </body>
 </html>

@@ -1,0 +1,680 @@
+/* ========================================
+   ENHANCED STYLES - JINVANI EBOOK READER
+   Beautiful Onboarding & UI Polish
+   ======================================== */
+
+/* ========================================
+   WELCOME SCREEN ENHANCEMENTS
+   ======================================== */
+
+.welcome-screen {
+    position: relative;
+    overflow: hidden;
+}
+
+.welcome-bg-animation {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    pointer-events: none;
+    z-index: 0;
+}
+
+.floating-particle {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+    animation: float 20s infinite ease-in-out;
+}
+
+.floating-particle:nth-child(1) {
+    top: 10%;
+    left: 10%;
+    animation-delay: 0s;
+}
+
+.floating-particle:nth-child(2) {
+    top: 60%;
+    right: 15%;
+    animation-delay: 7s;
+    width: 150px;
+    height: 150px;
+}
+
+.floating-particle:nth-child(3) {
+    bottom: 15%;
+    left: 20%;
+    animation-delay: 14s;
+    width: 80px;
+    height: 80px;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translate(0, 0) scale(1);
+        opacity: 0.3;
+    }
+    33% {
+        transform: translate(30px, -30px) scale(1.1);
+        opacity: 0.5;
+    }
+    66% {
+        transform: translate(-20px, 20px) scale(0.9);
+        opacity: 0.4;
+    }
+}
+
+.welcome-content {
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-image-container {
+    margin-bottom: 2rem;
+    animation: fadeInScale 1s ease-out;
+}
+
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.welcome-image {
+    max-width: 200px;
+    height: auto;
+    filter: drop-shadow(0 10px 30px rgba(102, 126, 234, 0.3));
+    transition: transform 0.3s ease;
+}
+
+.welcome-image:hover {
+    transform: scale(1.05);
+}
+
+.welcome-title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    animation: fadeInUp 1s ease-out 0.2s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.gradient-text {
+    font-size: 2.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+.welcome-description {
+    max-width: 600px;
+    margin: 0 auto 3rem;
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: var(--text-secondary);
+    animation: fadeInUp 1s ease-out 0.4s both;
+}
+
+/* Feature Cards */
+.welcome-features {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+    animation: fadeInUp 1s ease-out 0.6s both;
+}
+
+.feature-card {
+    background: var(--bg-secondary);
+    padding: 2rem 1.5rem;
+    border-radius: 16px;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    box-shadow: var(--shadow-sm);
+}
+
+.feature-card:hover {
+    transform: translateY(-8px);
+    border-color: var(--accent-primary);
+    box-shadow: var(--shadow-md);
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1rem;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: white;
+    transition: transform 0.3s ease;
+}
+
+.feature-card:hover .feature-icon {
+    transform: rotate(360deg) scale(1.1);
+}
+
+.feature-card h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.feature-card p {
+    font-size: 0.9rem;
+    color: var(--text-tertiary);
+    line-height: 1.6;
+}
+
+/* Welcome Stats */
+.welcome-stats {
+    animation: fadeInUp 1s ease-out 0.8s both;
+}
+
+.stat-item {
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: scale(1.1);
+}
+
+.stat-item i {
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover i {
+    transform: rotate(360deg);
+}
+
+/* Welcome Actions */
+.welcome-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    animation: fadeInUp 1s ease-out 1s both;
+}
+
+.btn-large {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    min-width: 200px;
+}
+
+/* Install PWA Prompt */
+.install-prompt {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2000;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(100px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+.install-prompt-content {
+    background: var(--bg-secondary);
+    padding: 1.5rem 2rem;
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border: 2px solid var(--accent-primary);
+}
+
+.install-prompt-content i {
+    font-size: 2rem;
+    color: var(--accent-primary);
+}
+
+.install-prompt-content strong {
+    display: block;
+    margin-bottom: 0.25rem;
+    color: var(--text-primary);
+}
+
+.install-prompt-content p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.btn-install {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.btn-install:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-dismiss {
+    background: none;
+    border: none;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.btn-dismiss:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+/* ========================================
+   SEARCH PANEL
+   ======================================== */
+
+.search-panel {
+    position: fixed;
+    right: -400px;
+    top: var(--header-height);
+    bottom: 0;
+    width: 400px;
+    background: var(--bg-secondary);
+    border-left: 1px solid var(--border-color);
+    box-shadow: var(--shadow-lg);
+    transition: right var(--transition-speed);
+    z-index: 1500;
+    display: flex;
+    flex-direction: column;
+}
+
+.search-panel.active {
+    right: 0;
+}
+
+.search-panel-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-panel-header h3 {
+    font-size: 1.1rem;
+    color: var(--text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.close-search {
+    background: none;
+    border: none;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all var(--transition-speed);
+}
+
+.close-search:hover {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.search-panel-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+
+.search-input-container {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.pdf-search-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    border: 2px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    transition: all var(--transition-speed);
+}
+
+.pdf-search-input:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.btn-search {
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+}
+
+.btn-search:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.search-options {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.search-options label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    cursor: pointer;
+}
+
+.search-options input[type="checkbox"] {
+    cursor: pointer;
+}
+
+.search-results {
+    min-height: 200px;
+}
+
+.search-placeholder {
+    text-align: center;
+    color: var(--text-tertiary);
+    padding: 3rem 1rem;
+}
+
+.search-result-item {
+    padding: 1rem;
+    background: var(--bg-tertiary);
+    border-radius: 8px;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    border-left: 3px solid transparent;
+}
+
+.search-result-item:hover {
+    background: var(--accent-primary);
+    color: white;
+    border-left-color: var(--accent-secondary);
+    transform: translateX(4px);
+}
+
+.search-result-page {
+    font-size: 0.85rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    opacity: 0.8;
+}
+
+.search-result-text {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.search-highlight {
+    background: yellow;
+    color: black;
+    padding: 0 2px;
+    border-radius: 2px;
+    font-weight: 600;
+}
+
+/* ========================================
+   UI POLISH - ANIMATIONS & TRANSITIONS
+   ======================================== */
+
+/* Smooth page transitions */
+.pdf-card {
+    animation: cardFadeIn 0.5s ease-out;
+}
+
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Stagger animation for cards */
+.pdf-card:nth-child(1) { animation-delay: 0.05s; }
+.pdf-card:nth-child(2) { animation-delay: 0.1s; }
+.pdf-card:nth-child(3) { animation-delay: 0.15s; }
+.pdf-card:nth-child(4) { animation-delay: 0.2s; }
+.pdf-card:nth-child(5) { animation-delay: 0.25s; }
+.pdf-card:nth-child(6) { animation-delay: 0.3s; }
+
+/* Button ripple effect */
+.btn-primary, .btn-secondary, .btn-control {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::after, .btn-secondary::after, .btn-control::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.5);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:active::after, .btn-secondary:active::after, .btn-control:active::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* Loading spinner enhancement */
+.loading i {
+    animation: spin 1s linear infinite, pulse 2s ease-in-out infinite;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.5; }
+}
+
+/* Sidebar slide animation */
+.sidebar {
+    animation: slideInLeft 0.3s ease-out;
+}
+
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* Modal entrance */
+.modal.active .modal-content {
+    animation: modalZoomIn 0.3s ease-out;
+}
+
+@keyframes modalZoomIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Folder expand animation */
+.folder-children {
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover glow effect */
+.pdf-card:hover {
+    box-shadow: 0 8px 32px rgba(102, 126, 234, 0.2);
+}
+
+/* ========================================
+   RESPONSIVE ENHANCEMENTS
+   ======================================== */
+
+@media (max-width: 768px) {
+    .gradient-text {
+        font-size: 2rem;
+    }
+    
+    .subtitle {
+        font-size: 1rem;
+    }
+    
+    .welcome-features {
+        grid-template-columns: 1fr;
+    }
+    
+    .welcome-actions {
+        flex-direction: column;
+    }
+    
+    .btn-large {
+        width: 100%;
+    }
+    
+    .install-prompt {
+        left: 1rem;
+        right: 1rem;
+        transform: none;
+    }
+    
+    .install-prompt-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .search-panel {
+        width: 100%;
+        right: -100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .gradient-text {
+        font-size: 1.5rem;
+    }
+    
+    .welcome-description {
+        font-size: 1rem;
+    }
+    
+    .feature-card {
+        padding: 1.5rem 1rem;
+    }
+}
+
+/* ========================================
+   PERFORMANCE OPTIMIZATIONS
+   ======================================== */
+
+/* GPU acceleration for animations */
+.welcome-image,
+.feature-card,
+.pdf-card,
+.btn-primary,
+.btn-secondary {
+    will-change: transform;
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Print styles */
+@media print {
+    .header,
+    .sidebar,
+    .welcome-screen,
+    .install-prompt {
+        display: none !important;
+    }
+}

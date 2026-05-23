@@ -776,17 +776,11 @@ body {
 .secondary-controls {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     padding: 0.75rem 1rem;
     border-top: 1px solid var(--border-color);
-    gap: 1rem;
-    flex-wrap: wrap;
-}
-
-.control-group {
-    display: flex;
-    align-items: center;
     gap: 0.5rem;
+    flex-wrap: wrap;
 }
 
 .btn-control {
@@ -861,7 +855,11 @@ body {
     text-align: center;
     font-weight: 600;
     color: var(--text-primary);
-    display: none;
+    background: rgba(102, 126, 234, 0.1);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.9rem;
+    margin-left: 0.5rem;
 }
 
 /* PDF Viewer Container */
@@ -1146,6 +1144,10 @@ body {
     .page-indicator {
         font-size: 0.9rem;
         padding: 0;
+    }
+    
+    .zoom-level {
+        display: none; /* Hide zoom percentage on mobile to save space */
     }
     
     .pdf-viewer-container {
