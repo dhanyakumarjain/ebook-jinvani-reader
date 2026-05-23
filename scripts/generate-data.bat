@@ -24,39 +24,7 @@ echo [1/3] Scanning media folder...
 echo.
 
 REM Generate data.json using PowerShell
-powershell -ExecutionPolicy Bypass -Command ^
-"$mediaPath = '..\media'; " ^
-"function Get-FolderStructure($path, $basePath) { " ^
-"    $items = Get-ChildItem -Path $path -Force | Where-Object { $_.Name -notlike '.*' -and $_.Name -ne 'README.txt' -and $_.Name -ne 'sample.txt' }; " ^
-"    $children = @(); " ^
-"    foreach ($item in $items) { " ^
-"        if ($item.PSIsContainer) { " ^
-"            $folderObj = @{ " ^
-"                name = $item.Name; " ^
-"                type = 'folder'; " ^
-"                children = Get-FolderStructure $item.FullName $basePath " ^
-"            }; " ^
-"            $children += $folderObj; " ^
-"        } elseif ($item.Extension -eq '.pdf') { " ^
-"            $relativePath = $item.FullName.Replace($basePath, 'media').Replace('\', '/'); " ^
-"            $fileObj = @{ " ^
-"                name = $item.Name; " ^
-"                type = 'file'; " ^
-"                path = $relativePath " ^
-"            }; " ^
-"            $children += $fileObj; " ^
-"        } " ^
-"    } " ^
-"    return $children; " ^
-"} " ^
-"$basePath = (Resolve-Path $mediaPath).Path + '\'; " ^
-"$structure = @{ " ^
-"    name = 'media'; " ^
-"    type = 'folder'; " ^
-"    children = Get-FolderStructure $mediaPath $basePath " ^
-"}; " ^
-"$json = $structure | ConvertTo-Json -Depth 10; " ^
-"$json | Out-File -FilePath '..\data.json' -Encoding UTF8;"
+powershell -NoProfile -ExecutionPolicy Bypass -File "%~dp0generate-data.ps1"
 
 if %ERRORLEVEL% EQU 0 (
     echo [2/3] data.json generated successfully!
