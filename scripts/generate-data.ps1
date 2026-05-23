@@ -27,7 +27,10 @@ function Get-FolderStructure {
             $children += $folderObj
         }
         elseif ($item.Extension -eq '.pdf') {
-            $relativePath = $item.FullName.Replace($basePath, 'media').Replace('\', '/')
+            # Fix: Ensure proper path with forward slashes
+            $relativePath = $item.FullName.Replace($basePath, '').Replace('\', '/')
+            $relativePath = 'media/' + $relativePath.TrimStart('/')
+            
             $fileObj = @{
                 name = $item.Name
                 type = 'file'
