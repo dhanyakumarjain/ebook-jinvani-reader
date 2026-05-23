@@ -9,7 +9,7 @@ class LandingPage {
     
     init() {
         this.loadContinueReading();
-        this.loadRecentBooks();
+        // Removed: this.loadRecentBooks();
         this.updateStats();
     }
     
@@ -174,7 +174,7 @@ class LandingPage {
     // Refresh landing page
     refresh() {
         this.loadContinueReading();
-        this.loadRecentBooks();
+        // Removed: this.loadRecentBooks();
         this.updateStats();
     }
 }
@@ -197,14 +197,8 @@ function scrollToContinueReading() {
     if (section && section.style.display !== 'none') {
         section.scrollIntoView({ behavior: 'smooth', block: 'center' });
     } else {
-        // If no continue reading, show recent books
-        const recentSection = document.getElementById('recentBooksSection');
-        if (recentSection && recentSection.style.display !== 'none') {
-            recentSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        } else {
-            // If nothing to show, focus search
-            document.getElementById('searchInput').focus();
-        }
+        // If no continue reading, focus search to start exploring
+        document.getElementById('searchInput').focus();
     }
 }
 

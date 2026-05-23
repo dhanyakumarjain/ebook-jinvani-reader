@@ -39,9 +39,11 @@ const DOM = {
     errorState: document.getElementById('errorState'),
     errorMessage: document.getElementById('errorMessage'),
     
-    // Stats
+    // Stats (may not exist in new layout)
     totalPdfs: document.getElementById('totalPdfs'),
     totalFolders: document.getElementById('totalFolders'),
+    totalBookmarks: document.getElementById('totalBookmarks'),
+    recentCount: document.getElementById('recentCount'),
     
     // Modal
     pdfModal: document.getElementById('pdfModal'),
@@ -170,8 +172,23 @@ function extractAllPdfs(node, path = '') {
 }
 
 function updateStats() {
-    DOM.totalPdfs.textContent = STATE.allPdfs.length;
-    DOM.totalFolders.textContent = STATE.totalFolders;
+    // Update total PDFs
+    if (DOM.totalPdfs) {
+        DOM.totalPdfs.textContent = STATE.allPdfs.length;
+    }
+    
+    // Update total folders
+    if (DOM.totalFolders) {
+        DOM.totalFolders.textContent = STATE.totalFolders;
+    }
+    
+    // Make allPdfs available globally for landing page
+    window.allPdfs = STATE.allPdfs;
+    
+    // Refresh landing page if it exists
+    if (typeof landingPage !== 'undefined') {
+        landingPage.updateStats();
+    }
 }
 
 // ========================================
