@@ -315,7 +315,18 @@ function showWelcomeScreen() {
     DOM.emptyState.style.display = 'none';
     DOM.errorState.style.display = 'none';
     
-    // Clear PDF grid except welcome screen
+    // Show recent panel if there are recent books
+    const recentPanel = document.getElementById('recentPanel');
+    if (typeof pdfViewer !== 'undefined') {
+        const recent = pdfViewer.getRecentBooks();
+        if (recent.length > 0) {
+            recentPanel.style.display = 'block';
+        } else {
+            recentPanel.style.display = 'none';
+        }
+    }
+    
+    // Clear PDF grid except welcome screen and recent panel
     const pdfCards = DOM.pdfGrid.querySelectorAll('.pdf-card');
     pdfCards.forEach(card => card.remove());
 }
@@ -484,14 +495,15 @@ function clearSearch() {
 // ========================================
 
 function openPdf(file) {
-    openPdfByPath(file.path, file.name);
+    if (typeof pdfViewer !== 'undefined') {
+        pdfViewer.openPdf(file.path, file.name);
+    }
 }
 
 function openPdfByPath(path, name) {
-    DOM.modalTitle.textContent = name;
-    DOM.pdfFrame.src = path;
-    DOM.pdfModal.classList.add('active');
-    document.body.style.overflow = 'hidden';
+    if (typeof pdfViewer !== 'undefined') {
+        pdfViewer.openPdf(path, name);
+    }
 }
 
 function downloadPdf(path, name) {
@@ -502,9 +514,9 @@ function downloadPdf(path, name) {
 }
 
 function closeModal() {
-    DOM.pdfModal.classList.remove('active');
-    DOM.pdfFrame.src = '';
-    document.body.style.overflow = 'auto';
+    if (typeof pdfViewer !== 'undefined') {
+        pdfViewer.closePdf();
+    }
 }
 
 // ========================================
