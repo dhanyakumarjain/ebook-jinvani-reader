@@ -12,12 +12,18 @@ class PDFViewer {
         this.rendering = false;
         this.currentPdfPath = '';
         this.currentPdfName = '';
+        this.viewMode = 'single'; // 'single' or 'scroll'
+        this.renderedPages = new Set();
         
         // DOM elements
         this.canvas = document.getElementById('pdfCanvas');
         this.ctx = this.canvas.getContext('2d');
         this.modal = document.getElementById('pdfModal');
         this.loading = document.getElementById('pdfLoading');
+        this.scrollLoading = document.getElementById('scrollLoading');
+        this.singlePageView = document.getElementById('singlePageView');
+        this.scrollView = document.getElementById('scrollView');
+        this.pagesContainer = document.getElementById('pagesContainer');
         
         this.initializeControls();
         this.loadBookmarks();
@@ -25,6 +31,9 @@ class PDFViewer {
     }
     
     initializeControls() {
+        // View mode toggle
+        document.getElementById('toggleViewMode').addEventListener('click', () => this.toggleViewMode());
+        
         // Page navigation
         document.getElementById('firstPage').addEventListener('click', () => this.goToPage(1));
         document.getElementById('prevPage').addEventListener('click', () => this.previousPage());
@@ -49,6 +58,9 @@ class PDFViewer {
         document.getElementById('bookmarkBtn').addEventListener('click', () => this.addBookmark());
         document.getElementById('fullscreenBtn').addEventListener('click', () => this.toggleFullscreen());
         
+        // Scroll detection for scroll mode
+        this.scrollView.addEventListener('scroll', () => this.handleScroll());
+        
         // Keyboard shortcuts
         document.addEventListener('keydown', (e) => {
             if (!this.modal.classList.contains('active')) return;
@@ -56,11 +68,11 @@ class PDFViewer {
             switch(e.key) {
                 case 'ArrowLeft':
                 case 'PageUp':
-                    this.previousPage();
+                    if (this.viewMode === 'single') this.previousPage();
                     break;
                 case 'ArrowRight':
                 case 'PageDown':
-                    this.nextPage();
+                    if (this.viewMode === 'single') this.nextPage();
                     break;
                 case 'Home':
                     this.goToPage(1);
@@ -83,8 +95,149 @@ class PDFViewer {
                 case 'B':
                     this.addBookmark();
                     break;
+                case 's':
+                case 'S':
+                    this.toggleViewMode();
+                    break;
             }
         });
+    }
+    
+    toggleViewMode() {
+        this.viewMode = this.viewMode === 'single' ? 'scroll' : 'single';
+        
+        const btn = document.getElementById('toggleViewMode');
+        const modeText = btn.querySelector('.mode-text');
+        const icon = btn.querySelector('i');
+        
+        if (this.viewMode === 'scroll') {
+            this.singlePageView.style.display = 'none';
+            this.scrollView.style.display = 'block';
+            modeText.textContent = 'Single';
+            icon.className = 'fas fa-file';
+            this.renderScrollView();
+        } else {
+            this.singlePageView.style.display = 'flex';
+            this.scrollView.style.display = 'none';
+            modeText.textContent = 'Scroll';
+            icon.className = 'fas fa-th-list';
+            this.renderPage(this.currentPage);
+        }
+    }
+    
+    async renderScrollView() {
+        this.scrollLoading.style.display = 'flex';
+        this.pagesContainer.innerHTML = '';
+        this.renderedPages.clear();
+        
+        try {
+            // Render first 5 pages initially
+            const initialPages = Math.min(5, this.totalPages);
+            for (let i = 1; i <= initialPages; i++) {
+                await this.renderPageInScroll(i);
+            }
+            
+            this.scrollLoading.style.display = 'none';
+        } catch (error) {
+            console.error('Error rendering scroll view:', error);
+            this.scrollLoading.style.display = 'none';
+        }
+    }
+    
+    async renderPageInScroll(pageNum) {
+        if (this.renderedPages.has(pageNum)) return;
+        
+        try {
+            const page = await this.pdfDoc.getPage(pageNum);
+            const viewport = page.getViewport({ scale: this.scale, rotation: this.rotation });
+            
+            // Create canvas for this page
+            const canvas = document.createElement('canvas');
+            canvas.className = 'pdf-page';
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            canvas.dataset.pageNumber = pageNum;
+            
+            // Create page container with label
+            const pageContainer = document.createElement('div');
+            pageContainer.style.position = 'relative';
+            pageContainer.style.marginBottom = '2rem';
+            
+            const pageLabel = document.createElement('div');
+            pageLabel.className = 'page-number-label';
+            pageLabel.textContent = `Page ${pageNum}`;
+            
+            pageContainer.appendChild(pageLabel);
+            pageContainer.appendChild(canvas);
+            this.pagesContainer.appendChild(pageContainer);
+            
+            // Render page
+            const ctx = canvas.getContext('2d');
+            await page.render({
+                canvasContext: ctx,
+                viewport: viewport
+            }).promise;
+            
+            this.renderedPages.add(pageNum);
+        } catch (error) {
+            console.error(`Error rendering page ${pageNum}:`, error);
+        }
+    }
+    
+    handleScroll() {
+        if (this.viewMode !== 'scroll') return;
+        
+        // Lazy load more pages as user scrolls
+        const container = this.scrollView;
+        const scrollPosition = container.scrollTop + container.clientHeight;
+        const scrollHeight = container.scrollHeight;
+        
+        // Load more pages when near bottom
+        if (scrollPosition > scrollHeight - 1000) {
+            const nextPage = this.renderedPages.size + 1;
+            if (nextPage <= this.totalPages && !this.rendering) {
+                this.rendering = true;
+                this.renderPageInScroll(nextPage).then(() => {
+                    this.rendering = false;
+                });
+            }
+        }
+        
+        // Update current page based on scroll position
+        const canvases = this.pagesContainer.querySelectorAll('.pdf-page');
+        canvases.forEach(canvas => {
+            const rect = canvas.getBoundingClientRect();
+            if (rect.top >= 0 && rect.top < window.innerHeight / 2) {
+                const pageNum = parseInt(canvas.dataset.pageNumber);
+                if (this.currentPage !== pageNum) {
+                    this.currentPage = pageNum;
+                    document.getElementById('pageNumber').value = pageNum;
+                    this.updateProgress();
+                }
+            }
+        });
+    }
+    
+    goToPage(pageNum) {
+        if (pageNum < 1 || pageNum > this.totalPages) return;
+        
+        if (this.viewMode === 'scroll') {
+            // Scroll to specific page
+            const canvas = this.pagesContainer.querySelector(`[data-page-number="${pageNum}"]`);
+            if (canvas) {
+                canvas.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                // Page not rendered yet, render it
+                this.renderPageInScroll(pageNum).then(() => {
+                    const newCanvas = this.pagesContainer.querySelector(`[data-page-number="${pageNum}"]`);
+                    if (newCanvas) {
+                        newCanvas.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            }
+        } else {
+            this.renderPage(pageNum);
+        }
     }
     
     async openPdf(path, name) {
@@ -188,30 +341,42 @@ class PDFViewer {
     zoomIn() {
         this.scale += 0.25;
         this.updateZoomLevel();
-        this.renderPage(this.currentPage);
+        if (this.viewMode === 'scroll') {
+            this.renderScrollView();
+        } else {
+            this.renderPage(this.currentPage);
+        }
     }
     
     zoomOut() {
         if (this.scale <= 0.5) return;
         this.scale -= 0.25;
         this.updateZoomLevel();
-        this.renderPage(this.currentPage);
+        if (this.viewMode === 'scroll') {
+            this.renderScrollView();
+        } else {
+            this.renderPage(this.currentPage);
+        }
     }
     
     async fitWidth() {
         const page = await this.pdfDoc.getPage(this.currentPage);
         const viewport = page.getViewport({ scale: 1 });
-        const container = document.querySelector('.pdf-viewer-container');
+        const container = this.viewMode === 'scroll' ? this.scrollView : document.querySelector('.pdf-viewer-container');
         const containerWidth = container.clientWidth - 80;
         this.scale = containerWidth / viewport.width;
         this.updateZoomLevel();
-        this.renderPage(this.currentPage);
+        if (this.viewMode === 'scroll') {
+            this.renderScrollView();
+        } else {
+            this.renderPage(this.currentPage);
+        }
     }
     
     async fitPage() {
         const page = await this.pdfDoc.getPage(this.currentPage);
         const viewport = page.getViewport({ scale: 1 });
-        const container = document.querySelector('.pdf-viewer-container');
+        const container = this.viewMode === 'scroll' ? this.scrollView : document.querySelector('.pdf-viewer-container');
         const containerWidth = container.clientWidth - 80;
         const containerHeight = container.clientHeight - 80;
         
@@ -220,12 +385,20 @@ class PDFViewer {
         this.scale = Math.min(scaleWidth, scaleHeight);
         
         this.updateZoomLevel();
-        this.renderPage(this.currentPage);
+        if (this.viewMode === 'scroll') {
+            this.renderScrollView();
+        } else {
+            this.renderPage(this.currentPage);
+        }
     }
     
     rotate(degrees) {
         this.rotation = (this.rotation + degrees) % 360;
-        this.renderPage(this.currentPage);
+        if (this.viewMode === 'scroll') {
+            this.renderScrollView();
+        } else {
+            this.renderPage(this.currentPage);
+        }
     }
     
     updateZoomLevel() {

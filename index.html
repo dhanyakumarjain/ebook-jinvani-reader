@@ -151,6 +151,13 @@
             
             <div class="pdf-controls">
                 <div class="control-group">
+                    <button class="btn-control" id="toggleViewMode" title="Toggle View Mode">
+                        <i class="fas fa-th-list"></i>
+                        <span class="mode-text">Scroll</span>
+                    </button>
+                </div>
+                
+                <div class="control-group">
                     <button class="btn-control" id="firstPage" title="First Page">
                         <i class="fas fa-step-backward"></i>
                     </button>
@@ -199,11 +206,21 @@
             </div>
             
             <div class="modal-body">
-                <div class="pdf-viewer-container">
+                <!-- Single Page View -->
+                <div class="pdf-viewer-container" id="singlePageView">
                     <canvas id="pdfCanvas"></canvas>
                     <div class="pdf-loading" id="pdfLoading">
                         <i class="fas fa-spinner fa-spin"></i>
                         <p>Loading page...</p>
+                    </div>
+                </div>
+                
+                <!-- Scroll View (Multiple Pages) -->
+                <div class="pdf-scroll-container" id="scrollView" style="display: none;">
+                    <div id="pagesContainer"></div>
+                    <div class="pdf-loading" id="scrollLoading">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <p>Loading pages...</p>
                     </div>
                 </div>
             </div>
