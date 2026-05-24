@@ -101,149 +101,17 @@
                 </a>
             </nav>
 
-            <!-- Recent Books -->
-            <div class="recent-panel" id="recentPanel" style="display: none;">
-                <h3><i class="fas fa-history"></i> Recently Read</h3>
-                <div class="recent-list" id="recentList">
-                    <!-- Dynamically populated -->
-                </div>
-            </div>
-
             <!-- PDF Grid -->
             <div class="pdf-grid" id="pdfGrid">
-                <!-- Enhanced Welcome/Landing Page -->
+                <!-- Simplified Welcome/Landing Page -->
                 <div class="welcome-screen" id="welcomeScreen">
-                    <!-- Hero Section -->
-                    <section class="hero-section">
-                        <div class="hero-content">
-                            <div class="hero-image-container">
-                                <img src="assets/jain-statue.jpg" alt="Jain Tirthankara" class="hero-image">
-                                <div class="hero-glow"></div>
-                            </div>
-                            <div class="hero-text">
-                                <h1 class="hero-title">
-                                    <span class="gradient-text">Jinvani eBook Reader</span>
-                                </h1>
-                                <p class="hero-tagline">
-                                    <i class="fas fa-book-open"></i>
-                                    Read, Bookmark & Continue Seamlessly
-                                </p>
-                                <p class="hero-description">
-                                    Your personal library of sacred Jain texts, poojas, and scriptures. 
-                                    Access anywhere, anytime.
-                                </p>
-                                <div class="hero-actions">
-                                    <button class="btn-hero-primary" onclick="document.getElementById('searchInput').focus()">
-                                        <i class="fas fa-search"></i>
-                                        Explore Library
-                                    </button>
-                                    <button class="btn-hero-secondary" onclick="scrollToContinueReading()">
-                                        <i class="fas fa-play-circle"></i>
-                                        Continue Reading
-                                    </button>
-                                </div>
-                            </div>
+                    <!-- Simple Hero Section with 3 Elements -->
+                    <section class="hero-section-simple">
+                        <h1 class="main-title">ई-बुक जिनवानी रीडर</h1>
+                        <div class="hero-image-wrapper">
+                            <img src="MunisuvratHD.jpg" alt="Munisuvrat Bhagwan" class="main-hero-image">
                         </div>
-                        
-                        <!-- Floating Stats -->
-                        <div class="floating-stats">
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-file-pdf"></i>
-                                </div>
-                                <div class="stat-info">
-                                    <span class="stat-number" id="totalPdfs">0</span>
-                                    <span class="stat-label">Sacred Texts</span>
-                                </div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-bookmark"></i>
-                                </div>
-                                <div class="stat-info">
-                                    <span class="stat-number" id="totalBookmarks">0</span>
-                                    <span class="stat-label">Bookmarks</span>
-                                </div>
-                            </div>
-                            <div class="stat-card">
-                                <div class="stat-icon">
-                                    <i class="fas fa-clock"></i>
-                                </div>
-                                <div class="stat-info">
-                                    <span class="stat-number" id="recentCount">0</span>
-                                    <span class="stat-label">Recently Read</span>
-                                </div>
-                            </div>
-                        </div>
-                    </section>
-                    
-                    <!-- Continue Reading Section -->
-                    <section class="continue-reading-section" id="continueReadingSection" style="display: none;">
-                        <div class="section-header">
-                            <h2>
-                                <i class="fas fa-book-reader"></i>
-                                Continue Reading
-                            </h2>
-                            <p>Pick up where you left off</p>
-                        </div>
-                        <div class="continue-reading-card" id="continueReadingCard">
-                            <!-- Dynamically populated -->
-                        </div>
-                    </section>
-                    
-                    <!-- Features Grid -->
-                    <section class="features-section">
-                        <div class="section-header">
-                            <h2>
-                                <i class="fas fa-star"></i>
-                                Features
-                            </h2>
-                            <p>Everything you need for a great reading experience</p>
-                        </div>
-                        <div class="features-grid">
-                            <div class="feature-card">
-                                <div class="feature-icon">
-                                    <i class="fas fa-book-reader"></i>
-                                </div>
-                                <h3>Easy Reading</h3>
-                                <p>Beautiful PDF viewer with zoom, scroll, and smooth navigation</p>
-                            </div>
-                            <div class="feature-card">
-                                <div class="feature-icon">
-                                    <i class="fas fa-bookmark"></i>
-                                </div>
-                                <h3>Smart Bookmarks</h3>
-                                <p>Save your progress and favorite pages automatically</p>
-                            </div>
-                            <div class="feature-card">
-                                <div class="feature-icon">
-                                    <i class="fas fa-search"></i>
-                                </div>
-                                <h3>Quick Search</h3>
-                                <p>Find any text or scripture instantly across all pages</p>
-                            </div>
-                            <div class="feature-card">
-                                <div class="feature-icon">
-                                    <i class="fas fa-mobile-alt"></i>
-                                </div>
-                                <h3>Mobile Ready</h3>
-                                <p>Works perfectly on phones, tablets, and desktops</p>
-                            </div>
-                            <div class="feature-card">
-                                <div class="feature-icon">
-                                    <i class="fas fa-cloud-download-alt"></i>
-                                </div>
-                                <h3>Offline Access</h3>
-                                <p>Read your books even without internet connection</p>
-                            </div>
-                            <div class="feature-card">
-                                <div class="feature-icon">
-                                    <i class="fas fa-palette"></i>
-                                </div>
-                                <h3>Dark Mode</h3>
-                                <p>Easy on the eyes with beautiful light and dark themes</p>
-                            </div>
-                        </div>
+                        <p class="author-credit">धन्यकुमार जैन द्वारा संकलित</p>
                     </section>
                     
                     <!-- Install PWA Prompt -->
@@ -400,14 +268,6 @@
         </div>
         <div class="bookmarks-list" id="bookmarksList">
             <p class="empty-bookmarks">No bookmarks yet</p>
-        </div>
-    </div>
-
-    <!-- Recent Books Panel -->
-    <div class="recent-panel" id="recentPanel">
-        <h3><i class="fas fa-history"></i> Recently Read</h3>
-        <div class="recent-list" id="recentList">
-            <!-- Dynamically populated -->
         </div>
     </div>
 
