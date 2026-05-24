@@ -328,13 +328,21 @@ function countPdfsInFolder(folder) {
 // ========================================
 
 function showWelcomeScreen() {
-    DOM.welcomeScreen.style.display = 'flex';
-    DOM.emptyState.style.display = 'none';
-    DOM.errorState.style.display = 'none';
+    if (DOM.welcomeScreen) {
+        DOM.welcomeScreen.style.display = 'flex';
+    }
     
-    // Show recent panel if there are recent books
+    if (DOM.emptyState) {
+        DOM.emptyState.style.display = 'none';
+    }
+    
+    if (DOM.errorState) {
+        DOM.errorState.style.display = 'none';
+    }
+    
+    // Show recent panel if there are recent books (element may not exist in simplified layout)
     const recentPanel = document.getElementById('recentPanel');
-    if (typeof pdfViewer !== 'undefined') {
+    if (recentPanel && typeof pdfViewer !== 'undefined') {
         const recent = pdfViewer.getRecentBooks();
         if (recent.length > 0) {
             recentPanel.style.display = 'block';
@@ -512,14 +520,24 @@ function clearSearch() {
 // ========================================
 
 function openPdf(file) {
-    if (typeof pdfViewer !== 'undefined') {
+    console.log('openPdf called with:', file);
+    if (typeof pdfViewer !== 'undefined' && pdfViewer) {
+        console.log('pdfViewer exists, opening PDF');
         pdfViewer.openPdf(file.path, file.name);
+    } else {
+        console.error('pdfViewer is not defined or not initialized');
+        alert('PDF Viewer is not ready. Please refresh the page.');
     }
 }
 
 function openPdfByPath(path, name) {
-    if (typeof pdfViewer !== 'undefined') {
+    console.log('openPdfByPath called with:', path, name);
+    if (typeof pdfViewer !== 'undefined' && pdfViewer) {
+        console.log('pdfViewer exists, opening PDF');
         pdfViewer.openPdf(path, name);
+    } else {
+        console.error('pdfViewer is not defined or not initialized');
+        alert('PDF Viewer is not ready. Please refresh the page.');
     }
 }
 

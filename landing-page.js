@@ -15,11 +15,20 @@ class LandingPage {
     
     // Load Continue Reading section
     loadContinueReading() {
+        const continueReadingSection = document.getElementById('continueReadingSection');
+        const continueCard = document.getElementById('continueReadingCard');
+        
+        // Check if elements exist (they don't in simplified layout)
+        if (!continueReadingSection || !continueCard) {
+            console.log('Continue reading section not found - using simplified layout');
+            return;
+        }
+        
         const positions = JSON.parse(localStorage.getItem('pdfPositions') || '{}');
         const recentBooks = JSON.parse(localStorage.getItem('recentBooks') || '[]');
         
         if (recentBooks.length === 0) {
-            document.getElementById('continueReadingSection').style.display = 'none';
+            continueReadingSection.style.display = 'none';
             return;
         }
         
@@ -31,7 +40,6 @@ class LandingPage {
         const totalPages = this.getEstimatedPages(lastBook.path);
         const progress = totalPages > 0 ? Math.round((currentPage / totalPages) * 100) : 0;
         
-        const continueCard = document.getElementById('continueReadingCard');
         continueCard.innerHTML = `
             <div class="book-cover">
                 <i class="fas fa-book-open"></i>
@@ -64,7 +72,7 @@ class LandingPage {
             </div>
         `;
         
-        document.getElementById('continueReadingSection').style.display = 'block';
+        continueReadingSection.style.display = 'block';
     }
     
     // Load Recent Books carousel

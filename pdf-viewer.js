@@ -4,6 +4,8 @@
 
 class PDFViewer {
     constructor() {
+        console.log('PDFViewer constructor called');
+        
         this.pdfDoc = null;
         this.currentPage = 1;
         this.totalPages = 0;
@@ -17,6 +19,11 @@ class PDFViewer {
         
         // DOM elements
         this.canvas = document.getElementById('pdfCanvas');
+        if (!this.canvas) {
+            console.error('pdfCanvas element not found!');
+            throw new Error('PDF Canvas element not found');
+        }
+        
         this.ctx = this.canvas.getContext('2d');
         this.modal = document.getElementById('pdfModal');
         this.loading = document.getElementById('pdfLoading');
@@ -25,9 +32,21 @@ class PDFViewer {
         this.scrollView = document.getElementById('scrollView');
         this.pagesContainer = document.getElementById('pagesContainer');
         
+        console.log('DOM elements loaded:', {
+            canvas: !!this.canvas,
+            modal: !!this.modal,
+            loading: !!this.loading,
+            scrollLoading: !!this.scrollLoading,
+            singlePageView: !!this.singlePageView,
+            scrollView: !!this.scrollView,
+            pagesContainer: !!this.pagesContainer
+        });
+        
         this.initializeControls();
         this.loadBookmarks();
         this.loadRecentBooks();
+        
+        console.log('PDFViewer initialized successfully');
     }
     
     initializeControls() {
@@ -553,6 +572,11 @@ class PDFViewer {
         const bookmarks = this.getBookmarks();
         const list = document.getElementById('bookmarksList');
         
+        if (!list) {
+            console.warn('bookmarksList element not found');
+            return;
+        }
+        
         if (bookmarks.length === 0) {
             list.innerHTML = '<p class="empty-bookmarks">No bookmarks yet</p>';
             return;
@@ -602,6 +626,11 @@ class PDFViewer {
         const recent = this.getRecentBooks();
         const list = document.getElementById('recentList');
         
+        if (!list) {
+            console.warn('recentList element not found');
+            return;
+        }
+        
         if (recent.length === 0) {
             list.innerHTML = '<p style="text-align: center; color: var(--text-tertiary);">No recent books</p>';
             return;
@@ -636,29 +665,57 @@ class PDFViewer {
 // Initialize PDF Viewer
 let pdfViewer;
 document.addEventListener('DOMContentLoaded', () => {
-    pdfViewer = new PDFViewer();
+    console.log('Initializing PDF Viewer...');
+    
+    // Check if PDF.js is loaded
+    if (typeof pdfjsLib === 'undefined') {
+        console.error('PDF.js library not loaded!');
+        alert('PDF.js library failed to load. Please check your internet connection and refresh the page.');
+        return;
+    }
+    
+    console.log('PDF.js loaded successfully');
+    
+    try {
+        pdfViewer = new PDFViewer();
+        console.log('PDF Viewer initialized successfully');
+        
+        // Make it globally accessible for debugging
+        window.pdfViewer = pdfViewer;
+    } catch (error) {
+        console.error('Error initializing PDF Viewer:', error);
+        alert('Failed to initialize PDF Viewer: ' + error.message);
+    }
     
     // Close modal with touch support
     const closeBtn = document.getElementById('modalClose');
+    if (!closeBtn) {
+        console.error('Close button not found!');
+        return;
+    }
+    
     let touchHandled = false;
     
     closeBtn.addEventListener('touchend', (e) => {
         e.preventDefault();
         touchHandled = true;
-        pdfViewer.closePdf();
+        if (pdfViewer) pdfViewer.closePdf();
         setTimeout(() => { touchHandled = false; }, 300);
     });
     
     closeBtn.addEventListener('click', () => {
-        if (!touchHandled) {
+        if (!touchHandled && pdfViewer) {
             pdfViewer.closePdf();
         }
     });
     
     // Close on background click
-    document.getElementById('pdfModal').addEventListener('click', (e) => {
-        if (e.target.id === 'pdfModal') {
-            pdfViewer.closePdf();
-        }
-    });
+    const modal = document.getElementById('pdfModal');
+    if (modal) {
+        modal.addEventListener('click', (e) => {
+            if (e.target.id === 'pdfModal' && pdfViewer) {
+                pdfViewer.closePdf();
+            }
+        });
+    }
 });
