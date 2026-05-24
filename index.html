@@ -50,19 +50,18 @@
             </h1>
         </div>
         <div class="header-right">
-            <div class="search-container">
-                <i class="fas fa-search search-icon"></i>
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    class="search-input" 
-                    placeholder="Search PDFs..."
-                    aria-label="Search PDFs"
-                >
-                <button class="search-clear" id="searchClear" aria-label="Clear Search">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
+            <button class="header-btn" id="homeBtn" title="Home">
+                <i class="fas fa-home"></i>
+                <span>Home</span>
+            </button>
+            <button class="header-btn" id="addBookmarkHeaderBtn" title="Add Bookmark" style="display: none;">
+                <i class="fas fa-bookmark"></i>
+                <span>Add Bookmark</span>
+            </button>
+            <button class="header-btn" id="viewBookmarksBtn" title="View Bookmarks">
+                <i class="far fa-bookmark"></i>
+                <span>View Bookmarks</span>
+            </button>
             <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
                 <i class="fas fa-moon"></i>
             </button>
@@ -109,9 +108,16 @@
                     <section class="hero-section-simple">
                         <h1 class="main-title">ई-बुक जिनवानी रीडर</h1>
                         <div class="hero-image-wrapper">
-                            <img src="MunisuvratHD.jpg" alt="Munisuvrat Bhagwan" class="main-hero-image">
+                            <img src="MUNISUVRATHDBLK.png" alt="Munisuvrat Bhagwan" class="main-hero-image">
                         </div>
                         <p class="author-credit">धन्यकुमार जैन द्वारा संकलित</p>
+                    </section>
+                    
+                    <!-- Bookmarks Section on Home Page (Hidden by default) -->
+                    <section class="home-bookmarks-section" id="homeBookmarksSection" style="display: none;">
+                        <div class="bookmarks-grid" id="homeBookmarksGrid">
+                            <!-- Dynamically populated -->
+                        </div>
                     </section>
                     
                     <!-- Install PWA Prompt -->
@@ -227,10 +233,11 @@
                     <button class="btn-control" id="searchPdfBtn" title="Search in PDF">
                         <i class="fas fa-search"></i>
                     </button>
-                    <button class="btn-control" id="bookmarkBtn" title="Bookmark">
+                    <button class="btn-control bookmark-btn" id="bookmarkPageBtn" title="Bookmark This Page (Press B)">
                         <i class="fas fa-bookmark"></i>
+                        <span class="btn-label">Bookmark</span>
                     </button>
-                    <button class="btn-control" id="downloadPdf" title="Download">
+                    <button class="btn-control" id="downloadPdf" title="Download PDF">
                         <i class="fas fa-download"></i>
                     </button>
                 </div>

@@ -1357,3 +1357,293 @@ body {
     padding: 0 2px;
     border-radius: 2px;
 }
+
+
+/* ========================================
+   TOAST NOTIFICATIONS
+   ======================================== */
+
+.pdf-toast {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    box-shadow: var(--shadow-lg);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1rem;
+    font-weight: 500;
+    z-index: 10000;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.3s ease;
+    border-left: 4px solid var(--accent-primary);
+}
+
+.pdf-toast.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.pdf-toast-success {
+    border-left-color: #10b981;
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+}
+
+.pdf-toast-success i {
+    color: white;
+    font-size: 1.5rem;
+}
+
+.pdf-toast-info {
+    border-left-color: var(--accent-primary);
+}
+
+.pdf-toast-info i {
+    color: var(--accent-primary);
+    font-size: 1.25rem;
+}
+
+.pdf-toast-error {
+    border-left-color: #ef4444;
+}
+
+.pdf-toast-error i {
+    color: #ef4444;
+    font-size: 1.25rem;
+}
+
+@media (max-width: 768px) {
+    .pdf-toast {
+        bottom: 20px;
+        right: 20px;
+        left: 20px;
+        font-size: 0.9rem;
+    }
+}
+
+
+/* ========================================
+   HEADER BUTTONS
+   ======================================== */
+
+.header-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.header-btn:hover {
+    background: var(--accent-primary);
+    color: white;
+    border-color: var(--accent-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.header-btn i {
+    font-size: 1.1rem;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+@media (max-width: 768px) {
+    .header-btn span {
+        display: none;
+    }
+    
+    .header-btn {
+        padding: 0.75rem;
+        width: 45px;
+        height: 45px;
+        justify-content: center;
+    }
+}
+
+/* ========================================
+   HOME BOOKMARKS SECTION
+   ======================================== */
+
+.home-bookmarks-section {
+    padding: 2rem 2rem 3rem 2rem;
+    margin: 0;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.bookmarks-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+}
+
+.bookmarks-grid:empty {
+    display: none;
+}
+
+.empty-bookmarks-message {
+    text-align: center;
+    padding: 3rem 2rem;
+    color: var(--text-tertiary);
+}
+
+.empty-bookmarks-message h3 {
+    font-size: 1.3rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.empty-bookmarks-message p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.bookmark-card {
+    position: relative;
+}
+
+.bookmark-card .pdf-card-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.bookmark-card .btn-primary,
+.bookmark-card .btn-secondary,
+.bookmark-card .btn-danger {
+    flex: 1;
+    min-width: 100px;
+}
+
+.btn-danger {
+    background: #ef4444;
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+.bookmark-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+    color: white;
+    padding: 0.5rem 0.75rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: var(--shadow-sm);
+}
+
+.empty-bookmarks-message {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 4rem 2rem;
+    color: var(--text-tertiary);
+}
+
+.empty-bookmarks-message h3 {
+    font-size: 1.5rem;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.empty-bookmarks-message p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+@media (max-width: 768px) {
+    .home-bookmarks-section {
+        padding: 2rem 1rem;
+        margin-left: 0;
+    }
+    
+    .bookmarks-grid {
+        gap: 1rem;
+    }
+    
+    .section-header h2 {
+        font-size: 1.5rem;
+    }
+    
+    .bookmark-card .pdf-card-actions {
+        flex-direction: column;
+    }
+    
+    .bookmark-card .btn-primary,
+    .bookmark-card .btn-secondary,
+    .bookmark-card .btn-danger {
+        width: 100%;
+    }
+}
+
+
+/* ========================================
+   BOOKMARK BUTTON LABEL
+   ======================================== */
+
+.bookmark-btn {
+    min-width: 120px;
+}
+
+.bookmark-btn .btn-label {
+    display: inline;
+    margin-left: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .bookmark-btn {
+        min-width: auto;
+    }
+    
+    .bookmark-btn .btn-label {
+        display: none;
+    }
+}
+
+/* Bookmark button success state */
+.btn-control.bookmark-success {
+    background: #10b981 !important;
+    color: white !important;
+    border-color: #10b981 !important;
+}

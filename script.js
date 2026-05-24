@@ -96,9 +96,43 @@ function initializeEventListeners() {
         DOM.sidebar.classList.toggle('active');
     });
     
-    // Search
-    DOM.searchInput.addEventListener('input', handleSearch);
-    DOM.searchClear.addEventListener('click', clearSearch);
+    // Home button
+    const homeBtn = document.getElementById('homeBtn');
+    if (homeBtn) {
+        homeBtn.addEventListener('click', () => {
+            showWelcomeScreen();
+            // Hide bookmarks section when going home
+            const bookmarksSection = document.getElementById('homeBookmarksSection');
+            if (bookmarksSection) {
+                bookmarksSection.style.display = 'none';
+            }
+            // Hide add bookmark button in header
+            const addBookmarkHeaderBtn = document.getElementById('addBookmarkHeaderBtn');
+            if (addBookmarkHeaderBtn) {
+                addBookmarkHeaderBtn.style.display = 'none';
+            }
+        });
+    }
+    
+    // Add Bookmark button in header (shows only when PDF is open)
+    const addBookmarkHeaderBtn = document.getElementById('addBookmarkHeaderBtn');
+    if (addBookmarkHeaderBtn) {
+        addBookmarkHeaderBtn.addEventListener('click', () => {
+            if (typeof pdfViewer !== 'undefined' && pdfViewer && pdfViewer.pdfDoc) {
+                pdfViewer.addBookmark();
+            } else {
+                alert('Please open a PDF first to bookmark a page');
+            }
+        });
+    }
+    
+    // View Bookmarks button (toggle)
+    const viewBookmarksBtn = document.getElementById('viewBookmarksBtn');
+    if (viewBookmarksBtn) {
+        viewBookmarksBtn.addEventListener('click', () => {
+            toggleBookmarksSection();
+        });
+    }
     
     // Collapse all folders
     DOM.collapseAll.addEventListener('click', collapseAllFolders);
@@ -114,7 +148,15 @@ function initializeEventListeners() {
         if (e.key === 'Escape') closeModal();
         if (e.ctrlKey && e.key === 'k') {
             e.preventDefault();
-            DOM.searchInput.focus();
+            // Focus on sidebar search or first file
+            DOM.sidebar.focus();
+        }
+        // Bookmark shortcut
+        if (e.key === 'b' || e.key === 'B') {
+            if (typeof pdfViewer !== 'undefined' && pdfViewer && pdfViewer.pdfDoc) {
+                e.preventDefault();
+                pdfViewer.addBookmark();
+            }
         }
     });
 }
@@ -340,20 +382,21 @@ function showWelcomeScreen() {
         DOM.errorState.style.display = 'none';
     }
     
-    // Show recent panel if there are recent books (element may not exist in simplified layout)
-    const recentPanel = document.getElementById('recentPanel');
-    if (recentPanel && typeof pdfViewer !== 'undefined') {
-        const recent = pdfViewer.getRecentBooks();
-        if (recent.length > 0) {
-            recentPanel.style.display = 'block';
-        } else {
-            recentPanel.style.display = 'none';
-        }
+    // Clear PDF grid except welcome screen
+    const pdfCards = DOM.pdfGrid.querySelectorAll('.pdf-card:not(.bookmark-card)');
+    pdfCards.forEach(card => card.remove());
+    
+    // Hide bookmarks section by default
+    const bookmarksSection = document.getElementById('homeBookmarksSection');
+    if (bookmarksSection) {
+        bookmarksSection.style.display = 'none';
     }
     
-    // Clear PDF grid except welcome screen and recent panel
-    const pdfCards = DOM.pdfGrid.querySelectorAll('.pdf-card');
-    pdfCards.forEach(card => card.remove());
+    // Reset view bookmarks button text
+    const viewBookmarksBtn = document.getElementById('viewBookmarksBtn');
+    if (viewBookmarksBtn) {
+        viewBookmarksBtn.innerHTML = '<i class="far fa-bookmark"></i><span>View Bookmarks</span>';
+    }
 }
 
 function showFolderContents(folder) {
@@ -370,6 +413,12 @@ function showFolderContents(folder) {
     
     // Hide welcome screen
     DOM.welcomeScreen.style.display = 'none';
+    
+    // Hide bookmarks section
+    const bookmarksSection = document.getElementById('homeBookmarksSection');
+    if (bookmarksSection) {
+        bookmarksSection.style.display = 'none';
+    }
 }
 
 function getAllPdfsInFolder(folder) {
@@ -392,6 +441,12 @@ function displayPdfs(pdfs) {
     // Clear existing PDF cards
     const existingCards = DOM.pdfGrid.querySelectorAll('.pdf-card');
     existingCards.forEach(card => card.remove());
+    
+    // Hide bookmarks section when displaying library PDFs
+    const bookmarksSection = document.getElementById('homeBookmarksSection');
+    if (bookmarksSection) {
+        bookmarksSection.style.display = 'none';
+    }
     
     if (pdfs.length === 0) {
         DOM.emptyState.style.display = 'flex';
@@ -426,9 +481,9 @@ function createPdfCard(pdf) {
                 <i class="fas fa-eye"></i>
                 View
             </button>
-            <button class="btn-secondary" onclick="downloadPdf('${pdf.path}', '${escapeHtml(pdf.name)}')">
-                <i class="fas fa-download"></i>
-                Download
+            <button class="btn-secondary" onclick="addBookmarkFromLibrary('${pdf.path}', '${escapeHtml(pdf.name)}')">
+                <i class="fas fa-bookmark"></i>
+                Bookmark
             </button>
         </div>
     `;
@@ -458,6 +513,110 @@ function updateBreadcrumb(folder) {
             showFolderContents(folder);
         };
         DOM.breadcrumb.appendChild(breadcrumbItem);
+    }
+}
+
+// ========================================
+// BOOKMARKS ON HOME PAGE
+// ========================================
+
+function toggleBookmarksSection() {
+    const bookmarksSection = document.getElementById('homeBookmarksSection');
+    const viewBookmarksBtn = document.getElementById('viewBookmarksBtn');
+    
+    if (!bookmarksSection) return;
+    
+    const isVisible = bookmarksSection.style.display !== 'none';
+    
+    if (isVisible) {
+        // Hide bookmarks
+        bookmarksSection.style.display = 'none';
+        if (viewBookmarksBtn) {
+            viewBookmarksBtn.innerHTML = '<i class="far fa-bookmark"></i><span>View Bookmarks</span>';
+        }
+    } else {
+        // Show bookmarks
+        showBookmarksOnHomePage();
+        bookmarksSection.style.display = 'block';
+        if (viewBookmarksBtn) {
+            viewBookmarksBtn.innerHTML = '<i class="fas fa-bookmark"></i><span>Hide Bookmarks</span>';
+        }
+    }
+}
+
+function showBookmarksOnHomePage() {
+    // Get bookmarks
+    const bookmarks = JSON.parse(localStorage.getItem('pdfBookmarks') || '[]');
+    const bookmarksGrid = document.getElementById('homeBookmarksGrid');
+    
+    if (!bookmarksGrid) return;
+    
+    if (bookmarks.length === 0) {
+        bookmarksGrid.innerHTML = `
+            <div class="empty-bookmarks-message">
+                <i class="fas fa-bookmark" style="font-size: 3rem; opacity: 0.3; margin-bottom: 1rem;"></i>
+                <h3>No Bookmarks Yet</h3>
+                <p>Open any PDF and bookmark pages to see them here</p>
+            </div>
+        `;
+        return;
+    }
+    
+    // Display bookmarks in single column
+    bookmarksGrid.innerHTML = bookmarks.map((bookmark, index) => {
+        const fileName = bookmark.name.replace('.pdf', '');
+        return `
+            <div class="pdf-card bookmark-card">
+                <button class="btn-delete-top" onclick="deleteBookmarkFromHome(${index})" title="Delete Bookmark">
+                    <i class="fas fa-trash"></i>
+                </button>
+                <h3 class="pdf-card-title" title="${escapeHtml(fileName)}">${escapeHtml(fileName)}</h3>
+                <p class="pdf-card-path">Saved: ${new Date(bookmark.date).toLocaleDateString()}</p>
+                <div class="pdf-card-actions">
+                    <button class="btn-primary" onclick="openPdfByPath('${escapeHtml(bookmark.path)}', '${escapeHtml(bookmark.name)}')">
+                        <i class="fas fa-file-pdf"></i>
+                        Open PDF
+                    </button>
+                    <button class="btn-secondary" onclick="openBookmarkFromHome('${escapeHtml(bookmark.path)}', '${escapeHtml(bookmark.name)}', ${bookmark.page})">
+                        <i class="fas fa-bookmark"></i>
+                        Page ${bookmark.page}
+                    </button>
+                </div>
+            </div>
+        `;
+    }).join('');
+}
+
+function openBookmarkFromHome(path, name, page) {
+    console.log('Opening bookmark:', path, name, 'at page', page);
+    
+    if (typeof pdfViewer !== 'undefined' && pdfViewer) {
+        pdfViewer.openPdf(path, name).then(() => {
+            // Wait a bit for PDF to load, then go to page
+            setTimeout(() => {
+                pdfViewer.goToPage(page);
+            }, 500);
+        }).catch(error => {
+            console.error('Error opening bookmark:', error);
+            alert('Error opening PDF: ' + error.message);
+        });
+    } else {
+        console.error('pdfViewer not available');
+        alert('PDF Viewer is not ready. Please refresh the page.');
+    }
+}
+
+function deleteBookmarkFromHome(index) {
+    const bookmarks = JSON.parse(localStorage.getItem('pdfBookmarks') || '[]');
+    bookmarks.splice(index, 1);
+    localStorage.setItem('pdfBookmarks', JSON.stringify(bookmarks));
+    
+    // Refresh bookmarks display
+    showBookmarksOnHomePage();
+    
+    // Show toast if pdfViewer exists
+    if (typeof pdfViewer !== 'undefined' && pdfViewer && pdfViewer.showToast) {
+        pdfViewer.showToast('Bookmark removed', 'info');
     }
 }
 
@@ -521,6 +680,12 @@ function clearSearch() {
 
 function openPdf(file) {
     console.log('openPdf called with:', file);
+    
+    // Hide welcome screen to show we're loading
+    if (DOM.welcomeScreen) {
+        DOM.welcomeScreen.style.display = 'none';
+    }
+    
     if (typeof pdfViewer !== 'undefined' && pdfViewer) {
         console.log('pdfViewer exists, opening PDF');
         pdfViewer.openPdf(file.path, file.name);
@@ -532,6 +697,12 @@ function openPdf(file) {
 
 function openPdfByPath(path, name) {
     console.log('openPdfByPath called with:', path, name);
+    
+    // Hide welcome screen to show we're loading
+    if (DOM.welcomeScreen) {
+        DOM.welcomeScreen.style.display = 'none';
+    }
+    
     if (typeof pdfViewer !== 'undefined' && pdfViewer) {
         console.log('pdfViewer exists, opening PDF');
         pdfViewer.openPdf(path, name);
@@ -599,3 +770,44 @@ window.openPdfByPath = openPdfByPath;
 window.downloadPdf = downloadPdf;
 window.showWelcomeScreen = showWelcomeScreen;
 window.clearSearch = clearSearch;
+window.showBookmarksOnHomePage = showBookmarksOnHomePage;
+window.toggleBookmarksSection = toggleBookmarksSection;
+window.openBookmarkFromHome = openBookmarkFromHome;
+window.deleteBookmarkFromHome = deleteBookmarkFromHome;
+window.addBookmarkFromLibrary = addBookmarkFromLibrary;
+
+// Add bookmark from library view
+function addBookmarkFromLibrary(path, name) {
+    const bookmarks = JSON.parse(localStorage.getItem('pdfBookmarks') || '[]');
+    
+    // Check if already bookmarked
+    const exists = bookmarks.find(b => b.path === path);
+    if (exists) {
+        if (typeof pdfViewer !== 'undefined' && pdfViewer && pdfViewer.showToast) {
+            pdfViewer.showToast('Already bookmarked!', 'info');
+        } else {
+            alert('This PDF is already bookmarked!');
+        }
+        return;
+    }
+    
+    // Add bookmark at page 1
+    const bookmark = {
+        name: name,
+        path: path,
+        page: 1,
+        date: new Date().toISOString()
+    };
+    
+    bookmarks.push(bookmark);
+    localStorage.setItem('pdfBookmarks', JSON.stringify(bookmarks));
+    
+    if (typeof pdfViewer !== 'undefined' && pdfViewer && pdfViewer.showToast) {
+        pdfViewer.showToast('Bookmark added!', 'success');
+    } else {
+        alert('Bookmark added!');
+    }
+    
+    // Show bookmarks section below current library view
+    showBookmarksOnHomePage();
+}

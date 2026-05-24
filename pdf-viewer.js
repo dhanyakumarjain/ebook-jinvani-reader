@@ -51,48 +51,87 @@ class PDFViewer {
     
     initializeControls() {
         // View mode toggle
-        this.addButtonListener('toggleViewMode', () => this.toggleViewMode());
+        const toggleViewModeBtn = document.getElementById('toggleViewMode');
+        if (toggleViewModeBtn) {
+            toggleViewModeBtn.addEventListener('click', () => this.toggleViewMode());
+        }
         
         // More controls toggle (mobile)
         const moreBtn = document.getElementById('moreControls');
         const secondaryControls = document.getElementById('secondaryControls');
-        if (moreBtn) {
-            this.addButtonListener('moreControls', () => {
+        if (moreBtn && secondaryControls) {
+            moreBtn.addEventListener('click', () => {
                 secondaryControls.classList.toggle('active');
                 const icon = moreBtn.querySelector('i');
-                icon.className = secondaryControls.classList.contains('active') 
-                    ? 'fas fa-times' 
-                    : 'fas fa-ellipsis-v';
+                if (icon) {
+                    icon.className = secondaryControls.classList.contains('active') 
+                        ? 'fas fa-times' 
+                        : 'fas fa-ellipsis-v';
+                }
             });
         }
         
         // Page navigation
-        this.addButtonListener('firstPage', () => this.goToPage(1));
-        this.addButtonListener('prevPage', () => this.previousPage());
-        this.addButtonListener('nextPage', () => this.nextPage());
-        this.addButtonListener('lastPage', () => this.goToPage(this.totalPages));
+        const firstPageBtn = document.getElementById('firstPage');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        const lastPageBtn = document.getElementById('lastPage');
+        const pageNumberInput = document.getElementById('pageNumber');
         
-        document.getElementById('pageNumber').addEventListener('change', (e) => {
-            this.goToPage(parseInt(e.target.value));
-        });
+        if (firstPageBtn) firstPageBtn.addEventListener('click', () => this.goToPage(1));
+        if (prevPageBtn) prevPageBtn.addEventListener('click', () => this.previousPage());
+        if (nextPageBtn) nextPageBtn.addEventListener('click', () => this.nextPage());
+        if (lastPageBtn) lastPageBtn.addEventListener('click', () => this.goToPage(this.totalPages));
+        
+        if (pageNumberInput) {
+            pageNumberInput.addEventListener('change', (e) => {
+                this.goToPage(parseInt(e.target.value));
+            });
+        }
         
         // Zoom controls
-        this.addButtonListener('zoomIn', () => this.zoomIn());
-        this.addButtonListener('zoomOut', () => this.zoomOut());
-        this.addButtonListener('fitWidth', () => this.fitWidth());
-        this.addButtonListener('fitPage', () => this.fitPage());
+        const zoomInBtn = document.getElementById('zoomIn');
+        const zoomOutBtn = document.getElementById('zoomOut');
+        const fitWidthBtn = document.getElementById('fitWidth');
+        const fitPageBtn = document.getElementById('fitPage');
+        
+        if (zoomInBtn) zoomInBtn.addEventListener('click', () => this.zoomIn());
+        if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => this.zoomOut());
+        if (fitWidthBtn) fitWidthBtn.addEventListener('click', () => this.fitWidth());
+        if (fitPageBtn) fitPageBtn.addEventListener('click', () => this.fitPage());
         
         // Rotation
-        this.addButtonListener('rotateLeft', () => this.rotate(-90));
-        this.addButtonListener('rotateRight', () => this.rotate(90));
+        const rotateLeftBtn = document.getElementById('rotateLeft');
+        const rotateRightBtn = document.getElementById('rotateRight');
+        
+        if (rotateLeftBtn) rotateLeftBtn.addEventListener('click', () => this.rotate(-90));
+        if (rotateRightBtn) rotateRightBtn.addEventListener('click', () => this.rotate(90));
         
         // Other controls
-        this.addButtonListener('downloadPdf', () => this.downloadPdf());
-        this.addButtonListener('bookmarkBtn', () => this.addBookmark());
-        this.addButtonListener('fullscreenBtn', () => this.toggleFullscreen());
+        const downloadPdfBtn = document.getElementById('downloadPdf');
+        const bookmarkPageBtn = document.getElementById('bookmarkPageBtn');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const searchPdfBtn = document.getElementById('searchPdfBtn');
+        
+        if (downloadPdfBtn) downloadPdfBtn.addEventListener('click', () => this.downloadPdf());
+        if (bookmarkPageBtn) {
+            bookmarkPageBtn.addEventListener('click', () => this.addBookmark());
+            bookmarkPageBtn.title = 'Bookmark This Page (B)';
+        }
+        if (fullscreenBtn) fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+        if (searchPdfBtn) {
+            searchPdfBtn.addEventListener('click', () => {
+                const searchPanel = document.getElementById('searchPanel');
+                if (searchPanel) {
+                    searchPanel.classList.toggle('active');
+                }
+            });
+        }
         
         // Scroll detection for scroll mode
-        this.scrollView.addEventListener('scroll', () => this.handleScroll());
+        if (this.scrollView) {
+            this.scrollView.addEventListener('scroll', () => this.handleScroll());
+        }
         
         // Touch gestures for mobile
         this.initializeTouchGestures();
@@ -137,28 +176,8 @@ class PDFViewer {
                     break;
             }
         });
-    }
-    
-    // Helper method to add both click and touch events
-    addButtonListener(elementId, callback) {
-        const element = document.getElementById(elementId);
-        if (!element) return;
         
-        // Prevent double-firing on devices that support both touch and click
-        let touchHandled = false;
-        
-        element.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            touchHandled = true;
-            callback();
-            setTimeout(() => { touchHandled = false; }, 300);
-        });
-        
-        element.addEventListener('click', (e) => {
-            if (!touchHandled) {
-                callback();
-            }
-        });
+        console.log('Controls initialized successfully');
     }
     
     initializeTouchGestures() {
@@ -330,6 +349,36 @@ class PDFViewer {
     
     async openPdf(path, name) {
         try {
+            console.log('=== Opening NEW PDF ===');
+            console.log('Path:', path);
+            console.log('Name:', name);
+            
+            // FORCE close any existing PDF
+            if (this.pdfDoc) {
+                console.log('Destroying previous PDF document');
+                try {
+                    await this.pdfDoc.destroy();
+                } catch (e) {
+                    console.log('Error destroying PDF:', e);
+                }
+                this.pdfDoc = null;
+            }
+            
+            // FORCE clear canvas completely
+            if (this.ctx && this.canvas) {
+                console.log('Clearing canvas');
+                this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+                this.canvas.width = 0;
+                this.canvas.height = 0;
+            }
+            
+            // FORCE reset ALL state
+            this.currentPage = 1;
+            this.totalPages = 0;
+            this.scale = 1.5;
+            this.rotation = 0;
+            this.rendering = false;
+            
             this.currentPdfPath = path;
             this.currentPdfName = name;
             
@@ -338,24 +387,50 @@ class PDFViewer {
             this.loading.style.display = 'flex';
             document.body.style.overflow = 'hidden';
             
+            // Show Add Bookmark button in header
+            const addBookmarkHeaderBtn = document.getElementById('addBookmarkHeaderBtn');
+            if (addBookmarkHeaderBtn) {
+                addBookmarkHeaderBtn.style.display = 'flex';
+            }
+            
             // Update title
             document.getElementById('modalTitle').textContent = name;
             
-            // Load PDF
-            const loadingTask = pdfjsLib.getDocument(path);
+            // Reset page display
+            document.getElementById('pageNumber').value = 1;
+            document.getElementById('totalPages').textContent = '0';
+            
+            console.log('Loading NEW PDF from:', path);
+            
+            // Load PDF with unique cache-busting parameter
+            const cacheBuster = Date.now();
+            const loadingTask = pdfjsLib.getDocument({
+                url: path + '?t=' + cacheBuster,
+                cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
+                cMapPacked: true,
+                disableAutoFetch: false,
+                disableStream: false,
+                disableRange: false
+            });
+            
             this.pdfDoc = await loadingTask.promise;
             this.totalPages = this.pdfDoc.numPages;
+            
+            console.log('NEW PDF loaded successfully!');
+            console.log('Total pages:', this.totalPages);
+            console.log('PDF fingerprint:', this.pdfDoc.fingerprints);
             
             // Update UI
             document.getElementById('totalPages').textContent = this.totalPages;
             document.getElementById('pageNumber').max = this.totalPages;
             
-            // Load saved position or start from page 1
-            const savedPosition = this.getSavedPosition(path);
-            this.currentPage = savedPosition || 1;
+            // Always start from page 1 for library books (ignore saved position)
+            this.currentPage = 1;
+            
+            console.log('Rendering page 1 of NEW PDF');
             
             // Render first page
-            await this.renderPage(this.currentPage);
+            await this.renderPage(1);
             
             // Add to recent books
             this.addToRecent(name, path);
@@ -363,8 +438,10 @@ class PDFViewer {
             // Hide loading
             this.loading.style.display = 'none';
             
+            console.log('=== NEW PDF opened successfully ===');
+            
         } catch (error) {
-            console.error('Error loading PDF:', error);
+            console.error('!!! Error loading PDF !!!', error);
             alert('Error loading PDF: ' + error.message);
             this.closePdf();
         }
@@ -377,10 +454,15 @@ class PDFViewer {
         this.loading.style.display = 'flex';
         
         try {
+            console.log('Rendering page:', pageNum, 'of', this.totalPages);
+            
             const page = await this.pdfDoc.getPage(pageNum);
             
             // Calculate viewport
             let viewport = page.getViewport({ scale: this.scale, rotation: this.rotation });
+            
+            // Clear canvas before rendering
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
             
             // Set canvas dimensions
             this.canvas.height = viewport.height;
@@ -393,6 +475,8 @@ class PDFViewer {
             };
             
             await page.render(renderContext).promise;
+            
+            console.log('Page rendered successfully');
             
             // Update UI
             this.currentPage = pageNum;
@@ -430,6 +514,7 @@ class PDFViewer {
     }
     
     zoomIn() {
+        console.log('Zoom In clicked, current scale:', this.scale);
         this.scale += 0.25;
         this.updateZoomLevel();
         if (this.viewMode === 'scroll') {
@@ -440,7 +525,11 @@ class PDFViewer {
     }
     
     zoomOut() {
-        if (this.scale <= 0.5) return;
+        console.log('Zoom Out clicked, current scale:', this.scale);
+        if (this.scale <= 0.5) {
+            console.log('Already at minimum zoom');
+            return;
+        }
         this.scale -= 0.25;
         this.updateZoomLevel();
         if (this.viewMode === 'scroll') {
@@ -526,6 +615,20 @@ class PDFViewer {
         }
     }
     
+    toggleBookmarksPanel() {
+        const panel = document.getElementById('bookmarksPanel');
+        if (panel) {
+            const isActive = panel.classList.contains('active');
+            if (isActive) {
+                panel.classList.remove('active');
+            } else {
+                panel.classList.add('active');
+                // Refresh bookmarks list
+                this.loadBookmarks();
+            }
+        }
+    }
+    
     downloadPdf() {
         const link = document.createElement('a');
         link.href = this.currentPdfPath;
@@ -534,12 +637,33 @@ class PDFViewer {
     }
     
     closePdf() {
+        console.log('Closing PDF...');
+        
         this.modal.classList.remove('active');
         document.body.style.overflow = 'auto';
         this.pdfDoc = null;
         this.currentPage = 1;
         this.scale = 1.5;
         this.rotation = 0;
+        
+        // Reset page display
+        const pageNumberInput = document.getElementById('pageNumber');
+        const totalPagesSpan = document.getElementById('totalPages');
+        if (pageNumberInput) pageNumberInput.value = 1;
+        if (totalPagesSpan) totalPagesSpan.textContent = '0';
+        
+        // Hide Add Bookmark button in header
+        const addBookmarkHeaderBtn = document.getElementById('addBookmarkHeaderBtn');
+        if (addBookmarkHeaderBtn) {
+            addBookmarkHeaderBtn.style.display = 'none';
+        }
+        
+        // Always return to home page (welcome screen with bookmarks)
+        if (typeof showWelcomeScreen === 'function') {
+            showWelcomeScreen();
+        }
+        
+        console.log('PDF closed, returned to home page');
     }
     
     // Bookmarks
@@ -555,17 +679,92 @@ class PDFViewer {
         bookmarks.push(bookmark);
         localStorage.setItem('pdfBookmarks', JSON.stringify(bookmarks));
         
-        // Show feedback
-        const btn = document.getElementById('bookmarkBtn');
-        btn.classList.add('active');
-        setTimeout(() => btn.classList.remove('active'), 1000);
+        // Show user-friendly feedback on bookmark button in panel
+        const btn = document.getElementById('bookmarkPageBtn');
+        if (btn) {
+            const originalBg = btn.style.background;
+            const originalColor = btn.style.color;
+            const originalBorder = btn.style.borderColor;
+            
+            // Change to green with checkmark
+            btn.innerHTML = '<i class="fas fa-check"></i><span class="btn-label">Bookmarked!</span>';
+            btn.style.background = '#10b981';
+            btn.style.color = 'white';
+            btn.style.borderColor = '#10b981';
+            
+            setTimeout(() => {
+                btn.innerHTML = '<i class="fas fa-bookmark"></i><span class="btn-label">Bookmark</span>';
+                btn.style.background = originalBg;
+                btn.style.color = originalColor;
+                btn.style.borderColor = originalBorder;
+            }, 2000);
+        }
+        
+        // Show user-friendly feedback on header button
+        const headerBtn = document.getElementById('addBookmarkHeaderBtn');
+        if (headerBtn) {
+            const originalHTML = headerBtn.innerHTML;
+            const originalBg = headerBtn.style.background;
+            const originalColor = headerBtn.style.color;
+            const originalBorder = headerBtn.style.borderColor;
+            
+            headerBtn.innerHTML = '<i class="fas fa-check"></i><span>Bookmarked!</span>';
+            headerBtn.style.background = 'linear-gradient(135deg, #10b981, #059669)';
+            headerBtn.style.color = 'white';
+            headerBtn.style.borderColor = '#10b981';
+            
+            setTimeout(() => {
+                headerBtn.innerHTML = originalHTML;
+                headerBtn.style.background = originalBg;
+                headerBtn.style.color = originalColor;
+                headerBtn.style.borderColor = originalBorder;
+            }, 2000);
+        }
+        
+        // Show toast notification
+        this.showToast(`✓ Bookmarked: Page ${this.currentPage}`, 'success');
         
         this.loadBookmarks();
+        
+        console.log('Bookmark added:', bookmark);
     }
     
     getBookmarks() {
         const stored = localStorage.getItem('pdfBookmarks');
         return stored ? JSON.parse(stored) : [];
+    }
+    
+    // Show toast notification
+    showToast(message, type = 'info') {
+        // Remove existing toast if any
+        const existingToast = document.querySelector('.pdf-toast');
+        if (existingToast) {
+            existingToast.remove();
+        }
+        
+        // Create toast
+        const toast = document.createElement('div');
+        toast.className = `pdf-toast pdf-toast-${type}`;
+        
+        let icon = 'info-circle';
+        if (type === 'success') icon = 'check-circle';
+        if (type === 'error') icon = 'exclamation-circle';
+        
+        toast.innerHTML = `
+            <i class="fas fa-${icon}"></i>
+            <span>${message}</span>
+        `;
+        
+        document.body.appendChild(toast);
+        
+        // Show toast
+        setTimeout(() => toast.classList.add('show'), 100);
+        
+        // Hide and remove toast
+        setTimeout(() => {
+            toast.classList.remove('show');
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
     }
     
     loadBookmarks() {
@@ -578,16 +777,44 @@ class PDFViewer {
         }
         
         if (bookmarks.length === 0) {
-            list.innerHTML = '<p class="empty-bookmarks">No bookmarks yet</p>';
+            list.innerHTML = `
+                <div style="text-align: center; padding: 2rem; color: var(--text-tertiary);">
+                    <i class="fas fa-bookmark" style="font-size: 3rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+                    <p>No bookmarks yet</p>
+                    <p style="font-size: 0.9rem; margin-top: 0.5rem;">Click the bookmark button while reading to save pages</p>
+                </div>
+            `;
             return;
         }
         
-        list.innerHTML = bookmarks.map(bookmark => `
-            <div class="bookmark-item" onclick="pdfViewer.openBookmark('${bookmark.path}', '${bookmark.name}', ${bookmark.page})">
-                <h4>${bookmark.name}</h4>
-                <p>Page ${bookmark.page} • ${new Date(bookmark.date).toLocaleDateString()}</p>
+        list.innerHTML = bookmarks.map((bookmark, index) => `
+            <div class="bookmark-item" onclick="pdfViewer.openBookmark('${this.escapeHtml(bookmark.path)}', '${this.escapeHtml(bookmark.name)}', ${bookmark.page})">
+                <div class="bookmark-header">
+                    <h4><i class="fas fa-book"></i> ${this.escapeHtml(bookmark.name)}</h4>
+                    <button class="delete-bookmark" onclick="event.stopPropagation(); pdfViewer.deleteBookmark(${index})" title="Delete bookmark">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <p class="bookmark-info">
+                    <span><i class="fas fa-file-pdf"></i> Page ${bookmark.page}</span>
+                    <span><i class="fas fa-calendar"></i> ${new Date(bookmark.date).toLocaleDateString()}</span>
+                </p>
             </div>
         `).join('');
+    }
+    
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+    
+    deleteBookmark(index) {
+        const bookmarks = this.getBookmarks();
+        bookmarks.splice(index, 1);
+        localStorage.setItem('pdfBookmarks', JSON.stringify(bookmarks));
+        this.loadBookmarks();
+        this.showToast('Bookmark deleted', 'info');
     }
     
     openBookmark(path, name, page) {

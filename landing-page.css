@@ -60,9 +60,6 @@
         0 0 80px rgba(255, 215, 0, 0.1);
     transition: all 0.5s ease;
     object-fit: contain;
-    /* Remove white background to blend with page */
-    mix-blend-mode: multiply;
-    background: transparent;
 }
 
 .main-hero-image:hover {
