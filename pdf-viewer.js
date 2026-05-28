@@ -50,17 +50,36 @@ class PDFViewer {
     }
     
     initializeControls() {
+        // Helper function to add both click and touch events for mobile compatibility
+        const addButtonEvent = (btn, handler) => {
+            if (!btn) return;
+            
+            // Prevent double-firing on devices that support both
+            let touchHandled = false;
+            
+            btn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                touchHandled = true;
+                handler();
+                setTimeout(() => { touchHandled = false; }, 300);
+            }, { passive: false });
+            
+            btn.addEventListener('click', (e) => {
+                if (!touchHandled) {
+                    handler();
+                }
+            });
+        };
+        
         // View mode toggle
         const toggleViewModeBtn = document.getElementById('toggleViewMode');
-        if (toggleViewModeBtn) {
-            toggleViewModeBtn.addEventListener('click', () => this.toggleViewMode());
-        }
+        addButtonEvent(toggleViewModeBtn, () => this.toggleViewMode());
         
         // More controls toggle (mobile)
         const moreBtn = document.getElementById('moreControls');
         const secondaryControls = document.getElementById('secondaryControls');
         if (moreBtn && secondaryControls) {
-            moreBtn.addEventListener('click', () => {
+            addButtonEvent(moreBtn, () => {
                 secondaryControls.classList.toggle('active');
                 const icon = moreBtn.querySelector('i');
                 if (icon) {
@@ -78,10 +97,10 @@ class PDFViewer {
         const lastPageBtn = document.getElementById('lastPage');
         const pageNumberInput = document.getElementById('pageNumber');
         
-        if (firstPageBtn) firstPageBtn.addEventListener('click', () => this.goToPage(1));
-        if (prevPageBtn) prevPageBtn.addEventListener('click', () => this.previousPage());
-        if (nextPageBtn) nextPageBtn.addEventListener('click', () => this.nextPage());
-        if (lastPageBtn) lastPageBtn.addEventListener('click', () => this.goToPage(this.totalPages));
+        addButtonEvent(firstPageBtn, () => this.goToPage(1));
+        addButtonEvent(prevPageBtn, () => this.previousPage());
+        addButtonEvent(nextPageBtn, () => this.nextPage());
+        addButtonEvent(lastPageBtn, () => this.goToPage(this.totalPages));
         
         if (pageNumberInput) {
             pageNumberInput.addEventListener('change', (e) => {
@@ -89,23 +108,23 @@ class PDFViewer {
             });
         }
         
-        // Zoom controls
+        // Zoom controls - CRITICAL FOR MOBILE
         const zoomInBtn = document.getElementById('zoomIn');
         const zoomOutBtn = document.getElementById('zoomOut');
         const fitWidthBtn = document.getElementById('fitWidth');
         const fitPageBtn = document.getElementById('fitPage');
         
-        if (zoomInBtn) zoomInBtn.addEventListener('click', () => this.zoomIn());
-        if (zoomOutBtn) zoomOutBtn.addEventListener('click', () => this.zoomOut());
-        if (fitWidthBtn) fitWidthBtn.addEventListener('click', () => this.fitWidth());
-        if (fitPageBtn) fitPageBtn.addEventListener('click', () => this.fitPage());
+        addButtonEvent(zoomInBtn, () => this.zoomIn());
+        addButtonEvent(zoomOutBtn, () => this.zoomOut());
+        addButtonEvent(fitWidthBtn, () => this.fitWidth());
+        addButtonEvent(fitPageBtn, () => this.fitPage());
         
         // Rotation
         const rotateLeftBtn = document.getElementById('rotateLeft');
         const rotateRightBtn = document.getElementById('rotateRight');
         
-        if (rotateLeftBtn) rotateLeftBtn.addEventListener('click', () => this.rotate(-90));
-        if (rotateRightBtn) rotateRightBtn.addEventListener('click', () => this.rotate(90));
+        addButtonEvent(rotateLeftBtn, () => this.rotate(-90));
+        addButtonEvent(rotateRightBtn, () => this.rotate(90));
         
         // Other controls
         const downloadPdfBtn = document.getElementById('downloadPdf');
@@ -113,14 +132,14 @@ class PDFViewer {
         const fullscreenBtn = document.getElementById('fullscreenBtn');
         const searchPdfBtn = document.getElementById('searchPdfBtn');
         
-        if (downloadPdfBtn) downloadPdfBtn.addEventListener('click', () => this.downloadPdf());
+        addButtonEvent(downloadPdfBtn, () => this.downloadPdf());
         if (bookmarkPageBtn) {
-            bookmarkPageBtn.addEventListener('click', () => this.addBookmark());
+            addButtonEvent(bookmarkPageBtn, () => this.addBookmark());
             bookmarkPageBtn.title = 'Bookmark This Page (B)';
         }
-        if (fullscreenBtn) fullscreenBtn.addEventListener('click', () => this.toggleFullscreen());
+        addButtonEvent(fullscreenBtn, () => this.toggleFullscreen());
         if (searchPdfBtn) {
-            searchPdfBtn.addEventListener('click', () => {
+            addButtonEvent(searchPdfBtn, () => {
                 const searchPanel = document.getElementById('searchPanel');
                 if (searchPanel) {
                     searchPanel.classList.toggle('active');
@@ -184,6 +203,10 @@ class PDFViewer {
         let touchStartX = 0;
         let touchEndX = 0;
         
+        // Pinch to zoom variables
+        let initialDistance = 0;
+        let currentScale = this.scale;
+        
         const handleSwipe = () => {
             if (this.viewMode !== 'single') return;
             
@@ -201,13 +224,49 @@ class PDFViewer {
             }
         };
         
+        // Swipe gestures
         this.singlePageView.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
+            if (e.touches.length === 1) {
+                touchStartX = e.changedTouches[0].screenX;
+            } else if (e.touches.length === 2) {
+                // Pinch zoom start
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                initialDistance = Math.hypot(
+                    touch2.pageX - touch1.pageX,
+                    touch2.pageY - touch1.pageY
+                );
+                currentScale = this.scale;
+            }
         });
         
+        this.singlePageView.addEventListener('touchmove', (e) => {
+            if (e.touches.length === 2) {
+                e.preventDefault();
+                const touch1 = e.touches[0];
+                const touch2 = e.touches[1];
+                const currentDistance = Math.hypot(
+                    touch2.pageX - touch1.pageX,
+                    touch2.pageY - touch1.pageY
+                );
+                
+                if (initialDistance > 0) {
+                    const scaleChange = currentDistance / initialDistance;
+                    this.scale = Math.max(0.5, Math.min(5, currentScale * scaleChange));
+                    this.updateZoomLevel();
+                }
+            }
+        }, { passive: false });
+        
         this.singlePageView.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            handleSwipe();
+            if (e.changedTouches.length === 1 && e.touches.length === 0) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            } else if (e.touches.length === 0 && initialDistance > 0) {
+                // Pinch zoom end - re-render with new scale
+                initialDistance = 0;
+                this.renderPage(this.currentPage);
+            }
         });
     }
     
@@ -514,29 +573,55 @@ class PDFViewer {
     }
     
     zoomIn() {
-        console.log('Zoom In clicked, current scale:', this.scale);
+        console.log('=== ZOOM IN TRIGGERED ===');
+        console.log('Current scale:', this.scale);
+        console.log('View mode:', this.viewMode);
+        console.log('Has PDF:', !!this.pdfDoc);
+        
         this.scale += 0.25;
+        console.log('New scale:', this.scale);
+        
         this.updateZoomLevel();
+        
         if (this.viewMode === 'scroll') {
+            console.log('Rendering scroll view...');
             this.renderScrollView();
         } else {
+            console.log('Rendering single page...');
             this.renderPage(this.currentPage);
         }
+        
+        // Visual feedback for mobile
+        this.showToast(`Zoom: ${Math.round(this.scale * 100)}%`, 'info');
     }
     
     zoomOut() {
-        console.log('Zoom Out clicked, current scale:', this.scale);
+        console.log('=== ZOOM OUT TRIGGERED ===');
+        console.log('Current scale:', this.scale);
+        console.log('View mode:', this.viewMode);
+        console.log('Has PDF:', !!this.pdfDoc);
+        
         if (this.scale <= 0.5) {
-            console.log('Already at minimum zoom');
+            console.log('Already at minimum zoom (50%)');
+            this.showToast('Minimum zoom reached (50%)', 'info');
             return;
         }
+        
         this.scale -= 0.25;
+        console.log('New scale:', this.scale);
+        
         this.updateZoomLevel();
+        
         if (this.viewMode === 'scroll') {
+            console.log('Rendering scroll view...');
             this.renderScrollView();
         } else {
+            console.log('Rendering single page...');
             this.renderPage(this.currentPage);
         }
+        
+        // Visual feedback for mobile
+        this.showToast(`Zoom: ${Math.round(this.scale * 100)}%`, 'info');
     }
     
     async fitWidth() {

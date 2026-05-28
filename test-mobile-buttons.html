@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Button Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.5rem;
+        }
+        
+        .test-section {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        h2 {
+            color: #667eea;
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+        }
+        
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        
+        .test-btn {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            min-height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            transition: all 0.2s;
+            -webkit-tap-highlight-color: rgba(102, 126, 234, 0.3);
+            touch-action: manipulation;
+            user-select: none;
+        }
+        
+        .test-btn:active {
+            background: #5568d3;
+            transform: scale(0.95);
+        }
+        
+        .log {
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+        
+        .log-entry {
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .log-entry:last-child {
+            border-bottom: none;
+        }
+        
+        .success {
+            color: #10b981;
+            font-weight: bold;
+        }
+        
+        .info {
+            color: #667eea;
+        }
+        
+        .clear-btn {
+            background: #ef4444;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            margin-top: 10px;
+            cursor: pointer;
+            touch-action: manipulation;
+        }
+        
+        .clear-btn:active {
+            background: #dc2626;
+        }
+        
+        .counter {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #667eea;
+            text-align: center;
+            margin: 20px 0;
+        }
+        
+        .status {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        
+        .status.working {
+            background: #d1fae5;
+            color: #065f46;
+        }
+        
+        .status.waiting {
+            background: #fef3c7;
+            color: #92400e;
+        }
+    </style>
+</head>
+<body>
+    <h1>📱 Mobile Button Test Page</h1>
+    
+    <div class="test-section">
+        <h2>Test 1: Basic Touch Response</h2>
+        <p style="margin-bottom: 15px; color: #666;">Tap the buttons below. Each tap should increment the counter.</p>
+        <div class="button-grid">
+            <button class="test-btn" id="btn1">➕ Tap Me</button>
+            <button class="test-btn" id="btn2">➖ Tap Me</button>
+            <button class="test-btn" id="btn3">◀ Tap Me</button>
+            <button class="test-btn" id="btn4">▶ Tap Me</button>
+        </div>
+        <div class="counter" id="counter">0</div>
+        <div class="status waiting" id="status">Waiting for tap...</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Test 2: Zoom Button Simulation</h2>
+        <p style="margin-bottom: 15px; color: #666;">These buttons use the same event handling as the PDF viewer.</p>
+        <div class="button-grid">
+            <button class="test-btn" id="zoomIn">➕ Zoom In</button>
+            <button class="test-btn" id="zoomOut">➖ Zoom Out</button>
+        </div>
+        <div class="counter" id="zoomLevel">100%</div>
+    </div>
+    
+    <div class="test-section">
+        <h2>Event Log</h2>
+        <p style="margin-bottom: 15px; color: #666;">Shows which events are being triggered.</p>
+        <div class="log" id="log">
+            <div class="log-entry info">Ready to test. Tap any button above.</div>
+        </div>
+        <button class="clear-btn" id="clearLog">Clear Log</button>
+    </div>
+    
+    <div class="test-section">
+        <h2>✅ What to Check</h2>
+        <ul style="line-height: 1.8; color: #666;">
+            <li>✓ Buttons respond to touch immediately</li>
+            <li>✓ Counter increments with each tap</li>
+            <li>✓ No double-counting (each tap = +1 only)</li>
+            <li>✓ Visual feedback (button color changes)</li>
+            <li>✓ Zoom level changes correctly</li>
+            <li>✓ Event log shows touch events</li>
+        </ul>
+    </div>
+    
+    <div class="test-section">
+        <h2>📊 Test Results</h2>
+        <p style="color: #666; margin-bottom: 10px;">If all buttons work correctly, the mobile fixes are successful!</p>
+        <div id="results" style="padding: 15px; background: #f9f9f9; border-radius: 8px; font-weight: 600;">
+            Tap buttons above to test...
+        </div>
+    </div>
+
+    <script>
+        let tapCount = 0;
+        let zoomScale = 100;
+        const logEl = document.getElementById('log');
+        const counterEl = document.getElementById('counter');
+        const statusEl = document.getElementById('status');
+        const zoomLevelEl = document.getElementById('zoomLevel');
+        const resultsEl = document.getElementById('results');
+        
+        function addLog(message, type = 'info') {
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logEl.insertBefore(entry, logEl.firstChild);
+            
+            // Keep only last 20 entries
+            while (logEl.children.length > 20) {
+                logEl.removeChild(logEl.lastChild);
+            }
+        }
+        
+        function updateResults() {
+            if (tapCount > 0) {
+                resultsEl.innerHTML = `
+                    <span style="color: #10b981;">✅ SUCCESS!</span><br>
+                    Buttons are working correctly.<br>
+                    Total taps: ${tapCount}
+                `;
+                resultsEl.style.background = '#d1fae5';
+            }
+        }
+        
+        // Same event handling as PDF viewer
+        function addButtonEvent(btn, handler, label) {
+            if (!btn) return;
+            
+            let touchHandled = false;
+            
+            btn.addEventListener('touchend', (e) => {
+                e.preventDefault();
+                touchHandled = true;
+                addLog(`${label}: touchend event`, 'success');
+                handler();
+                setTimeout(() => { touchHandled = false; }, 300);
+            }, { passive: false });
+            
+            btn.addEventListener('click', (e) => {
+                if (!touchHandled) {
+                    addLog(`${label}: click event`, 'info');
+                    handler();
+                }
+            });
+        }
+        
+        // Test buttons 1-4
+        addButtonEvent(document.getElementById('btn1'), () => {
+            tapCount++;
+            counterEl.textContent = tapCount;
+            statusEl.textContent = '✅ Button 1 tapped!';
+            statusEl.className = 'status working';
+            updateResults();
+        }, 'Button 1');
+        
+        addButtonEvent(document.getElementById('btn2'), () => {
+            tapCount++;
+            counterEl.textContent = tapCount;
+            statusEl.textContent = '✅ Button 2 tapped!';
+            statusEl.className = 'status working';
+            updateResults();
+        }, 'Button 2');
+        
+        addButtonEvent(document.getElementById('btn3'), () => {
+            tapCount++;
+            counterEl.textContent = tapCount;
+            statusEl.textContent = '✅ Button 3 tapped!';
+            statusEl.className = 'status working';
+            updateResults();
+        }, 'Button 3');
+        
+        addButtonEvent(document.getElementById('btn4'), () => {
+            tapCount++;
+            counterEl.textContent = tapCount;
+            statusEl.textContent = '✅ Button 4 tapped!';
+            statusEl.className = 'status working';
+            updateResults();
+        }, 'Button 4');
+        
+        // Zoom buttons
+        addButtonEvent(document.getElementById('zoomIn'), () => {
+            zoomScale += 25;
+            zoomLevelEl.textContent = zoomScale + '%';
+            addLog(`Zoom In: ${zoomScale}%`, 'success');
+            tapCount++;
+            updateResults();
+        }, 'Zoom In');
+        
+        addButtonEvent(document.getElementById('zoomOut'), () => {
+            if (zoomScale > 50) {
+                zoomScale -= 25;
+                zoomLevelEl.textContent = zoomScale + '%';
+                addLog(`Zoom Out: ${zoomScale}%`, 'success');
+            } else {
+                addLog('Minimum zoom reached (50%)', 'info');
+            }
+            tapCount++;
+            updateResults();
+        }, 'Zoom Out');
+        
+        // Clear log button
+        document.getElementById('clearLog').addEventListener('click', () => {
+            logEl.innerHTML = '<div class="log-entry info">Log cleared.</div>';
+        });
+        
+        addLog('Test page loaded. Ready to test!', 'success');
+    </script>
+</body>
+</html>
