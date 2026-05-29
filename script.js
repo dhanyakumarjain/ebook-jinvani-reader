@@ -196,23 +196,52 @@ async function loadLibraryData() {
     }
 }
 
+// function extractAllPdfs(node, path = '') {
+//     if (node.type === 'file') {
+//         STATE.allPdfs.push({
+//             name: node.name,
+//             path: node.path,
+//             fullPath: path + '/' + node.name
+//         });
+//     } else if (node.type === 'folder') {
+//         STATE.totalFolders++;
+//         if (node.children && node.children.length > 0) {
+//             node.children.forEach(child => {
+//                 extractAllPdfs(child, path + '/' + node.name);
+//             });
+//         }
+//     }
+// }
 function extractAllPdfs(node, path = '') {
+
+    if (!node) return;
+
     if (node.type === 'file') {
         STATE.allPdfs.push({
             name: node.name,
             path: node.path,
             fullPath: path + '/' + node.name
         });
-    } else if (node.type === 'folder') {
+        return;
+    }
+
+    if (node.type === 'folder') {
+
         STATE.totalFolders++;
-        if (node.children && node.children.length > 0) {
-            node.children.forEach(child => {
-                extractAllPdfs(child, path + '/' + node.name);
-            });
+
+        let children = [];
+
+        if (node.children) {
+            children = Array.isArray(node.children)
+                ? node.children
+                : [node.children];
         }
+
+        children.forEach(child => {
+            extractAllPdfs(child, path + '/' + node.name);
+        });
     }
 }
-
 function updateStats() {
     // Update total PDFs
     if (DOM.totalPdfs) {
@@ -349,19 +378,44 @@ function collapseAllFolders() {
     allToggles.forEach(toggle => toggle.classList.remove('expanded'));
 }
 
+// function countPdfsInFolder(folder) {
+//     let count = 0;
+    
+//     if (folder.children) {
+//         folder.children.forEach(child => {
+//             if (child.type === 'file') {
+//                 count++;
+//             } else if (child.type === 'folder') {
+//                 count += countPdfsInFolder(child);
+//             }
+//         });
+//     }
+    
+//     return count;
+// }
 function countPdfsInFolder(folder) {
+
     let count = 0;
-    
-    if (folder.children) {
-        folder.children.forEach(child => {
-            if (child.type === 'file') {
-                count++;
-            } else if (child.type === 'folder') {
-                count += countPdfsInFolder(child);
-            }
-        });
+
+    if (!folder || !folder.children) {
+        return 0;
     }
-    
+
+    const children = Array.isArray(folder.children)
+        ? folder.children
+        : [folder.children];
+
+    children.forEach(child => {
+
+        if (child.type === 'file') {
+            count++;
+        }
+        else if (child.type === 'folder') {
+            count += countPdfsInFolder(child);
+        }
+
+    });
+
     return count;
 }
 
