@@ -100,6 +100,8 @@ class PDFViewer {
         // Bottom navigation arrows
         const bottomPrevBtn = document.getElementById('bottomPrevPage');
         const bottomNextBtn = document.getElementById('bottomNextPage');
+        const bottomFirstBtn = document.getElementById('bottomFirstPage');
+        const bottomLastBtn = document.getElementById('bottomLastPage');
         
         addButtonEvent(firstPageBtn, () => this.goToPage(1));
         addButtonEvent(prevPageBtn, () => this.previousPage());
@@ -109,6 +111,8 @@ class PDFViewer {
         // Bottom navigation
         addButtonEvent(bottomPrevBtn, () => this.previousPage());
         addButtonEvent(bottomNextBtn, () => this.nextPage());
+        addButtonEvent(bottomFirstBtn, () => this.goToPage(1));
+        addButtonEvent(bottomLastBtn, () => this.goToPage(this.totalPages));
         
         if (pageNumberInput) {
             pageNumberInput.addEventListener('change', (e) => {
@@ -722,6 +726,8 @@ class PDFViewer {
         // Bottom navigation buttons
         const bottomPrevBtn = document.getElementById('bottomPrevPage');
         const bottomNextBtn = document.getElementById('bottomNextPage');
+        const bottomFirstBtn = document.getElementById('bottomFirstPage');
+        const bottomLastBtn = document.getElementById('bottomLastPage');
         
         const isFirstPage = this.currentPage <= 1;
         const isLastPage = this.currentPage >= this.totalPages;
@@ -740,6 +746,14 @@ class PDFViewer {
         if (bottomNextBtn) {
             bottomNextBtn.disabled = isLastPage;
             bottomNextBtn.style.opacity = isLastPage ? '0.4' : '1';
+        }
+        if (bottomFirstBtn) {
+            bottomFirstBtn.disabled = isFirstPage;
+            bottomFirstBtn.style.opacity = isFirstPage ? '0.4' : '1';
+        }
+        if (bottomLastBtn) {
+            bottomLastBtn.disabled = isLastPage;
+            bottomLastBtn.style.opacity = isLastPage ? '0.4' : '1';
         }
     }
     

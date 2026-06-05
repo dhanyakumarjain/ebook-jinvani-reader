@@ -60,6 +60,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initializeTheme();
     initializeEventListeners();
     loadLibraryData();
+    updateLastUpdatedTime();
 });
 
 // ========================================
@@ -865,3 +866,32 @@ function addBookmarkFromLibrary(path, name) {
     // Show bookmarks section below current library view
     showBookmarksOnHomePage();
 }
+
+// ========================================
+// LAST UPDATED TIME
+// ========================================
+
+function updateLastUpdatedTime() {
+    const updateTimeElement = document.getElementById('updateTime');
+    if (!updateTimeElement) return;
+    
+    const now = new Date();
+    
+    // Format: "May 26, 2026, 01:03 AM"
+    const options = {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+    };
+    
+    const formattedTime = now.toLocaleString('en-US', options);
+    updateTimeElement.textContent = formattedTime;
+    
+    console.log('Last updated time set to:', formattedTime);
+}
+
+// Update time every minute
+setInterval(updateLastUpdatedTime, 60000);
