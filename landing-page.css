@@ -70,10 +70,10 @@
         0 0 100px rgba(255, 215, 0, 0.15);
 }
 
-/* Author Credit - Different Color */
+/* Author Credit - Different Color - SMALLER FONT */
 .author-credit {
-    font-size: 1.8rem;
-    font-weight: 600;
+    font-size: 1.2rem;
+    font-weight: 500;
     color: #FF8C00;
     text-align: center;
     margin: 0;
@@ -101,7 +101,7 @@
     }
     
     .author-credit {
-        font-size: 1.6rem;
+        font-size: 1.1rem;
     }
 }
 
@@ -125,7 +125,7 @@
     }
     
     .author-credit {
-        font-size: 1.4rem;
+        font-size: 1rem;
     }
 }
 
@@ -151,7 +151,7 @@
     }
     
     .author-credit {
-        font-size: 1.2rem;
+        font-size: 0.95rem;
         line-height: 1.4;
     }
 }
@@ -166,6 +166,6 @@
     }
     
     .author-credit {
-        font-size: 1.1rem;
+        font-size: 0.9rem;
     }
 }

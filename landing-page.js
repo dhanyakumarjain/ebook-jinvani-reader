@@ -40,39 +40,49 @@ class LandingPage {
         const totalPages = this.getEstimatedPages(lastBook.path);
         const progress = totalPages > 0 ? Math.round((currentPage / totalPages) * 100) : 0;
         
-        continueCard.innerHTML = `
-            <div class="book-cover">
-                <i class="fas fa-book-open"></i>
-            </div>
-            <div class="book-info">
-                <h3 class="book-title">${this.escapeHtml(lastBook.name)}</h3>
-                <div class="book-meta">
-                    <span>
-                        <i class="fas fa-file-pdf"></i>
-                        Page ${currentPage}${totalPages > 0 ? ` of ${totalPages}` : ''}
-                    </span>
-                    <span>
-                        <i class="fas fa-clock"></i>
-                        ${this.formatDate(lastBook.date)}
-                    </span>
-                </div>
-                <div class="progress-container">
-                    <div class="progress-label">
-                        <span>Reading Progress</span>
-                        <span><strong>${progress}%</strong></span>
-                    </div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${progress}%"></div>
-                    </div>
-                </div>
-                <button class="resume-button" onclick="landingPage.resumeReading('${this.escapeHtml(lastBook.path)}', '${this.escapeHtml(lastBook.name)}')">
-                    <i class="fas fa-play"></i>
-                    Resume Reading
-                </button>
-            </div>
-        `;
+        // Additional safety check before setting innerHTML
+        if (!continueCard) {
+            console.warn('Continue card element not found');
+            return;
+        }
         
-        continueReadingSection.style.display = 'block';
+        try {
+            continueCard.innerHTML = `
+                <div class="book-cover">
+                    <i class="fas fa-book-open"></i>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title">${this.escapeHtml(lastBook.name)}</h3>
+                    <div class="book-meta">
+                        <span>
+                            <i class="fas fa-file-pdf"></i>
+                            Page ${currentPage}${totalPages > 0 ? ` of ${totalPages}` : ''}
+                        </span>
+                        <span>
+                            <i class="fas fa-clock"></i>
+                            ${this.formatDate(lastBook.date)}
+                        </span>
+                    </div>
+                    <div class="progress-container">
+                        <div class="progress-label">
+                            <span>Reading Progress</span>
+                            <span><strong>${progress}%</strong></span>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${progress}%"></div>
+                        </div>
+                    </div>
+                    <button class="resume-button" onclick="landingPage.resumeReading('${this.escapeHtml(lastBook.path)}', '${this.escapeHtml(lastBook.name)}')">
+                        <i class="fas fa-play"></i>
+                        Resume Reading
+                    </button>
+                </div>
+            `;
+            
+            continueReadingSection.style.display = 'block';
+        } catch (error) {
+            console.error('Error updating continue reading card:', error);
+        }
     }
     
     // Load Recent Books carousel

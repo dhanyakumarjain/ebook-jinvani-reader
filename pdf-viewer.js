@@ -743,12 +743,41 @@ class PDFViewer {
             addBookmarkHeaderBtn.style.display = 'none';
         }
         
-        // Always return to home page (welcome screen with bookmarks)
-        if (typeof showWelcomeScreen === 'function') {
-            showWelcomeScreen();
+        // ALWAYS return to clean home page
+        // Hide any library listings or bookmark sections
+        const welcomeScreen = document.getElementById('welcomeScreen');
+        const bookmarksSection = document.getElementById('homeBookmarksSection');
+        const pdfGrid = document.getElementById('pdfGrid');
+        
+        // Show only welcome screen
+        if (welcomeScreen) {
+            welcomeScreen.style.display = 'flex';
         }
         
-        console.log('PDF closed, returned to home page');
+        // Hide bookmarks section
+        if (bookmarksSection) {
+            bookmarksSection.style.display = 'none';
+        }
+        
+        // Remove any PDF cards from library view
+        if (pdfGrid) {
+            const pdfCards = pdfGrid.querySelectorAll('.pdf-card:not(.bookmark-card)');
+            pdfCards.forEach(card => card.remove());
+        }
+        
+        // Reset view bookmarks button
+        const viewBookmarksBtn = document.getElementById('viewBookmarksBtn');
+        if (viewBookmarksBtn) {
+            viewBookmarksBtn.innerHTML = '<i class="far fa-bookmark"></i><span>View Bookmarks</span>';
+        }
+        
+        // Hide empty state
+        const emptyState = document.getElementById('emptyState');
+        if (emptyState) {
+            emptyState.style.display = 'none';
+        }
+        
+        console.log('PDF closed, returned to clean home page');
     }
     
     // Bookmarks
