@@ -97,10 +97,18 @@ class PDFViewer {
         const lastPageBtn = document.getElementById('lastPage');
         const pageNumberInput = document.getElementById('pageNumber');
         
+        // Bottom navigation arrows
+        const bottomPrevBtn = document.getElementById('bottomPrevPage');
+        const bottomNextBtn = document.getElementById('bottomNextPage');
+        
         addButtonEvent(firstPageBtn, () => this.goToPage(1));
         addButtonEvent(prevPageBtn, () => this.previousPage());
         addButtonEvent(nextPageBtn, () => this.nextPage());
         addButtonEvent(lastPageBtn, () => this.goToPage(this.totalPages));
+        
+        // Bottom navigation
+        addButtonEvent(bottomPrevBtn, () => this.previousPage());
+        addButtonEvent(bottomNextBtn, () => this.nextPage());
         
         if (pageNumberInput) {
             pageNumberInput.addEventListener('change', (e) => {
@@ -431,15 +439,30 @@ class PDFViewer {
                 this.canvas.height = 0;
             }
             
+            // Clear scroll view if in scroll mode
+            if (this.pagesContainer) {
+                this.pagesContainer.innerHTML = '';
+            }
+            this.renderedPages.clear();
+            
             // FORCE reset ALL state
             this.currentPage = 1;
             this.totalPages = 0;
             this.scale = 1.5;
             this.rotation = 0;
             this.rendering = false;
+            this.viewMode = 'single';
             
             this.currentPdfPath = path;
             this.currentPdfName = name;
+            
+            // Ensure single page view is active
+            if (this.singlePageView) {
+                this.singlePageView.style.display = 'flex';
+            }
+            if (this.scrollView) {
+                this.scrollView.style.display = 'none';
+            }
             
             // Show modal and loading
             this.modal.classList.add('active');
@@ -461,15 +484,23 @@ class PDFViewer {
             
             console.log('Loading NEW PDF from:', path);
             
-            // Load PDF with unique cache-busting parameter
-            const cacheBuster = Date.now();
+            // Load PDF with STRONG cache-busting and clear worker cache
+            const cacheBuster = Date.now() + Math.random();
+            
+            // Clear PDF.js internal cache
+            if (typeof pdfjsLib !== 'undefined' && pdfjsLib.GlobalWorkerOptions) {
+                console.log('Clearing PDF.js cache');
+            }
+            
             const loadingTask = pdfjsLib.getDocument({
-                url: path + '?t=' + cacheBuster,
+                url: path + '?nocache=' + cacheBuster,
                 cMapUrl: 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/cmaps/',
                 cMapPacked: true,
-                disableAutoFetch: false,
-                disableStream: false,
-                disableRange: false
+                disableAutoFetch: true,  // Changed to true to force fresh load
+                disableStream: true,      // Changed to true to force fresh load
+                disableRange: true,       // Changed to true to force fresh load
+                isEvalSupported: false,
+                useSystemFonts: false
             });
             
             this.pdfDoc = await loadingTask.promise;
@@ -482,6 +513,7 @@ class PDFViewer {
             // Update UI
             document.getElementById('totalPages').textContent = this.totalPages;
             document.getElementById('pageNumber').max = this.totalPages;
+            document.getElementById('zoomLevel').textContent = '150%';
             
             // Always start from page 1 for library books (ignore saved position)
             this.currentPage = 1;
@@ -681,10 +713,34 @@ class PDFViewer {
     }
     
     updateNavigationButtons() {
-        document.getElementById('firstPage').disabled = this.currentPage <= 1;
-        document.getElementById('prevPage').disabled = this.currentPage <= 1;
-        document.getElementById('nextPage').disabled = this.currentPage >= this.totalPages;
-        document.getElementById('lastPage').disabled = this.currentPage >= this.totalPages;
+        // Top navigation buttons
+        const firstPageBtn = document.getElementById('firstPage');
+        const prevPageBtn = document.getElementById('prevPage');
+        const nextPageBtn = document.getElementById('nextPage');
+        const lastPageBtn = document.getElementById('lastPage');
+        
+        // Bottom navigation buttons
+        const bottomPrevBtn = document.getElementById('bottomPrevPage');
+        const bottomNextBtn = document.getElementById('bottomNextPage');
+        
+        const isFirstPage = this.currentPage <= 1;
+        const isLastPage = this.currentPage >= this.totalPages;
+        
+        // Update top buttons
+        if (firstPageBtn) firstPageBtn.disabled = isFirstPage;
+        if (prevPageBtn) prevPageBtn.disabled = isFirstPage;
+        if (nextPageBtn) nextPageBtn.disabled = isLastPage;
+        if (lastPageBtn) lastPageBtn.disabled = isLastPage;
+        
+        // Update bottom buttons
+        if (bottomPrevBtn) {
+            bottomPrevBtn.disabled = isFirstPage;
+            bottomPrevBtn.style.opacity = isFirstPage ? '0.4' : '1';
+        }
+        if (bottomNextBtn) {
+            bottomNextBtn.disabled = isLastPage;
+            bottomNextBtn.style.opacity = isLastPage ? '0.4' : '1';
+        }
     }
     
     toggleFullscreen() {
