@@ -72,11 +72,11 @@
 
 /* Author Credit - Different Color - SMALLER FONT */
 .author-credit {
-    font-size: 1.2rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: #FF8C00;
     text-align: center;
-    margin: 0 0 2rem 0;
+    margin: 0 0 0 0;
     padding: 0;
     position: relative;
     z-index: 2;
@@ -87,8 +87,9 @@
     letter-spacing: 0.5px;
 }
 
-/* Last Updated Time */
+/* Last Updated Time - HIDDEN */
 .last-updated {
+    display: none; /* Hidden as per user request */
     font-size: 0.9rem;
     font-weight: 400;
     color: #888;
@@ -135,8 +136,8 @@
     }
     
     .author-credit {
-        font-size: 1.1rem;
-        margin-bottom: 1.5rem;
+        font-size: 0.85rem;
+        margin-bottom: 0;
     }
     
     .last-updated {
@@ -164,8 +165,8 @@
     }
     
     .author-credit {
-        font-size: 1rem;
-        margin-bottom: 1.5rem;
+        font-size: 0.8rem;
+        margin-bottom: 0;
     }
     
     .last-updated {
@@ -195,9 +196,9 @@
     }
     
     .author-credit {
-        font-size: 0.95rem;
+        font-size: 0.75rem;
         line-height: 1.4;
-        margin-bottom: 1rem;
+        margin-bottom: 0;
     }
     
     .last-updated {
@@ -215,7 +216,7 @@
     }
     
     .author-credit {
-        font-size: 0.9rem;
+        font-size: 0.7rem;
     }
     
     .last-updated {

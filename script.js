@@ -19,44 +19,56 @@ const STATE = {
 // DOM ELEMENTS
 // ========================================
 
-const DOM = {
-    // Header
-    menuToggle: document.getElementById('menuToggle'),
-    searchInput: document.getElementById('searchInput'),
-    searchClear: document.getElementById('searchClear'),
-    themeToggle: document.getElementById('themeToggle'),
+let DOM = {};
+
+function initializeDOM() {
+    DOM = {
+        // Header
+        menuToggle: document.getElementById('menuToggle'),
+        searchInput: document.getElementById('searchInput'),
+        searchClear: document.getElementById('searchClear'),
+        themeToggle: document.getElementById('themeToggle'),
+        
+        // Sidebar
+        sidebar: document.getElementById('sidebar'),
+        folderTree: document.getElementById('folderTree'),
+        collapseAll: document.getElementById('collapseAll'),
+        
+        // Main Content
+        breadcrumb: document.getElementById('breadcrumb'),
+        pdfGrid: document.getElementById('pdfGrid'),
+        welcomeScreen: document.getElementById('welcomeScreen'),
+        emptyState: document.getElementById('emptyState'),
+        errorState: document.getElementById('errorState'),
+        errorMessage: document.getElementById('errorMessage'),
+        
+        // Stats (may not exist in new layout)
+        totalPdfs: document.getElementById('totalPdfs'),
+        totalFolders: document.getElementById('totalFolders'),
+        totalBookmarks: document.getElementById('totalBookmarks'),
+        recentCount: document.getElementById('recentCount'),
+        
+        // Modal
+        pdfModal: document.getElementById('pdfModal'),
+        modalTitle: document.getElementById('modalTitle'),
+        modalClose: document.getElementById('modalClose'),
+        pdfFrame: document.getElementById('pdfFrame')
+    };
     
-    // Sidebar
-    sidebar: document.getElementById('sidebar'),
-    folderTree: document.getElementById('folderTree'),
-    collapseAll: document.getElementById('collapseAll'),
-    
-    // Main Content
-    breadcrumb: document.getElementById('breadcrumb'),
-    pdfGrid: document.getElementById('pdfGrid'),
-    welcomeScreen: document.getElementById('welcomeScreen'),
-    emptyState: document.getElementById('emptyState'),
-    errorState: document.getElementById('errorState'),
-    errorMessage: document.getElementById('errorMessage'),
-    
-    // Stats (may not exist in new layout)
-    totalPdfs: document.getElementById('totalPdfs'),
-    totalFolders: document.getElementById('totalFolders'),
-    totalBookmarks: document.getElementById('totalBookmarks'),
-    recentCount: document.getElementById('recentCount'),
-    
-    // Modal
-    pdfModal: document.getElementById('pdfModal'),
-    modalTitle: document.getElementById('modalTitle'),
-    modalClose: document.getElementById('modalClose'),
-    pdfFrame: document.getElementById('pdfFrame')
-};
+    console.log('DOM initialized:', {
+        errorMessage: !!DOM.errorMessage,
+        errorState: !!DOM.errorState,
+        welcomeScreen: !!DOM.welcomeScreen
+    });
+}
 
 // ========================================
 // INITIALIZATION
 // ========================================
 
 document.addEventListener('DOMContentLoaded', () => {
+    console.log('DOM Content Loaded');
+    initializeDOM();
     initializeTheme();
     initializeEventListeners();
     loadLibraryData();
@@ -826,17 +838,38 @@ function showLoading() {
 }
 
 function showError(message) {
-    DOM.errorState.style.display = 'flex';
-    DOM.welcomeScreen.style.display = 'none';
-    DOM.emptyState.style.display = 'none';
-    DOM.errorMessage.textContent = message;
+    console.error('showError called with:', message);
     
-    DOM.folderTree.innerHTML = `
-        <div class="empty-state">
-            <i class="fas fa-exclamation-triangle"></i>
-            <p>Error loading library</p>
-        </div>
-    `;
+    if (DOM.errorState) {
+        DOM.errorState.style.display = 'flex';
+    } else {
+        console.error('errorState element not found');
+    }
+    
+    if (DOM.welcomeScreen) {
+        DOM.welcomeScreen.style.display = 'none';
+    }
+    
+    if (DOM.emptyState) {
+        DOM.emptyState.style.display = 'none';
+    }
+    
+    if (DOM.errorMessage) {
+        DOM.errorMessage.textContent = message;
+    } else {
+        console.error('errorMessage element not found');
+        // Show error in console and alert as fallback
+        alert('Error loading library: ' + message);
+    }
+    
+    if (DOM.folderTree) {
+        DOM.folderTree.innerHTML = `
+            <div class="empty-state">
+                <i class="fas fa-exclamation-triangle"></i>
+                <p>Error loading library</p>
+            </div>
+        `;
+    }
 }
 
 // ========================================

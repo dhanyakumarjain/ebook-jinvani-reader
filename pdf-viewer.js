@@ -439,6 +439,14 @@ class PDFViewer {
             console.log('Path:', path);
             console.log('Name:', name);
             
+            // Close sidebar on mobile when opening PDF
+            if (window.innerWidth <= 768) {
+                const sidebar = document.getElementById('sidebar');
+                if (sidebar) {
+                    sidebar.classList.remove('active');
+                }
+            }
+            
             // FORCE close any existing PDF
             if (this.pdfDoc) {
                 console.log('Destroying previous PDF document');
@@ -641,6 +649,12 @@ class PDFViewer {
         console.log('View mode:', this.viewMode);
         console.log('Has PDF:', !!this.pdfDoc);
         
+        if (!this.pdfDoc) {
+            console.error('No PDF loaded!');
+            this.showToast('Please open a PDF first', 'error');
+            return;
+        }
+        
         this.scale += 0.25;
         console.log('New scale:', this.scale);
         
@@ -663,6 +677,12 @@ class PDFViewer {
         console.log('Current scale:', this.scale);
         console.log('View mode:', this.viewMode);
         console.log('Has PDF:', !!this.pdfDoc);
+        
+        if (!this.pdfDoc) {
+            console.error('No PDF loaded!');
+            this.showToast('Please open a PDF first', 'error');
+            return;
+        }
         
         if (this.scale <= 0.5) {
             console.log('Already at minimum zoom (50%)');
@@ -838,6 +858,14 @@ class PDFViewer {
         const addBookmarkHeaderBtn = document.getElementById('addBookmarkHeaderBtn');
         if (addBookmarkHeaderBtn) {
             addBookmarkHeaderBtn.style.display = 'none';
+        }
+        
+        // Close sidebar on mobile
+        if (window.innerWidth <= 768) {
+            const sidebar = document.getElementById('sidebar');
+            if (sidebar) {
+                sidebar.classList.remove('active');
+            }
         }
         
         // ALWAYS return to clean home page

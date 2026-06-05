@@ -1429,6 +1429,21 @@ body {
     .menu-toggle::after {
         display: block; /* Show Library text on mobile */
     }
+    
+    /* Mobile header - show data-mobile-text attribute */
+    .logo {
+        font-size: 1rem;
+    }
+    
+    .logo::before {
+        content: attr(data-mobile-text);
+        display: block;
+    }
+    
+    .logo i,
+    .logo::after {
+        display: none;
+    }
 
     .sidebar {
         transform: translateX(-100%);
