@@ -143,6 +143,7 @@ class PDFViewer {
         const bookmarkPageBtn = document.getElementById('bookmarkPageBtn');
         const fullscreenBtn = document.getElementById('fullscreenBtn');
         const searchPdfBtn = document.getElementById('searchPdfBtn');
+        const closeSearchBtn = document.getElementById('closeSearch');
         
         addButtonEvent(downloadPdfBtn, () => this.downloadPdf());
         if (bookmarkPageBtn) {
@@ -152,9 +153,23 @@ class PDFViewer {
         addButtonEvent(fullscreenBtn, () => this.toggleFullscreen());
         if (searchPdfBtn) {
             addButtonEvent(searchPdfBtn, () => {
+                console.log('Search button clicked!');
                 const searchPanel = document.getElementById('searchPanel');
                 if (searchPanel) {
                     searchPanel.classList.toggle('active');
+                    console.log('Search panel toggled, active:', searchPanel.classList.contains('active'));
+                } else {
+                    console.error('Search panel not found!');
+                }
+            });
+        }
+        
+        // Close search panel button
+        if (closeSearchBtn) {
+            addButtonEvent(closeSearchBtn, () => {
+                const searchPanel = document.getElementById('searchPanel');
+                if (searchPanel) {
+                    searchPanel.classList.remove('active');
                 }
             });
         }
@@ -543,18 +558,28 @@ class PDFViewer {
     }
     
     async renderPage(pageNum) {
-        if (this.rendering) return;
+        if (this.rendering) {
+            console.log('Already rendering, waiting...');
+            // Wait a bit and try again
+            await new Promise(resolve => setTimeout(resolve, 100));
+            if (this.rendering) {
+                console.log('Still rendering, skipping...');
+                return;
+            }
+        }
         
         this.rendering = true;
         this.loading.style.display = 'flex';
         
         try {
-            console.log('Rendering page:', pageNum, 'of', this.totalPages);
+            console.log('Rendering page:', pageNum, 'of', this.totalPages, 'at scale:', this.scale);
             
             const page = await this.pdfDoc.getPage(pageNum);
             
-            // Calculate viewport
+            // Calculate viewport with current scale and rotation
             let viewport = page.getViewport({ scale: this.scale, rotation: this.rotation });
+            
+            console.log('Viewport dimensions:', viewport.width, 'x', viewport.height);
             
             // Clear canvas before rendering
             this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
@@ -562,6 +587,8 @@ class PDFViewer {
             // Set canvas dimensions
             this.canvas.height = viewport.height;
             this.canvas.width = viewport.width;
+            
+            console.log('Canvas dimensions set to:', this.canvas.width, 'x', this.canvas.height);
             
             // Render page
             const renderContext = {
@@ -571,7 +598,7 @@ class PDFViewer {
             
             await page.render(renderContext).promise;
             
-            console.log('Page rendered successfully');
+            console.log('Page rendered successfully at', Math.round(this.scale * 100) + '%');
             
             // Update UI
             this.currentPage = pageNum;
