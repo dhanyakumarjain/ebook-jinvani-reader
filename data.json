@@ -5,511 +5,72 @@
                      {
                          "name":  "web कर्नानुयोग",
                          "type":  "folder",
-                         "children":  [
-                                          {
-                                              "path":  "media/web कर्नानुयोग/web १ GomatsarJeevkand_InChartsTables.pdf",
-                                              "name":  "web १ GomatsarJeevkand_InChartsTables.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web कर्नानुयोग/web २ Gunsthan Vivechan.pdf",
-                                              "name":  "web २ Gunsthan Vivechan.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web कर्नानुयोग/web ३ SamyakgyaanChandrika.pdf",
-                                              "name":  "web ३ SamyakgyaanChandrika.pdf",
-                                              "type":  "file"
-                                          }
-                                      ]
+                         "children":  {
+
+                                      }
                      },
                      {
                          "name":  "web गुण स्थान नोट्स",
                          "type":  "folder",
                          "children":  {
-                                          "path":  "media/web गुण स्थान नोट्स/web Notes Gun Stanome.pdf",
-                                          "name":  "web Notes Gun Stanome.pdf",
-                                          "type":  "file"
+
                                       }
                      },
                      {
                          "name":  "web चर्नाणु योग",
                          "type":  "folder",
-                         "children":  [
-                                          {
-                                              "path":  "media/web चर्नाणु योग/web १ आराधनासार--Gatha.pdf",
-                                              "name":  "web १ आराधनासार--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web चर्नाणु योग/web २ दर्शनसार--Gatha.pdf",
-                                              "name":  "web २ दर्शनसार--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web चर्नाणु योग/web ३ पुरुषार्थसिद्ध्युपाय--Gatha.pdf",
-                                              "name":  "web ३ पुरुषार्थसिद्ध्युपाय--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web चर्नाणु योग/web ४ बारसणुपेक्_खा--Gatha.pdf",
-                                              "name":  "web ४ बारसणुपेक्_खा--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web चर्नाणु योग/web ५ रत्नकरण्ड-श्रावकाचार.pdf",
-                                              "name":  "web ५ रत्नकरण्ड-श्रावकाचार.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web चर्नाणु योग/web ६ रत्नकरण्ड-श्रावकाचार--Gatha.pdf",
-                                              "name":  "web ६ रत्नकरण्ड-श्रावकाचार--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web चर्नाणु योग/web ७ वारासाणुवेक्खा--Gatha.pdf",
-                                              "name":  "web ७ वारासाणुवेक्खा--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web चर्नाणु योग/web ८ श्रीअष्टपाहुड--Gatha.pdf",
-                                              "name":  "web ८ श्रीअष्टपाहुड--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web चर्नाणु योग/web ९ श्रीअष्टपाहुड.pdf",
-                                              "name":  "web ९ श्रीअष्टपाहुड.pdf",
-                                              "type":  "file"
-                                          }
-                                      ]
+                         "children":  {
+
+                                      }
                      },
                      {
                          "name":  "web तत्वार्थ सूत्र",
                          "type":  "folder",
-                         "children":  [
-                                          {
-                                              "path":  "media/web तत्वार्थ सूत्र/web १ Tatvarthsutra_in_Charts_\u0026_Table.pdf",
-                                              "name":  "web १ Tatvarthsutra_in_Charts_\u0026_Table.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web तत्वार्थ सूत्र/web २ तत्त्वार्थसूत्र--Gatha.pdf",
-                                              "name":  "web २ तत्त्वार्थसूत्र--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web तत्वार्थ सूत्र/web ३ तत्त्वार्थसूत्र.pdf",
-                                              "name":  "web ३ तत्त्वार्थसूत्र.pdf",
-                                              "type":  "file"
-                                          }
-                                      ]
+                         "children":  {
+
+                                      }
                      },
                      {
                          "name":  "web द्रव्यानुयोग",
                          "type":  "folder",
-                         "children":  [
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web १ इष्टोपदेश--Gatha.pdf",
-                                              "name":  "web १ इष्टोपदेश--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web १० योगसार-प्राभृत--Gatha.pdf",
-                                              "name":  "web १० योगसार-प्राभृत--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web ११ समयसार--Gatha.pdf",
-                                              "name":  "web ११ समयसार--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web १२ समयसार.pdf",
-                                              "name":  "web १२ समयसार.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web १३ समाधितन्त्र--Gatha.pdf",
-                                              "name":  "web १३ समाधितन्त्र--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web १४ स्वरूप-संबोधन--Gatha.pdf",
-                                              "name":  "web १४ स्वरूप-संबोधन--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web २ द्रव्यसंग्रह--Gatha.pdf",
-                                              "name":  "web २ द्रव्यसंग्रह--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web ३ द्रव्यसंग्रह.pdf",
-                                              "name":  "web ३ द्रव्यसंग्रह.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web ४ पन्चास्तिकाय--Gatha.pdf",
-                                              "name":  "web ४ पन्चास्तिकाय--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web ५ पन्चास्तिकाय.pdf",
-                                              "name":  "web ५ पन्चास्तिकाय.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web ६ परमात्मप्रकाश--Gatha.pdf",
-                                              "name":  "web ६ परमात्मप्रकाश--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web ७ प्रवचनसार--Gatha.pdf",
-                                              "name":  "web ७ प्रवचनसार--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web ८ प्रवचनसार.pdf",
-                                              "name":  "web ८ प्रवचनसार.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web द्रव्यानुयोग/web ९ योगसार--Gatha.pdf",
-                                              "name":  "web ९ योगसार--Gatha.pdf",
-                                              "type":  "file"
-                                          }
-                                      ]
+                         "children":  {
+
+                                      }
                      },
                      {
                          "name":  "web न्याय",
                          "type":  "folder",
                          "children":  {
-                                          "path":  "media/web न्याय/web 1 आलापपद्धति--Gatha.pdf",
-                                          "name":  "web 1 आलापपद्धति--Gatha.pdf",
-                                          "type":  "file"
+
                                       }
                      },
                      {
                          "name":  "web प्रथमानुयोग",
                          "type":  "folder",
-                         "children":  [
-                                          {
-                                              "path":  "media/web प्रथमानुयोग/web १ आदिपुराण.pdf",
-                                              "name":  "web १ आदिपुराण.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web प्रथमानुयोग/web २ आराधना-कथा-कोश--Gatha.pdf",
-                                              "name":  "web २ आराधना-कथा-कोश--Gatha.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web प्रथमानुयोग/web ३ उत्तरपुराण.pdf",
-                                              "name":  "web ३ उत्तरपुराण.pdf",
-                                              "type":  "file"
-                                          }
-                                      ]
+                         "children":  {
+
+                                      }
                      },
                      {
                          "name":  "web षटखण्डआगम Shatkhandagam",
                          "type":  "folder",
-                         "children":  [
-                                          {
-                                              "path":  "media/web षटखण्डआगम Shatkhandagam/web PushpdantBhutbaliAacharya - Shatkhandm - 1.pdf",
-                                              "name":  "web PushpdantBhutbaliAacharya - Shatkhandm - 1.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web षटखण्डआगम Shatkhandagam/web PushpdantBhutbaliAacharya - Shatkhandm - 10.pdf",
-                                              "name":  "web PushpdantBhutbaliAacharya - Shatkhandm - 10.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web षटखण्डआगम Shatkhandagam/web PushpdantBhutbaliAacharya - Shatkhandm - 11.pdf",
-                                              "name":  "web PushpdantBhutbaliAacharya - Shatkhandm - 11.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web षटखण्डआगम Shatkhandagam/web PushpdantBhutbaliAacharya - Shatkhandm - 12.pdf",
-                                              "name":  "web PushpdantBhutbaliAacharya - Shatkhandm - 12.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web षटखण्डआगम Shatkhandagam/web PushpdantBhutbaliAacharya - Shatkhandm - 2.pdf",
-                                              "name":  "web PushpdantBhutbaliAacharya - Shatkhandm - 2.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web षटखण्डआगम Shatkhandagam/web PushpdantBhutbaliAacharya - Shatkhandm - 3.pdf",
-                                              "name":  "web PushpdantBhutbaliAacharya - Shatkhandm - 3.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web षटखण्डआगम Shatkhandagam/web PushpdantBhutbaliAacharya - Shatkhandm - 4.pdf",
-                                              "name":  "web PushpdantBhutbaliAacharya - Shatkhandm - 4.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web षटखण्डआगम Shatkhandagam/web PushpdantBhutbaliAacharya - Shatkhandm - 5.pdf",
-                                              "name":  "web PushpdantBhutbaliAacharya - Shatkhandm - 5.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web षटखण्डआगम Shatkhandagam/web PushpdantBhutbaliAacharya - Shatkhandm - 6.pdf",
-                                              "name":  "web PushpdantBhutbaliAacharya - Shatkhandm - 6.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web षटखण्डआगम Shatkhandagam/web PushpdantBhutbaliAacharya - Shatkhandm - 7.pdf",
-                                              "name":  "web PushpdantBhutbaliAacharya - Shatkhandm - 7.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web षटखण्डआगम Shatkhandagam/web PushpdantBhutbaliAacharya - Shatkhandm - 8.pdf",
-                                              "name":  "web PushpdantBhutbaliAacharya - Shatkhandm - 8.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/web षटखण्डआगम Shatkhandagam/web PushpdantBhutbaliAacharya - Shatkhandm - 9.pdf",
-                                              "name":  "web PushpdantBhutbaliAacharya - Shatkhandm - 9.pdf",
-                                              "type":  "file"
-                                          }
-                                      ]
+                         "children":  {
+
+                                      }
                      },
                      {
                          "name":  "web सिद्धांत कषाय पाहुड सुत्त",
                          "type":  "folder",
                          "children":  {
-                                          "path":  "media/web सिद्धांत कषाय पाहुड सुत्त/web Kasaypahudsutt.pdf",
-                                          "name":  "web Kasaypahudsutt.pdf",
-                                          "type":  "file"
+
                                       }
                      },
                      {
                          "name":  "प्रमाणिक कहानियां पार्ट 1-4",
                          "type":  "folder",
-                         "children":  [
-                                          {
-                                              "path":  "media/प्रमाणिक कहानियां पार्ट 1-4/प्रमाणिक कहानियां पार्ट 1.pdf",
-                                              "name":  "प्रमाणिक कहानियां पार्ट 1.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/प्रमाणिक कहानियां पार्ट 1-4/प्रमाणिक कहानियां पार्ट 2.pdf",
-                                              "name":  "प्रमाणिक कहानियां पार्ट 2.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/प्रमाणिक कहानियां पार्ट 1-4/प्रमाणिक कहानियां पार्ट 3.pdf",
-                                              "name":  "प्रमाणिक कहानियां पार्ट 3.pdf",
-                                              "type":  "file"
-                                          },
-                                          {
-                                              "path":  "media/प्रमाणिक कहानियां पार्ट 1-4/प्रमाणिक कहानियां पार्ट 4.pdf",
-                                              "name":  "प्रमाणिक कहानियां पार्ट 4.pdf",
-                                              "type":  "file"
-                                          }
-                                      ]
-                     },
-                     {
-                         "path":  "media/0105 सामायिक पाठ भाषा (काल अनंत..).pdf",
-                         "name":  "0105 सामायिक पाठ भाषा (काल अनंत..).pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0106 आलोचना पाठ जोहरिलाल (वंदो पांचो परमगुरू).pdf",
-                         "name":  "0106 आलोचना पाठ जोहरिलाल (वंदो पांचो परमगुरू).pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0111 समाधिमरण पाठ (बंदोश्री अरिहंत परमगुरु-भव भव मे).pdf",
-                         "name":  "0111 समाधिमरण पाठ (बंदोश्री अरिहंत परमगुरु-भव भव मे).pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0169 जिनवाणी अभिषेक पाठ पंचामृत बुक.pdf",
-                         "name":  "0169 जिनवाणी अभिषेक पाठ पंचामृत बुक.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0224 विनय-पाठ-लघु सफ़ल जन्म मेरा.pdf",
-                         "name":  "0224 विनय-पाठ-लघु सफ़ल जन्म मेरा.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0241 देव पूजा प्राकृत (देव गंगेचे आनोनी निर.. दादाजी).pdf",
-                         "name":  "0241 देव पूजा प्राकृत (देव गंगेचे आनोनी निर.. दादाजी).pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0242 श्री देव शास्त्र गुरु समुच्च पूजन (देव शास्त्र गुरु नमन् ).pdf",
-                         "name":  "0242 श्री देव शास्त्र गुरु समुच्च पूजन (देव शास्त्र गुरु नमन् ).pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0282 पार्श्वनाथ पूजा कचनेरजी.pdf",
-                         "name":  "0282 पार्श्वनाथ पूजा कचनेरजी.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0283 पार्श्वनाथ पूजा रविव्रत पूजा.pdf",
-                         "name":  "0283 पार्श्वनाथ पूजा रविव्रत पूजा.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0331 श्री नन्दीश्वर द्वीप (अष्टाह्निका पर्व) 1 श्री नंदीश्वर की स्तुती.pdf",
-                         "name":  "0331 श्री नन्दीश्वर द्वीप (अष्टाह्निका पर्व) 1 श्री नंदीश्वर की स्तुती.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0331 श्री नन्दीश्वर द्वीप (अष्टाह्निका पर्व) 2 पूजन.pdf",
-                         "name":  "0331 श्री नन्दीश्वर द्वीप (अष्टाह्निका पर्व) 2 पूजन.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0331 श्री नन्दीश्वर द्वीप (अष्टाह्निका पर्व) 3 श्री नंदीश्वर की आरती.pdf",
-                         "name":  "0331 श्री नन्दीश्वर द्वीप (अष्टाह्निका पर्व) 3 श्री नंदीश्वर की आरती.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0380 आचार्य श्री शांन्तिसागर महाराज 1 पूजा.pdf",
-                         "name":  "0380 आचार्य श्री शांन्तिसागर महाराज 1 पूजा.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0380 आचार्य श्री शांन्तिसागर महाराज 2 आरती.pdf",
-                         "name":  "0380 आचार्य श्री शांन्तिसागर महाराज 2 आरती.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0391 दिवाली पूजा संक्षिप्त-सम्पूर्ण जैन विधि-21102025 ✽.pdf",
-                         "name":  "0391 दिवाली पूजा संक्षिप्त-सम्पूर्ण जैन विधि-21102025 ✽.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0410 भक्तामर विधान एवं दीप अर्चना आसरस्वतीभूषण माताजी r.pdf",
-                         "name":  "0410 भक्तामर विधान एवं दीप अर्चना आसरस्वतीभूषण माताजी r.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0410 भक्तामर स्त्रोत दीप अर्चना_r.pdf",
-                         "name":  "0410 भक्तामर स्त्रोत दीप अर्चना_r.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0533 पंच गुरुभक्ति प्रतिदिन सुबह पढ़े.pdf",
-                         "name":  "0533 पंच गुरुभक्ति प्रतिदिन सुबह पढ़े.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0700 जैन हवन की विधी.pdf",
-                         "name":  "0700 जैन हवन की विधी.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/0952 शिखरजी टोक प्रत्येक अर्घ JD.pdf",
-                         "name":  "0952 शिखरजी टोक प्रत्येक अर्घ JD.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/1500 विधान शांतिनाथ विधान ताराचंदजी.pdf",
-                         "name":  "1500 विधान शांतिनाथ विधान ताराचंदजी.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/1501 विधान शांतिनाथ विधान अर्थ सहित.pdf",
-                         "name":  "1501 विधान शांतिनाथ विधान अर्थ सहित.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/1535 वास्तु विधान आ सरस्वती भूषण माताजी_r.pdf",
-                         "name":  "1535 वास्तु विधान आ सरस्वती भूषण माताजी_r.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web चालीसा संग्रह 009247 Data.pdf",
-                         "name":  "web चालीसा संग्रह 009247 Data.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web चौबीस भगवन की एवं अन्य पूजाए 009243 Data.pdf",
-                         "name":  "web चौबीस भगवन की एवं अन्य पूजाए 009243 Data.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web जिनवानी इंग्लिश हिंदी 009252 Data.pdf",
-                         "name":  "web जिनवानी इंग्लिश हिंदी 009252 Data.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web जैन पूजा पाठ JainPooja.pdf",
-                         "name":  "web जैन पूजा पाठ JainPooja.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web जैन भजन JainBhajan.pdf",
-                         "name":  "web जैन भजन JainBhajan.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web जैन भजन संग्रह 009246 Data.pdf",
-                         "name":  "web जैन भजन संग्रह 009246 Data.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web तत्त्वार्थसूत्र.pdf",
-                         "name":  "web तत्त्वार्थसूत्र.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web दस लक्षण धर्म पूजा 009244 Data.pdf",
-                         "name":  "web दस लक्षण धर्म पूजा 009244 Data.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web नित्य नियम पूजा 009253 Data.pdf",
-                         "name":  "web नित्य नियम पूजा 009253 Data.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web नित्य नियम पूजा इंग्रजी 007763 Data.pdf",
-                         "name":  "web नित्य नियम पूजा इंग्रजी 007763 Data.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web पन्चास्तिकाय.pdf",
-                         "name":  "web पन्चास्तिकाय.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web प्रवचनसार.pdf",
-                         "name":  "web प्रवचनसार.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web श्री जिन पूजन चौबीस भगवन की पूजाए पूर्णमती माताजी 009250 Data.pdf",
-                         "name":  "web श्री जिन पूजन चौबीस भगवन की पूजाए पूर्णमती माताजी 009250 Data.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web श्री जिन समस्त अर्घावली संग्रह 009251 Data.pdf",
-                         "name":  "web श्री जिन समस्त अर्घावली संग्रह 009251 Data.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web समयसार.pdf",
-                         "name":  "web समयसार.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/web समाधितन्त्र.pdf",
-                         "name":  "web समाधितन्त्र.pdf",
-                         "type":  "file"
-                     },
-                     {
-                         "path":  "media/सुप्रभात नित्य पाठ के लिए उपयोगी.pdf",
-                         "name":  "सुप्रभात नित्य पाठ के लिए उपयोगी.pdf",
-                         "type":  "file"
+                         "children":  {
+
+                                      }
                      }
                  ]
 }
