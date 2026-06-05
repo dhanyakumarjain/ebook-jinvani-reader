@@ -97,6 +97,20 @@ function initializeEventListeners() {
         DOM.sidebar.classList.toggle('active');
     });
     
+    // Close sidebar when clicking outside on mobile
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768) {
+            const sidebar = DOM.sidebar;
+            const menuToggle = DOM.menuToggle;
+            
+            if (sidebar.classList.contains('active') && 
+                !sidebar.contains(e.target) && 
+                !menuToggle.contains(e.target)) {
+                sidebar.classList.remove('active');
+            }
+        }
+    });
+    
     // Home button
     const homeBtn = document.getElementById('homeBtn');
     if (homeBtn) {
@@ -111,6 +125,10 @@ function initializeEventListeners() {
             const addBookmarkHeaderBtn = document.getElementById('addBookmarkHeaderBtn');
             if (addBookmarkHeaderBtn) {
                 addBookmarkHeaderBtn.style.display = 'none';
+            }
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) {
+                DOM.sidebar.classList.remove('active');
             }
         });
     }
@@ -270,7 +288,7 @@ function updateStats() {
 function renderFolderTree(data) {
     DOM.folderTree.innerHTML = '';
     
-    if (!data.children || data.children.length === 0) {
+    if (!data.children || (Array.isArray(data.children) && data.children.length === 0)) {
         DOM.folderTree.innerHTML = `
             <div class="empty-state">
                 <i class="fas fa-folder-open"></i>
@@ -281,9 +299,14 @@ function renderFolderTree(data) {
         return;
     }
     
-    data.children.forEach(child => {
+    // Handle both array and single object
+    const children = Array.isArray(data.children) ? data.children : [data.children];
+    
+    children.forEach(child => {
         const element = createTreeNode(child);
-        DOM.folderTree.appendChild(element);
+        if (element) {
+            DOM.folderTree.appendChild(element);
+        }
     });
 }
 
@@ -316,12 +339,18 @@ function createFolderNode(folder) {
     const folderChildren = document.createElement('div');
     folderChildren.className = 'folder-children';
     
-    // Add children
-    if (folder.children && folder.children.length > 0) {
-        folder.children.forEach(child => {
-            const childElement = createTreeNode(child);
-            folderChildren.appendChild(childElement);
-        });
+    // Add children - handle both array and single object
+    if (folder.children) {
+        const children = Array.isArray(folder.children) ? folder.children : [folder.children];
+        
+        if (children.length > 0) {
+            children.forEach(child => {
+                const childElement = createTreeNode(child);
+                if (childElement) {
+                    folderChildren.appendChild(childElement);
+                }
+            });
+        }
     }
     
     // Toggle folder on click
@@ -480,7 +509,10 @@ function getAllPdfsInFolder(folder) {
     const pdfs = [];
     
     if (folder.children) {
-        folder.children.forEach(child => {
+        // Handle both array and single object
+        const children = Array.isArray(folder.children) ? folder.children : [folder.children];
+        
+        children.forEach(child => {
             if (child.type === 'file') {
                 pdfs.push(child);
             } else if (child.type === 'folder') {
