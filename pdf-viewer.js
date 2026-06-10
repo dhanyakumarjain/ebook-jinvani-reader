@@ -711,7 +711,7 @@ class PDFViewer {
         const page = await this.pdfDoc.getPage(this.currentPage);
         const viewport = page.getViewport({ scale: 1 });
         const container = this.viewMode === 'scroll' ? this.scrollView : document.querySelector('.pdf-viewer-container');
-        const containerWidth = container.clientWidth - 80;
+        const containerWidth = container.clientWidth - 16;
         this.scale = containerWidth / viewport.width;
         this.updateZoomLevel();
         if (this.viewMode === 'scroll') {
@@ -725,8 +725,8 @@ class PDFViewer {
         const page = await this.pdfDoc.getPage(this.currentPage);
         const viewport = page.getViewport({ scale: 1 });
         const container = this.viewMode === 'scroll' ? this.scrollView : document.querySelector('.pdf-viewer-container');
-        const containerWidth = container.clientWidth - 80;
-        const containerHeight = container.clientHeight - 80;
+        const containerWidth = container.clientWidth - 16;
+        const containerHeight = container.clientHeight - 16;
         
         const scaleWidth = containerWidth / viewport.width;
         const scaleHeight = containerHeight / viewport.height;
