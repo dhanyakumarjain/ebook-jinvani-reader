@@ -1903,3 +1903,43 @@ body {
     color: white !important;
     border-color: #10b981 !important;
 }
+
+
+/* ========================================
+   CLOSE APP BUTTON (Header)
+   ======================================== */
+
+.close-app-btn {
+    background: #dc2626;
+    border: none;
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    color: white;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(220, 38, 38, 0.35);
+}
+
+.close-app-btn:hover {
+    background: #b91c1c;
+    transform: scale(1.08);
+    box-shadow: 0 4px 14px rgba(220, 38, 38, 0.5);
+}
+
+.close-app-btn:active {
+    transform: scale(0.95);
+}
+
+@media (max-width: 768px) {
+    .close-app-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.1rem;
+        border-radius: 10px;
+    }
+}

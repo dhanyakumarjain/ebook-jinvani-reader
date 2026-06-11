@@ -103,6 +103,18 @@ function updateThemeIcon() {
 function initializeEventListeners() {
     // Theme toggle
     DOM.themeToggle.addEventListener('click', toggleTheme);
+
+    // Close App button
+    const closeAppBtn = document.getElementById('closeAppBtn');
+    if (closeAppBtn) {
+        closeAppBtn.addEventListener('click', () => {
+            window.close();
+            // Fallback: if window.close() is blocked (opened via link), go back in history
+            if (!window.closed) {
+                history.back();
+            }
+        });
+    }
     
     // Menu toggle (mobile)
     DOM.menuToggle.addEventListener('click', () => {
