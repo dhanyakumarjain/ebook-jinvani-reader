@@ -982,109 +982,124 @@ body {
 }
 
 /* ========================================
-   BOTTOM NAVIGATION ARROWS
+   COLOURFUL NAV BUTTONS (toolbar)
    ======================================== */
 
-.bottom-navigation {
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(15, 23, 42, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 0.4rem 1rem;
+/* Base nav button — icon + small label stacked or inline */
+.btn-nav {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    gap: 0.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-    z-index: 100;
-}
-
-.bottom-nav-btn {
-    flex: 1;
-    max-width: 160px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
-    border: none;
-    padding: 0.5rem 1rem;
+    justify-content: center;
+    gap: 2px;
+    border: none !important;
+    color: white !important;
+    font-weight: 700;
     border-radius: 8px;
-    color: white;
-    font-size: 0.95rem;
-    font-weight: 600;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    transition: all 0.3s ease;
-    box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
-    -webkit-tap-highlight-color: rgba(102, 126, 234, 0.3);
-    touch-action: manipulation;
-    user-select: none;
-}
-
-/* Smaller buttons for Top/End */
-.bottom-nav-btn-small {
-    flex: 0.5;
-    max-width: 80px;
-    padding: 0.5rem 0.6rem;
-    font-size: 0.85rem;
-    background: linear-gradient(135deg, #f59e0b, #d97706);
-}
-
-.bottom-nav-btn-small .nav-label {
-    font-size: 0.8rem;
-}
-
-.bottom-nav-btn-small i {
-    font-size: 0.95rem;
-}
-
-.bottom-nav-btn:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
-}
-
-.bottom-nav-btn-small:hover {
-    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.4);
-}
-
-.bottom-nav-btn:active {
-    transform: translateY(0);
-    box-shadow: 0 2px 6px rgba(102, 126, 234, 0.3);
-}
-
-.bottom-nav-btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none;
-}
-
-.bottom-nav-btn i {
-    font-size: 1rem;
-}
-
-.nav-label {
+    min-width: 46px;
+    min-height: 38px;
+    padding: 0.3rem 0.5rem;
     font-size: 0.9rem;
-    letter-spacing: 0.3px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.18);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
-/* Previous button - left arrow first */
-#bottomPrevPage {
+.btn-nav:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.12);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.22);
+}
+
+.btn-nav:active {
+    transform: scale(0.93) !important;
+    filter: brightness(0.92);
+}
+
+.btn-nav i {
+    font-size: 0.95rem;
+    line-height: 1;
+}
+
+.btn-nav-label {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    line-height: 1;
+    opacity: 0.92;
+}
+
+/* ── Individual button colours ── */
+
+/* Top — teal */
+.btn-nav-top {
+    background: linear-gradient(135deg, #06b6d4, #0891b2);
+    box-shadow: 0 2px 8px rgba(6,182,212,0.35);
+}
+.btn-nav-top:hover { box-shadow: 0 4px 14px rgba(6,182,212,0.5); }
+
+/* Prev — indigo/purple */
+.btn-nav-prev {
     background: linear-gradient(135deg, #667eea, #764ba2);
+    box-shadow: 0 2px 8px rgba(102,126,234,0.35);
 }
+.btn-nav-prev:hover { box-shadow: 0 4px 14px rgba(102,126,234,0.5); }
 
-/* Next button - right arrow last */
-#bottomNextPage {
+/* Next — emerald */
+.btn-nav-next {
     background: linear-gradient(135deg, #10b981, #059669);
+    box-shadow: 0 2px 8px rgba(16,185,129,0.35);
+}
+.btn-nav-next:hover { box-shadow: 0 4px 14px rgba(16,185,129,0.5); }
+
+/* Bottom/End — orange */
+.btn-nav-bottom {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    box-shadow: 0 2px 8px rgba(245,158,11,0.35);
+}
+.btn-nav-bottom:hover { box-shadow: 0 4px 14px rgba(245,158,11,0.5); }
+
+/* Zoom out — rose */
+.btn-nav-zoomout {
+    background: linear-gradient(135deg, #f43f5e, #e11d48);
+    box-shadow: 0 2px 8px rgba(244,63,94,0.3);
+}
+.btn-nav-zoomout:hover { box-shadow: 0 4px 12px rgba(244,63,94,0.45); }
+
+/* Zoom in — violet */
+.btn-nav-zoomin {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    box-shadow: 0 2px 8px rgba(139,92,246,0.3);
+}
+.btn-nav-zoomin:hover { box-shadow: 0 4px 12px rgba(139,92,246,0.45); }
+
+/* Bookmark — amber */
+.btn-nav-bookmark {
+    background: linear-gradient(135deg, #fbbf24, #f59e0b);
+    box-shadow: 0 2px 8px rgba(251,191,36,0.3);
+}
+.btn-nav-bookmark:hover { box-shadow: 0 4px 12px rgba(251,191,36,0.45); }
+.btn-nav-bookmark.bookmark-success {
+    background: linear-gradient(135deg, #10b981, #059669) !important;
 }
 
-#bottomNextPage:hover {
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+/* Download — sky blue */
+.btn-nav-download {
+    background: linear-gradient(135deg, #0ea5e9, #0284c7);
+    box-shadow: 0 2px 8px rgba(14,165,233,0.3);
+}
+.btn-nav-download:hover { box-shadow: 0 4px 12px rgba(14,165,233,0.45); }
+
+/* Disabled state for nav buttons */
+.btn-nav:disabled {
+    opacity: 0.35 !important;
+    cursor: not-allowed;
+    transform: none !important;
+    filter: grayscale(0.4);
 }
 
 /* ========================================
-   END BOTTOM NAVIGATION
+   END COLOURFUL NAV BUTTONS
    ======================================== */
 
 /* Bookmarks Panel */
@@ -1341,47 +1356,23 @@ body {
         width: 100% !important;
         height: auto !important;
     }
-    
-    /* ── Bottom 4 navigation buttons — icon only, slim bar ── */
-    .bottom-navigation {
-        padding: 0.3rem 0.4rem;
-        gap: 0.3rem;
-        flex-wrap: nowrap;
+
+    /* Colourful nav buttons — compact on mobile */
+    .btn-nav {
+        min-width: 36px;
+        min-height: 34px;
+        padding: 0.25rem 0.35rem;
+        border-radius: 7px;
+        gap: 1px;
     }
 
-    /* Hide text labels — icons only */
-    .bottom-nav-btn .nav-label,
-    .bottom-nav-btn-small .nav-label {
-        display: none;
+    .btn-nav i {
+        font-size: 0.82rem;
     }
 
-    /* All 4 buttons equal width, small */
-    .bottom-nav-btn {
-        flex: 1;
-        max-width: none;
-        min-width: 0;
-        padding: 0.5rem 0.4rem;
-        font-size: 0;          /* hide any stray text */
-        border-radius: 8px;
-        gap: 0;
-    }
-
-    .bottom-nav-btn i {
-        font-size: 1.1rem;
-    }
-
-    .bottom-nav-btn-small {
-        flex: 1;
-        max-width: none;
-        min-width: 0;
-        padding: 0.5rem 0.4rem;
-        font-size: 0;
-        border-radius: 8px;
-        gap: 0;
-    }
-
-    .bottom-nav-btn-small i {
-        font-size: 1rem;
+    .btn-nav-label {
+        font-size: 0.52rem;
+        letter-spacing: 0.2px;
     }
 }
 
@@ -1439,19 +1430,20 @@ body {
         gap: 0.15rem;
     }
 
-    /* Bottom nav — even slimmer on very small screens */
-    .bottom-nav-btn,
-    .bottom-nav-btn-small {
-        padding: 0.4rem 0.3rem;
+    /* Even more compact nav buttons on small phones */
+    .btn-nav {
+        min-width: 30px;
+        min-height: 30px;
+        padding: 0.2rem 0.25rem;
         border-radius: 6px;
     }
 
-    .bottom-nav-btn i {
-        font-size: 0.95rem;
+    .btn-nav i {
+        font-size: 0.75rem;
     }
 
-    .bottom-nav-btn-small i {
-        font-size: 0.9rem;
+    .btn-nav-label {
+        font-size: 0.48rem;
     }
 }
 
@@ -1472,8 +1464,18 @@ body {
         font-size: 0.8rem !important;
     }
 
-    .bottom-navigation {
-        padding: 0.25rem 0.4rem;
+    .btn-nav {
+        min-width: 30px;
+        min-height: 28px;
+        padding: 0.2rem 0.3rem;
+    }
+
+    .btn-nav i {
+        font-size: 0.75rem;
+    }
+
+    .btn-nav-label {
+        display: none; /* hide labels in landscape to save space */
     }
 }
 

@@ -187,8 +187,16 @@
             <div class="pdf-controls">
                 <!-- Primary Controls (Always Visible) -->
                 <div class="primary-controls">
-                    <button class="btn-control" id="prevPage" title="Previous Page">
+
+                    <!-- Navigation: colourful icon+label buttons -->
+                    <button class="btn-control btn-nav btn-nav-top" id="firstPage" title="First Page (Home)">
+                        <i class="fas fa-angle-double-up"></i>
+                        <span class="btn-nav-label">Top</span>
+                    </button>
+
+                    <button class="btn-control btn-nav btn-nav-prev" id="prevPage" title="Previous Page">
                         <i class="fas fa-chevron-left"></i>
+                        <span class="btn-nav-label">Prev</span>
                     </button>
                     
                     <div class="page-indicator">
@@ -198,24 +206,30 @@
                         <span class="zoom-level" id="zoomLevel">150%</span>
                     </div>
                     
-                    <button class="btn-control" id="nextPage" title="Next Page">
+                    <button class="btn-control btn-nav btn-nav-next" id="nextPage" title="Next Page">
+                        <span class="btn-nav-label">Next</span>
                         <i class="fas fa-chevron-right"></i>
                     </button>
+
+                    <button class="btn-control btn-nav btn-nav-bottom" id="lastPage" title="Last Page (End)">
+                        <i class="fas fa-angle-double-down"></i>
+                        <span class="btn-nav-label">End</span>
+                    </button>
                     
-                    <button class="btn-control" id="zoomOut" title="Zoom Out">
+                    <button class="btn-control btn-nav btn-nav-zoomout" id="zoomOut" title="Zoom Out">
                         <i class="fas fa-search-minus"></i>
                     </button>
                     
-                    <button class="btn-control" id="zoomIn" title="Zoom In">
+                    <button class="btn-control btn-nav btn-nav-zoomin" id="zoomIn" title="Zoom In">
                         <i class="fas fa-search-plus"></i>
                     </button>
 
-                    <!-- Bookmark & Download always visible on all screens -->
-                    <button class="btn-control bookmark-btn" id="bookmarkPageBtn" title="Bookmark This Page (Press B)">
+                    <!-- Bookmark & Download always visible -->
+                    <button class="btn-control btn-nav btn-nav-bookmark bookmark-btn" id="bookmarkPageBtn" title="Bookmark This Page (Press B)">
                         <i class="fas fa-bookmark"></i>
-                        <span class="btn-label">Bookmark</span>
+                        <span class="btn-label">Save</span>
                     </button>
-                    <button class="btn-control" id="downloadPdf" title="Download PDF">
+                    <button class="btn-control btn-nav btn-nav-download" id="downloadPdf" title="Download PDF">
                         <i class="fas fa-download"></i>
                     </button>
                     
@@ -228,12 +242,6 @@
                 <div class="secondary-controls" id="secondaryControls">
                     <button class="btn-control" id="toggleViewMode" title="Toggle View Mode">
                         <i class="fas fa-th-list"></i>
-                    </button>
-                    <button class="btn-control" id="firstPage" title="First Page">
-                        <i class="fas fa-step-backward"></i>
-                    </button>
-                    <button class="btn-control" id="lastPage" title="Last Page">
-                        <i class="fas fa-step-forward"></i>
                     </button>
                     <button class="btn-control" id="fitWidth" title="Fit Width">
                         <i class="fas fa-arrows-alt-h"></i>
@@ -270,26 +278,6 @@
                         <i class="fas fa-spinner fa-spin"></i>
                         <p>Loading pages...</p>
                     </div>
-                </div>
-                
-                <!-- Bottom Navigation Arrows -->
-                <div class="bottom-navigation" id="bottomNavigation">
-                    <button class="bottom-nav-btn" id="bottomPrevPage" title="Previous Page (←)">
-                        <i class="fas fa-arrow-left"></i>
-                        <span class="nav-label">Previous</span>
-                    </button>
-                    <button class="bottom-nav-btn bottom-nav-btn-small" id="bottomFirstPage" title="Go to First Page (Home)">
-                        <i class="fas fa-angle-double-up"></i>
-                        <span class="nav-label">Top</span>
-                    </button>
-                    <button class="bottom-nav-btn bottom-nav-btn-small" id="bottomLastPage" title="Go to Last Page (End)">
-                        <i class="fas fa-angle-double-down"></i>
-                        <span class="nav-label">End</span>
-                    </button>
-                    <button class="bottom-nav-btn" id="bottomNextPage" title="Next Page (→)">
-                        <span class="nav-label">Next</span>
-                        <i class="fas fa-arrow-right"></i>
-                    </button>
                 </div>
             </div>
         </div>
