@@ -1247,8 +1247,9 @@ body {
     }
     
     .modal-btn {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
+        font-size: 0.85rem;
     }
     
     /* Show more button, hide secondary controls */
@@ -1262,40 +1263,67 @@ body {
     
     .secondary-controls.active {
         display: flex;
+        flex-wrap: wrap;
+        gap: 0.3rem;
+        padding: 0.3rem 0.5rem;
     }
+
+    /* Primary toolbar — compact for mobile */
     .primary-controls {
-        padding: 0.35rem;
+        padding: 0.25rem 0.35rem;
         gap: 0.2rem;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
+    /* All toolbar buttons — small on mobile */
     .btn-control {
-        padding: 0.5rem;
-        min-width: 40px;
-        min-height: 40px;
-        font-size: 0.95rem;
+        padding: 0.35rem;
+        min-width: 32px !important;
+        min-height: 32px !important;
+        font-size: 0.82rem !important;
+        border-radius: 6px;
     }
-    
+
+    /* Hide bookmark text label on mobile — icon only */
+    .bookmark-btn .btn-label {
+        display: none;
+    }
+
+    /* Compact bookmark button width */
+    .bookmark-btn {
+        min-width: 32px !important;
+    }
+
+    /* Page number input */
     .page-input {
-        width: 40px;
-        padding: 0.5rem 0.2rem;
-        font-size: 0.9rem;
+        width: 34px;
+        padding: 0.3rem 0.15rem;
+        font-size: 0.8rem;
     }
     
     .page-indicator {
-        font-size: 0.85rem;
+        font-size: 0.8rem;
         padding: 0;
+        gap: 0.1rem;
+    }
+
+    .page-separator {
+        margin: 0 0.1rem;
     }
     
     .zoom-level {
-        display: none; /* Hide zoom percentage on mobile to save space */
+        display: none;
     }
     
+    /* PDF canvas area */
     .pdf-viewer-container {
         padding: 0.25rem;
     }
     
     .pdf-scroll-container {
         padding: 0.25rem;
+        -webkit-overflow-scrolling: touch;
     }
     
     #pagesContainer {
@@ -1314,108 +1342,138 @@ body {
         height: auto !important;
     }
     
-    /* Touch-friendly scrolling */
-    .pdf-scroll-container {
-        -webkit-overflow-scrolling: touch;
-    }
-    
-    /* Bottom navigation on mobile */
+    /* ── Bottom 4 navigation buttons — icon only, slim bar ── */
     .bottom-navigation {
-        padding: 0.4rem 0.4rem;
-        gap: 0.35rem;
+        padding: 0.3rem 0.4rem;
+        gap: 0.3rem;
         flex-wrap: nowrap;
-        overflow-x: auto;
     }
-    
-    .bottom-nav-btn {
-        padding: 0.6rem 0.8rem;
-        font-size: 0.9rem;
-        min-width: 80px;
-        flex-shrink: 0;
-    }
-    
-    .bottom-nav-btn-small {
-        padding: 0.5rem 0.5rem;
-        font-size: 0.8rem;
-        min-width: 60px;
-        max-width: 72px;
-    }
-    
-    .nav-label {
-        font-size: 0.8rem;
-    }
-    
+
+    /* Hide text labels — icons only */
+    .bottom-nav-btn .nav-label,
     .bottom-nav-btn-small .nav-label {
-        font-size: 0.75rem;
+        display: none;
+    }
+
+    /* All 4 buttons equal width, small */
+    .bottom-nav-btn {
+        flex: 1;
+        max-width: none;
+        min-width: 0;
+        padding: 0.5rem 0.4rem;
+        font-size: 0;          /* hide any stray text */
+        border-radius: 8px;
+        gap: 0;
+    }
+
+    .bottom-nav-btn i {
+        font-size: 1.1rem;
+    }
+
+    .bottom-nav-btn-small {
+        flex: 1;
+        max-width: none;
+        min-width: 0;
+        padding: 0.5rem 0.4rem;
+        font-size: 0;
+        border-radius: 8px;
+        gap: 0;
+    }
+
+    .bottom-nav-btn-small i {
+        font-size: 1rem;
     }
 }
 
 @media (max-width: 480px) {
     .modal-title-section {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.25rem;
+        flex-direction: row;
+        align-items: center;
+        gap: 0.4rem;
     }
     
     .modal-header h3 {
-        font-size: 0.9rem;
-        max-width: 200px;
+        font-size: 0.8rem;
+        max-width: 45vw;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
     }
     
     .modal-controls {
-        gap: 0.25rem;
-    }
-    
-    .modal-btn {
-        width: 32px;
-        height: 32px;
-        font-size: 0.9rem;
-    }
-    
-    .btn-control {
-        padding: 0.5rem;
-        min-width: 36px;
-        min-height: 36px;
-        font-size: 0.9rem;
-    }
-    
-    .page-input {
-        width: 40px;
-        padding: 0.5rem 0.2rem;
-        font-size: 0.85rem;
-    }
-    
-    .page-indicator {
-        font-size: 0.85rem;
-    }
-    
-    .primary-controls {
-        padding: 0.4rem;
         gap: 0.2rem;
     }
     
-    .secondary-controls {
-        padding: 0.5rem;
+    .modal-btn {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+    
+    .modal-close {
+        width: 28px;
+        height: 28px;
+        font-size: 0.8rem;
+    }
+
+    .btn-control {
+        min-width: 28px !important;
+        min-height: 28px !important;
+        padding: 0.25rem !important;
+        font-size: 0.78rem !important;
+        border-radius: 5px;
+    }
+    
+    .page-input {
+        width: 30px;
+        padding: 0.25rem 0.1rem;
+        font-size: 0.75rem;
+    }
+    
+    .page-indicator {
+        font-size: 0.75rem;
+    }
+    
+    .primary-controls {
+        padding: 0.2rem 0.25rem;
+        gap: 0.15rem;
+    }
+
+    /* Bottom nav — even slimmer on very small screens */
+    .bottom-nav-btn,
+    .bottom-nav-btn-small {
+        padding: 0.4rem 0.3rem;
+        border-radius: 6px;
+    }
+
+    .bottom-nav-btn i {
+        font-size: 0.95rem;
+    }
+
+    .bottom-nav-btn-small i {
+        font-size: 0.9rem;
     }
 }
 
 /* Landscape mode on mobile */
 @media (max-width: 768px) and (orientation: landscape) {
     .modal-header {
-        padding: 0.5rem 1rem;
+        padding: 0.3rem 0.75rem;
     }
     
     .primary-controls {
-        padding: 0.4rem 0.5rem;
+        padding: 0.25rem 0.4rem;
     }
     
     .btn-control {
-        padding: 0.5rem;
-        min-width: 36px;
-        min-height: 36px;
+        min-width: 30px !important;
+        min-height: 30px !important;
+        padding: 0.3rem !important;
+        font-size: 0.8rem !important;
+    }
+
+    .bottom-navigation {
+        padding: 0.25rem 0.4rem;
     }
 }
 
@@ -1514,26 +1572,14 @@ body {
         padding: 1rem;
     }
     
-    /* MOBILE BUTTON IMPROVEMENTS */
-    .btn-control {
-        /* Larger touch targets for mobile */
-        min-width: 48px !important;
-        min-height: 48px !important;
-        padding: 0.8rem !important;
-        font-size: 1.1rem !important;
-        /* Better touch feedback */
-        -webkit-tap-highlight-color: rgba(102, 126, 234, 0.3);
-        touch-action: manipulation;
-        user-select: none;
-    }
-    
+    /* Mobile touch feedback for PDF viewer buttons */
     .btn-control:active {
         background: var(--accent-primary) !important;
         color: white !important;
         transform: scale(0.95);
     }
     
-    /* Ensure zoom buttons are easily tappable */
+    /* Ensure zoom buttons are clearly tappable */
     #zoomIn,
     #zoomOut {
         font-weight: bold;
